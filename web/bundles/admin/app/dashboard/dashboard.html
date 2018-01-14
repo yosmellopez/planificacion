@@ -1,0 +1,109 @@
+<!-- BEGIN PAGE HEADER-->
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="#/dashboard">Inicio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Dashboard</a>
+        </li>
+    </ul>
+</div>
+
+<h3 class="page-title">
+    Sistema de Planificación
+    <small>Panel de Control</small>
+</h3>
+
+
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row" id="row-diagrama">
+    <div class="col-md-12">
+        <div class="portlet light ">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-apolo-sharp hide"></i>
+                    <span class="caption-subject font-apolo-haze bold uppercase">Diagrama de planificación</span>
+                    <span class="caption-helper"></span>
+                </div>
+                <div class="actions">
+                    <button
+                            class="btn green"
+                            type="button" ng-click="vm.salvar()">
+                        <i class="fa fa-save fa-fw"></i> Guardar
+                    </button>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="diagrama"
+                     style="width:100%; height:400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detalle-tarea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header blue-hoki">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title">Detalle</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-horizontal-resumen">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <key class="control-key col-md-2">Código:</key>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static" id="tarea-detalle-codigo">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <key class="control-key col-md-2">Título:</key>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static" id="tarea-detalle-titulo">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <key class="control-key col-md-2">Fecha:</key>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static" id="tarea-detalle-fecha">
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn red" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS & CSS -->
+<script>
+
+</script>
+<!-- BEGIN MAIN JS & CSS -->

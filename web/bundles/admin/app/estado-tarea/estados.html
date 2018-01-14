@@ -1,0 +1,216 @@
+<!-- BEGIN PAGE HEADER-->
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="#/dashboard">Inicio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Administrar</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Tareas</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Estados de Tareas</a>
+        </li>
+    </ul>
+</div>
+<h3 class="page-title">
+    Administrar los estados de tareas
+</h3>
+
+
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row" id="lista-estado">
+    <div class="col-lg-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption caption-md">
+                    <i class="icon-list font-apolo-sharp"></i>
+                    <span class="caption-subject font-apolo-haze bold uppercase">Estados de Tareas</span>
+                </div>
+                <div class="actions">
+                    <a href="javascript:;" class="btn btn-circle btn-icon-only btn-default fullscreen"
+                       data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-toolbar">
+                    <div class="row">
+                        <div class="col-md-12"
+                             data-ng-include="vm.urlPath + '/bundles/admin/app/layout/acciones-lista.html'"></div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-striped table-bordered table-hover" id="estado-tarea-table-editable">
+                        <thead>
+                            <tr>
+                                <th class="table-checkbox all">
+                                    <input type="checkbox" class="group-checkable"
+                                           data-set="#estado-tarea-table-editable .checkboxes"/>
+                                </th>
+                                <th class="all">Nombre</th>
+                                <th class="all">Descripción</th>
+                                <th class="min-tablet">Estado</th>
+                                <th class="min-tablet">Color</th>
+                                <th class="min-tablet">Peso</th>
+                                <th class="min-tablet">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row ng-hide" id="form-estado">
+    <div class="col-lg-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption caption-md">
+                    <i class="icon-bar-chart font-apolo-haze hide"></i>
+                    <span class="caption-subject font-apolo-haze bold uppercase" id="form-estado-title">¿Deseas crear un nuevo estado de tarea? Sigue los siguientes pasos:</span>
+                    <span class="caption-helper"></span>
+                </div>
+                <div class="actions">
+                    <a href="javascript:;" class="btn btn-circle btn-icon-only btn-default fullscreen"
+                       data-original-title="" title="">
+                    </a>
+                    <a href="javascript:;" class="btn btn-circle btn-icon-only btn-default my-remove"
+                       data-ng-click="vm.cerrarForm()">
+                        <i class="fa fa-times fa"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="" id="estado-form" action="#"
+                              enctype="multipart/form-data" method="post">
+                            <div class="form-body">
+                                <input type="hidden" id="estado_id" name="estado_id"/>
+
+                                <div class="form-group ic-form-group">
+                                    <key>
+                                        <span class="ic-step-number">1</span>
+                                        Para comenzar, ingrese el nombre del estado de tarea
+                                        <span class="ic-small italic">(obligatorio)</span>
+                                    </key>
+                                    <p class="help-block">Es muy importante que elijas un nombre claro y
+                                        representativa, a través del cual puedas identificar fácilmente tu estado de tarea una
+                                        vez creada.</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control form-control-text"
+                                                   id="nombre"
+                                                   name="nombre"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ic-form-group">
+                                    <key>
+                                        <span class="ic-step-number">2</span>
+                                        Para continuar, ingrese la descripción del estado de tarea
+                                        <span class="ic-small italic">(obligatorio)</span>
+                                    </key>
+                                    <p class="help-block">Es muy importante que elijas una descripción clara y
+                                        representativa, a través del cual puedas identificar fácilmente tu estado de tarea una
+                                        vez creada.</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control form-control-text"
+                                                   id="descripcion"
+                                                   name="descripcion"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ic-form-group">
+                                    <key>
+                                        <span class="ic-step-number">3</span>
+                                        Para continuar, seleccione el color para su estado
+                                        <span class="ic-small italic">(obligatorio)</span>
+                                    </key>
+                                    <p class="help-block">Seleccione el color en que se mostrarán las tareas con este estado.</p>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input color-picker class="form-control form-control-text" id="color" name="color" 
+                                                   color-picker-output-format="'hex'"
+                                                   color-picker-model="var"
+                                                   ng-style="{background:var   }"/>
+                                        </div>
+                                    </div>
+                                    <div id="colorpicker"></div>
+                                </div>
+                                <div class="form-group ic-form-group">
+                                    <key><span class="ic-step-number">4</span>A continuación, define el estado en el
+                                        que se creará el estado de tarea</key>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <key class="radio-inline">
+                                                    <input type="radio" name="radioestado" id="estadoactivo" checked>
+                                                    <span class="ic-small">Activo</span>
+                                                </key>
+                                                <key class="radio-inline">
+                                                    <input type="radio" name="radioestado" id="estadoinactivo">
+                                                    <span class="ic-small">Inactivo</span>
+                                                </key>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ic-form-group">
+                                    <key>
+                                        <span class="ic-step-number">5</span>
+                                        Para continuar, ingrese el peso del estado de tarea
+                                        <span class="ic-small italic">(obligatorio)</span>
+                                    </key>
+                                    <p class="help-block">El peso del estado se utiliza para ordenar las tareas un vez creadas.</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="number" class="form-control form-control-text"
+                                                   id="peso" name="peso"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group ic-form-group">
+                                            <button data-ng-click="vm.salvarForm()" class="btn green" type="button">
+                                                Guardar
+                                            </button>
+                                            <button data-ng-click="vm.cerrarForm()" class="btn red" type="button">
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div data-ng-include="vm.urlPath + '/bundles/admin/app/layout/modal-eliminar.html'"></div>
+<!-- END PAGE -->
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS & CSS -->
+<script>
+
+</script>
+<!-- BEGIN MAIN JS & CSS -->

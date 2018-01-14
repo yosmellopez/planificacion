@@ -1,0 +1,290 @@
+<!-- BEGIN PAGE HEADER-->
+<style>
+    .modal-body key {
+        margin-right: 10px;
+        width: 150px;
+    }
+
+    .mi-task {
+        background-color: #90f890;
+        color: red;
+    }
+
+    .modal-body .nivel-alerta-tareas li {
+        list-style: none;
+        display: inline-block;
+        padding: 2px;
+        margin: 0 10px 0 0;
+        border: 1px solid black;
+    }
+</style>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="#/dashboard">Inicio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">Planes</a>
+        </li>
+    </ul>
+</div>
+<h3 class="page-title">
+    Administrar los planes
+</h3>
+<div class="row" id="lista-plan">
+    <div class="col-lg-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption caption-md">
+                    <i class="icon-grid font-apolo-sharp"></i>
+                    <span class="caption-subject font-apolo-haze bold uppercase">{{titulo}}</span>
+                </div>
+                <div class="actions">
+                    <a href="javascript:;" class="btn btn-circle btn-icon-only btn-default fullscreen"
+                       data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="col-md-6" id="select-area" ng-if="!mostrarInicial">
+                    <select data-ds-select2 class="form-control selectpicker" id="plan" name="plan" ng-model="idPlan">
+                        <option value="">Seleccione el plan</option>
+                        <option data-ng-repeat="item in vm.planes" value="{{item.plan_id}}">{{item.nombre}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2" ng-if="!mostrarInicial">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button
+                                    class="btn btn-primary"
+                                    type="button" ng-click="vm.mostrarDetalles()">
+                                <i class="fa fa-search fa-fw"></i> Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="margin-bottom-30" style="margin-bottom: 5px"></div>
+                <div class="margin-bottom-30"></div>
+                <div class="table-container" ng-if="!mostrarInicial">
+                    <table class="table table-striped table-bordered table-hover dt-responsive"
+                           id="plan-table-editable">
+                        <thead>
+                            <tr>
+                                <th class="all col-md-4">Nombre</th>
+                                <th class="all col-md-5">Descripción</th>
+                                <th class="desktop col-md-1">Estado</th>
+                                <th class="all col-md-2">Fecha de Creación</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-plan">
+                            <tr data-ng-repeat="item in planes">
+                                <td>{{item.nombre}}</td>
+                                <td>{{item.descripcion}}</td>
+                                <td>{{item.estado_id.descripcion}}</td>
+                                <td>{{item.fechaCreacion}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-container" data-ng-hide="mostrarTabla">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6" id="select-nivel-alerta">
+                                <select data-ds-select2 class="form-control selectpicker" id="nivel-alerta" name="nivel-alerta" ng-model="nivelAlerta" ng-change="vm.seleccionarElemento({criticidad:true,cargo:false,area:false,direccion:false});">
+                                    <option value="">Seleccione nivel de alerta</option>
+                                    <option data-ng-repeat="item in vm.criticidades" value="{{item.criticidad_id}}">{{item.nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px;"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3" id="select-direccion">
+                                <select data-ds-select2 class="form-control selectpicker" id="direccion" name="direccion" ng-model="direccion" ng-change="vm.seleccionarElemento({criticidad:false,cargo:false,area:false,direccion:true});">
+                                    <option value="">Seleccione la dirección</option>
+                                    <option data-ng-repeat="item in vm.gerencias" value="{{item.gerencia_id}}">{{item.descripcion}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3" id="select-gerencia">
+                                <select data-ds-select2 class="form-control selectpicker" id="gerencia" name="gerencia" ng-model="gerencia" ng-change="vm.seleccionarElemento({criticidad:false,cargo:false,area:true,direccion:false});">
+                                    <option value="">Seleccione la gerencia</option>
+                                    <option data-ng-repeat="item in vm.areas" value="{{item.area_id}}">{{item.nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3" id="select-cargo">
+                                <select data-ds-select2 class="form-control selectpicker" id="cargo" name="cargo" ng-model="cargo" ng-change="vm.seleccionarElemento({criticidad:false,cargo:true,area:false,direccion:false});">
+                                    <option value="">Seleccione el cargo</option>
+                                    <option data-ng-repeat="item in vm.cargos" value="{{item.cargo_id}}">{{item.nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button
+                                                class="btn btn-primary"
+                                                type="button" ng-click="vm.filtarTareasCargo()">
+                                            <i class="fa fa-search fa-fw"></i> Seleccionar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <legend>Lista de Tareas del Plan</legend>
+                        <div class="table-container">
+                            <table class="table table-striped table-bordered table-hover dt-responsive"
+                                   id="tarea-table-editable">
+                                <thead>
+                                    <tr>
+                                        <th class="all">Código</th>
+                                        <th class="min-tablet">Nombre</th>
+                                        <th class="desktop">Cargo</th>
+                                        <th class="desktop">Nivel de Alerta</th>
+                                        <th class="min-tablet text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-tarea-detalle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" ng-style="vm.mostrarColorVentana(tarea)">
+        <div class="modal-content">
+            <div class="modal-header blue-hoki">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title">{{tituloModal}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <ul class="nivel-alerta-tareas" style="padding: 0 20px">
+                        <li ng-repeat="item in vm.criticidades" ng-style="vm.mostrarColor(item,tarea)">{{item.nombre}}</li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="portlet light" style="margin-bottom: 0">
+                        <div class="portlet-body">
+                            <div><strong style="display: inline-block;font-size: 12px;width: 8em;vertical-align: top;margin-right: 5px;">Responsable: </strong>
+                                <p style="display: inline-block;width: 84.5%;text-align: justify">{{tarea.cargo}}</p>
+                            </div>
+                            <div><strong style="display: inline-block;font-size: 12px;width: 8em;vertical-align: top;margin-right: 5px;">Observaciones: </strong>
+                                <p style="display: inline-block;width: 84.5%;text-align: justify" ng-bind-html="tarea.descripcion"></p>
+                            </div>
+                            <div><strong style="display: inline-block;font-size: 12px;width:  8em;vertical-align: top;margin-right: 5px;">Canal: </strong>
+                                <p style="display: inline-block;width: 84.5%;text-align: justify">{{tarea.canal.nombre}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="div-table-antecesoras">
+                        <div class="portlet light" style="margin-bottom: 0">
+                            <div class="portlet-title" style="margin-bottom: 0">
+                                <h4>Tareas Precedentes</h4>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-responsive">
+                                    <table class="table table-advance table-bordered table-hover table-striped"
+                                           id="table-antecesoras" style="max-height: 700px;overflow: scroll">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Nombre</th>
+                                                <th>Nivel de Alerta</th>
+                                                <th>Cargo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-antecesoras-cuerpo">
+                                            <tr data-ng-repeat="elem in antecesoras" draggable="true">
+                                                <td>{{elem.codigo}}</td>
+                                                <td>{{elem.nombre}}</td>
+                                                <td>{{elem.criticidad}}</td>
+                                                <td>{{elem.cargo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="div-table-relacionados">
+                        <div class="portlet light" style="margin-bottom: 0">
+                            <div class="portlet-title" style="margin-bottom: 0">
+                                <h4>Tareas Sucesoras</h4>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-responsive">
+                                    <table class="table table-advance table-bordered table-hover table-striped" id="table-relacionados" style="max-height: 700px;overflow: scroll">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Nombre</th>
+                                                <th>Nivel de Alerta</th>
+                                                <th>Cargo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-relacionados-cuerpo">
+                                            <tr data-ng-repeat="elem in tarea.sucesoras" draggable="true">
+                                                <td>{{elem.codigo}}</td>
+                                                <td>{{elem.nombre}}</td>
+                                                <td>{{elem.criticidad}}</td>
+                                                <td>{{elem.cargo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="portlet light" style="margin-bottom: 0">
+                            <div class="portlet-title" style="margin-bottom: 0">
+                                <h4>Archivos</h4>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-responsive">
+                                    <table class="table table-advance table-bordered table-hover table-striped" id="table-archivos">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Descripción</th>
+                                                <th class="text-center">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="item in tarea.modelos">
+                                                <td>{{item.nombre}}</td>
+                                                <td>{{item.descripcion}}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-icon-only yellow download table-action" href="uploads/{{item.ruta}}" target="_blank" data-original-title="" title="">
+                                                        <i class="fa fa-download fa-fw"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn red" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

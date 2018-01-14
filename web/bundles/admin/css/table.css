@@ -1,0 +1,185 @@
+/* 
+    Document   : table
+    Created on : 17-nov-2013, 12:58:15
+    Author     : Marcel
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* DataTables Overrides */
+
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+    background: transparent;
+}
+
+table.dataTable thead .sorting_asc:after {
+    content: "\f0de";
+    float: right;
+    font-family: fontawesome;
+}
+
+table.dataTable thead .sorting_desc:after {
+    content: "\f0dd";
+    float: right;
+    font-family: fontawesome;
+}
+
+table.dataTable thead .sorting:after {
+    content: "\f0dc";
+    float: right;
+    font-family: fontawesome;
+    color: rgba(50,50,50,.5);
+}
+
+.dataTables_processing{    
+    color: #999;
+    background: url("../assets/pre-loader/Snake.gif") no-repeat;
+    text-align: center;
+    width: 30%;
+    left: 50%;
+    margin-top: 5%;
+    margin-left: 35%;    
+    height: 35px;  
+    font-size: 0.95em;
+}
+
+.m-wrap.small {
+    width: 95% !important;
+    height: 30px;
+}
+
+.m-wrap.small.error{
+    border-color: #B94A48;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+table.table-striped {
+    width: 100% !important;
+}
+
+.chzn-container {
+    display: inline-block;
+    position: relative;
+    width: 95% !important;
+}
+
+.chzn-container-single .chzn-drop {
+    background-clip: padding-box;
+    border-radius: 3px;
+    width: 100% !important;
+}
+
+.chzn-single.error{
+    border-color: #B94A48;
+}
+
+select.error{
+    border-color: #B94A48;
+}
+
+.bootstrap-select.form-control.has-error button.btn-default{
+    border-color: #A94442;
+}
+
+.chzn-container-single .chzn-search input {
+    margin: 1px 0;
+    outline: 0 none;
+    padding: 4px 20px 4px 5px;
+    width: 90% !important;
+}
+
+table.table-striped tbody tr.odd{
+    background-color: #f9f9f9;
+}
+
+.uneditable-input{
+    display: inline-block;
+    height: 34px;
+    padding: 4px 6px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #555555;
+    vertical-align: middle;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    width: 206px;
+    margin-left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: #FCFCFC;
+    border-color: #CCCCCC;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
+    color: #999999;
+    cursor: not-allowed;
+}
+
+.uneditable-input:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    outline: 0;
+    outline: thin dotted \9;
+    /* IE6-9 */
+
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+.uneditable-input[class*="span"] {
+    float: none;
+    margin-left: 0;
+}
+
+.dropzone{
+    display: block;
+    min-height: 80px;
+}
+
+.dropzone.dz-clickable {
+    background: none repeat scroll 0 0 #002A5F;
+    cursor: pointer;
+}
+
+.dropzone.dz-clickable.dz-started {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.dropzone-single-file .dz-preview,
+.dropzone-previews .dz-preview {
+    width: 90%;
+}
+
+.dropzone-single-file .dz-preview .dz-details,
+.dropzone-previews .dz-preview .dz-details {
+    width: 100%;
+}
+.dropzone-single-file .dz-preview .dz-details img,
+.dropzone-previews .dz-preview .dz-details img {
+    width: 100%;
+}
+
+.dropzone a.dz-remove, .dropzone-previews a.dz-remove {       
+    cursor: pointer;
+
+}
+
+/*.table-striped tbody tr.active:nth-child(2n+1) td, .table-striped tbody tr.active:nth-child(2n+1) th {
+    background-color: #017EBC;
+    color: #fff;
+}
+.table > thead > tr > td.active, .table > thead > tr > th.active, .table > thead > tr.active > td, .table > thead > tr.active > th, .table > tbody > tr > td.active, .table > tbody > tr > th.active, .table > tbody > tr.active > td, .table > tbody > tr.active > th, .table > tfoot > tr > td.active, .table > tfoot > tr > th.active, .table > tfoot > tr.active > td, .table > tfoot > tr.active > th {
+    background-color: #A6C8E6;
+    color: #fff;
+}*/
+
+.form-control.error{
+    border-color: #B94A48;
+}

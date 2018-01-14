@@ -1,0 +1,358 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13-sep-2015, 13:49:53
+    Author     : Marcel
+*/
+.margin-bottom-60 {
+    margin-bottom: 60px !important;
+}
+
+.table-scrollable > .table-bordered > thead > tr:last-child > th, .table-scrollable > .table-bordered > tbody > tr:last-child > th, .table-scrollable > .table-bordered > tfoot > tr:last-child > th, .table-scrollable > .table-bordered > thead > tr:last-child > td, .table-scrollable > .table-bordered > tbody > tr:last-child > td, .table-scrollable > .table-bordered > tfoot > tr:last-child > td {
+    font-size: 12px;
+}
+
+.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    font-size: 12px;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    font-size: 12px;
+}
+
+.btn-icon-only {
+    height: 30px;
+    width: 30px;
+}
+
+.my-task{
+    border-left-color: #006600;
+    border-left-style: dotted;
+    border-left-width: 10px;
+}
+
+.error {
+    border-color: #a94442;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.portlet > .portlet-title > .caption {
+    font-size: 15px;
+}
+
+.ic-form-group {
+    padding-left: 50px;
+}
+
+/* Estilos de texto */
+.ic-small {
+    font-size: 0.8em
+}
+
+.ic-step-number {
+    background: #2174FF;
+    color: #ffffff;
+    font-size: 13px;
+    display: inline-block;
+    /*width: 20 px;*/
+    height: 20px;
+    padding: 1px 6px 3px 6px;
+    text-align: center;
+    margin-left: -30px;
+    margin-right: 10px;
+    border-radius: 50% !important;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+}
+
+.italic {
+    font-style: italic
+}
+
+.input-mini {
+    width: 40px !important
+}
+
+.ic-color-ok {
+    color: #26a69a
+}
+
+.ic-color-error {
+    color: #cb5a5e
+}
+
+.has-error .form-control {
+    border-color: #cb5a5e;
+    box-shadow: none;
+}
+
+input.has-error, .required.has-error {
+    border: 1px solid #cb5a5e !important;
+}
+
+.profile-info h1 {
+    font-size: 20px;
+}
+
+.datepicker table tr td, .datepicker table tr th {
+    font-size: 14px;
+}
+
+.datetimepicker td, .datetimepicker th {
+    font-size: 14px;
+}
+
+.dropzone {
+    display: block;
+    min-height: 80px;
+}
+
+.dropzone.dz-clickable {
+    /*background: none repeat scroll 0 0 #00420E;*/
+    cursor: pointer;
+}
+
+.dropzone.dz-clickable.dz-started {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.dropzone-single-file .dz-preview,
+.dropzone-previews .dz-preview {
+    width: 90%;
+}
+
+.dropzone-single-file .dz-preview .dz-details,
+.dropzone-previews .dz-preview .dz-details {
+    width: 100%;
+}
+
+.dropzone-single-file .dz-preview .dz-details img,
+.dropzone-previews .dz-preview .dz-details img {
+    width: 100%;
+}
+
+.dropzone a.dz-remove, .dropzone-previews a.dz-remove {
+    cursor: pointer;
+
+}
+
+.dropzone .dz-default.dz-message {
+    height: 30px;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    position: static;
+}
+
+.dropzone .dz-default.dz-message span {
+    color: #2174FF;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.5em;
+    font-weight: 300;
+    display: block;
+}
+
+.dd-item .dd3-content {
+    background: #2174FF;
+    color: #fff;
+}
+
+.dd-item-categoria .dd3-content {
+    background: #fff;
+    color: #333;
+    /*border: none;
+    border-bottom: 1px solid #ccc;*/
+    /*border-color: #00420E;*/
+}
+
+.dd-item > button:before {
+    color: #fff;
+}
+
+@media (max-width: 480px) {
+    /*.edit.btn, .delete.btn, .pdf.btn, .block.btn {
+        height: 40px;
+        width: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .edit > i, .delete > i, .pdf > i, .block > i {
+        font-size: 25px !important;
+        margin-top: 10px;
+    }*/
+    /*.pdf.btn, .block.btn {
+        margin-top: 10px;
+    }*/
+    tr.filter {
+        display: none !important;
+    }
+
+    .fixedHeader-floating {
+        top: 0 !important;
+    }
+
+}
+
+tr.row-active {
+    background-color: #017ebc !important;
+}
+
+.font-apolo-sharp {
+    color: #2174FF !important;
+}
+
+.font-apolo-haze {
+    color: #2174FF !important;
+}
+
+.form-control-number {
+    text-align: right !important;
+}
+
+.form-control-text {
+    text-transform: capitalize !important;
+}
+
+.btn + .btn {
+    margin-left: 0px;
+}
+
+.panel-image {
+    margin: auto;
+}
+
+.tabla-total {
+    background-color: #cb0000 !important;
+    color: #fff;
+}
+
+@media (min-width: 1200px) {
+    .my-container {
+        width: 1250px !important;
+    }
+    .col-action-form-group{
+        text-align: center;
+        padding-right: 0px;
+        padding-left: 0px;
+        width: 5%;
+    }
+
+    .sin-padding-right{
+        padding-right: 0px;
+    }
+    .sin-padding-left{
+        padding-left: 0px;
+    }
+    .sin-padding{
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .col-3-input-with-action {
+        width: 28%;
+    }
+}
+
+.mt-25 {
+    margin-top: 25px;
+}
+.mt-2 {
+    margin-top: 2px;
+}
+
+.modal-body .form .form-actions {
+
+    background-color: #ffffff;
+
+}
+
+.optionGroup {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.optionChild1 {
+    padding-left: 15px;
+}
+
+.optionGroup2 {
+    font-weight: bold;
+    font-style: italic;
+    padding-left: 15px;
+}
+
+.optionChild2 {
+    padding-left: 30px;
+}
+
+.optionChild3 {
+    padding-left: 45px;
+}
+
+.optionChild4 {
+    padding-left: 60px;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+    height: 20px;
+    width: 20px;
+    top: 6px;
+}
+
+.table .btn {
+    height: 25px;
+    width: 25px;
+}
+.btn-icon-only > [class^="icon-"], .btn-icon-only > i{
+    margin-top: 0px;
+    position: relative;
+    top: -4px;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 5px 10px;
+}
+
+.select2-drop-active {
+    z-index: 99999;
+}
+
+.custom-rating {
+    font-size: 2em;
+    color: #2174FF;
+    line-height: 1;
+}
+
+td.text-center .md-checkbox {
+    margin-bottom: 15px;
+}
+
+td.text-center .md-checkbox input[type=checkbox]:checked ~ label > .check {
+    margin-left: 50%;
+}
+
+td.text-center .md-checkbox label > .box {
+    margin-left: 50%;
+}
+
+.jstree-default-large .jstree-wholerow {
+    border: 1px solid #ffffff;
+    background-color: #E9EDEF;
+}
+
+.shortdrop .select2-results {
+    max-height: 120px !important;
+}
+
+.form-horizontal-resumen .control-label {
+    text-align: left;
+}
+
+.form-horizontal-resumen .form-body {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
