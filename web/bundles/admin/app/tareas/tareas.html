@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-md-3" id="select-gerencia-filtro" ng-if="vm.usuario.rol === 1">
                             <select data-ds-select2 class="form-control selectpicker" id="gerencia-filtro" name="gerencia" ng-model="gerencia" ng-change="vm.seleccionarElemento({criticidad:false,cargo:false,area:true,direccion:false});">
-                                <option value="">Seleccione la gerencia</option>
+                                <option value="">Seleccione la unidad</option>
                                 <option data-ng-repeat="item in vm.areas" value="{{item.area_id}}">{{item.nombre}}</option>
                             </select>
                         </div>
@@ -203,16 +203,14 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4" id="select-area">
-                                                    <key>Gerencia</key>
-                                                    <select data-ds-select2 class="form-control selectpicker" id="area"
-                                                            name="area">
+                                                    <key>Unidad</key>
+                                                    <select data-ds-select2 class="form-control selectpicker" id="area" name="area">
                                                         <option value="">Seleccione</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4" id="select-cargo">
                                                     <key>Cargo</key>
-                                                    <select data-ds-select2 class="form-control selectpicker" id="cargo"
-                                                            name="cargo">
+                                                    <select data-ds-select2 class="form-control selectpicker" id="cargo" name="cargo">
                                                         <option value="">Seleccione</option>
                                                     </select>
                                                 </div>
@@ -236,14 +234,14 @@
                                         <div class="form-group ic-form-group">
                                             <key>
                                                 <span class="ic-step-number">6</span>
-                                                Luego, seleccione el canal
+                                                Luego, seleccione los canales
                                                 <span class="ic-small italic">(opcional)</span>
                                             </key>
                                             <p class="help-block"></p>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <select data-ds-select2 class="form-control selectpicker" id="canal" name="canal">
-                                                        <option value="">Seleccione el canal</option>
+                                                    <select data-ds-select2 class="form-control selectpicker" id="canales" name="canales" multiple>
+                                                        <option value="">Seleccione los canales</option>
                                                         <option data-ng-repeat="item in vm.canales"
                                                                 value="{{item.canal_id}}">{{item.descripcion}}
                                                         </option>
@@ -290,30 +288,59 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="radiorecurrente"
-                                                                   id="recurrenteactivo">
+                                                            <input type="radio" name="recurrente" ng-model="recurrente" value="true" checked="false" id="recurrente-activo" style="left: 11px;position: relative;">
                                                             <span class="ic-small">SI</span>
                                                         </key>
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="radiorecurrente"
-                                                                   id="recurrenteinactivo" checked>
+                                                            <input type="radio" name="recurrente" ng-model="recurrente" value="false" checked="true" id="recurrente-inactivo" style="left: 11px;position: relative;">
                                                             <span class="ic-small">NO</span>
                                                         </key>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group ic-form-group" ng-disabled="recurrente=='false'">
+                                            <key>
+                                                <span class="ic-step-number">9</span>
+                                                Luego, ingrese el tiempo en que se ejecutará la tarea
+                                                <span class="ic-small italic">(opcional)</span>
+                                            </key>
+                                            <p class="help-block">Debe introducir el tiempo en minutos.</p>
+                                            <div class="row">
+                                                <div class="col-md-6" ng-disabled="recurrente=='false'">
+                                                    <input type="number" class="form-control" id="tiempo-recurrencia" name="tiempoRecurrencia" ng-disabled="recurrente=='false'">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group ic-form-group">
-                                            <key><span class="ic-step-number">9</span>A continuación, define si la tarea será un hito de la tarea</key>
+                                            <key><span class="ic-step-number">10</span>A continuación, define si la tarea será un hito</key>
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="radiohito" id="hitoactivo">
+                                                            <input type="radio" name="radiohito" id="hitoactivo" style="left: 11px;position: relative;">
                                                             <span class="ic-small">Si</span>
                                                         </key>
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="radiohito" id="hitoinactivo" checked>
+                                                            <input type="radio" name="radiohito" id="hitoinactivo" checked style="left: 11px;position: relative;">
+                                                            <span class="ic-small">No</span>
+                                                        </key>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group ic-form-group">
+                                            <key><span class="ic-step-number">11</span>A continuación, define si la tarea será tranversal</key>
+                                            <p class="help-block">Tenga en cuenta que para una tarea ser tranversal los niveles de alerta deben ser consecutivos</p>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <key class="radio-inline">
+                                                            <input type="radio" name="tranversal" id="tarea-tranversal-activa" style="left: 11px;position: relative;">
+                                                            <span class="ic-small">Si</span>
+                                                        </key>
+                                                        <key class="radio-inline">
+                                                            <input type="radio" name="tranversal" id="tarea-tranversal-inactiva" checked style="left: 11px;position: relative;">
                                                             <span class="ic-small">No</span>
                                                         </key>
                                                     </div>
@@ -400,8 +427,7 @@
                             </p>
                             <div class="row">
                                 <div class="col-xs-8">
-                                    <div id="fileinput-archivo" class="fileinput fileinput-new"
-                                         data-provides="fileinput">
+                                    <div id="fileinput-archivo" class="fileinput fileinput-new" data-provides="fileinput" style="position:relative;top: 10px;">
                                         <div class="input-group">
                                             <div class="form-control uneditable-input input-fixed"
                                                  data-trigger="fileinput">
@@ -417,6 +443,7 @@
                                                     Cambiar
                                                 </span>
                                                 <input type="file" name="file" id="file" required>
+                                                <input type="hidden" name="nombreArchivo" id="nombre-archivo">
                                             </span>
                                             <a href="javascript:;"
                                                class="input-group-addon btn red fileinput-exists"
@@ -425,26 +452,13 @@
                                             </a>
                                         </div>
                                     </div>
+                                    <input type="text" name="nombre" id="archivo" style="display: none;position:relative;top:-28px;z-index:10000;height:32px;width:71%;padding-left:10px;border: 1px solid #e5e5e5;">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group ic-form-group">
                             <key>
                                 <span class="ic-step-number">2</span>
-                                A continuación, ingrese el nombre del archivo <span
-                                    class="ic-small italic">(obligatorio)</span>
-                            </key>
-                            <p class="help-block"></p>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" id="modelo-nombre"
-                                           name="nombre">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group ic-form-group">
-                            <key>
-                                <span class="ic-step-number">3</span>
                                 Seguidamente, ingrese una descripción para el archivo <span
                                     class="ic-small italic">(opcional)</span>
                             </key>
@@ -456,7 +470,7 @@
                             </div>
                         </div>
                         <div class="form-group ic-form-group">
-                            <key><span class="ic-step-number">4</span>Luego, define si el archivo estará activo</key>
+                            <key><span class="ic-step-number">3</span>Luego, define si el archivo estará activo</key>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -511,7 +525,6 @@
                                    id="table-modelos-tarea">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
                                         <th>Descripción</th>
                                         <th class="text-center">Acciones</th>
                                     </tr>

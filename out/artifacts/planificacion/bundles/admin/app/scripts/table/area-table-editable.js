@@ -3,7 +3,7 @@ var TableEditableAreas = function () {
     var oTable;
     var rowDelete = null;
     var cont = 0;
-    var formTitle = "¿Deseas crear una nueva gerencia? Sigue los siguientes pasos:";
+    var formTitle = "¿Deseas crear una nueva unidad? Sigue los siguientes pasos:";
 
     //Inicializar table
     var initTable = function () {
@@ -347,7 +347,7 @@ var TableEditableAreas = function () {
                         $('#descripcion').val(response.area.descripcion);
                         $('#nombre').val(response.area.nombre);
 
-                        formTitle = "Deseas actualizar el area \"" + response.area.descripcion + "\" ? Sigue los siguientes pasos:";
+                        formTitle = "Deseas actualizar la unidad \"" + response.area.descripcion + "\" ? Sigue los siguientes pasos:";
                         $('#form-area-title').html(formTitle);
 
                     } else {

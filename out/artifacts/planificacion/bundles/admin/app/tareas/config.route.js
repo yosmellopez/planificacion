@@ -22,6 +22,8 @@
                 estadosTareasPrepService: estadosTareasPrepService,
                 criticidadesTareasPrepService: criticidadesTareasPrepService,
                 gerenciasPrepService: gerenciasPrepService,
+                areasPrepService: areasPrepService,
+                cargosPrepService: cargosPrepService,
                 canalPrepService: canalPrepService,
                 usuarioPrepService: usuarioPrepService,
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -67,6 +69,20 @@
             return gerenciaService.getGerencias();
         }
 
+        //Carga las areas
+        areasPrepService.$inject = ['areaService'];
+
+        function areasPrepService(areaService) {
+            return areaService.getAreas();
+        }
+
+        //Carga las areas
+        cargosPrepService.$inject = ['cargoService'];
+
+        function cargosPrepService(cargoService) {
+            return cargoService.getCargos();
+        }
+
         //Carga las criticidades
         criticidadesPrepService.$inject = ['criticidadPlanService'];
 
@@ -101,6 +117,7 @@
         function canalPrepService(canalService) {
             return canalService.getCanales();
         }
+
         //Carga los usuarios
         usuarioPrepService.$inject = ['usuarioService'];
 

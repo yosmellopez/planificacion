@@ -2,15 +2,18 @@ package com.planning.diagram;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.planning.entity.CriticalyLevel;
-import com.planning.entity.Position;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Modelo {
     
     @JsonProperty(value = "class")
     private String clase;
+    
+    private ModelData modelData;
     
     private ArrayList<Node> nodeDataArray = new ArrayList<>();
     
@@ -27,6 +30,37 @@ public class Modelo {
             nodeDataArray.add(node);
             modificado = true;
         }
+    }
+    
+    
+    public void addSider(Node node) {
+        if (!existNode(node)) {
+            nodeDataArray.add(node);
+            modificado = true;
+            List<Node> ordenados = buscarSiders().parallelStream().sorted((o1, o2) -> o1.getPeso() > o2.getPeso() ? 1 : o1.getPeso() == o2.getPeso() ? 0 : -1).collect(Collectors.toList());
+            int i = 0;
+            for (Node elemento : ordenados) {
+                deleteNode(elemento);
+                ArrayList<Node> grupos = buscarGruposSider(elemento, node);
+                elemento.setRow(2 + i);
+                for (Node grupo : grupos) {
+                    grupo.setRow(elemento.getRow());
+                }
+                addNode(elemento);
+                if (elemento.equals(node))
+                    node.setRow(elemento.getRow());
+                i++;
+            }
+        }
+    }
+    
+    private ArrayList<Node> buscarGruposSider(Node sider, Node newNode) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Node elemento : nodeDataArray) {
+            if (elemento.getRow() != null && Objects.equals(sider.getRow(), elemento.getRow()) && !elemento.equals(newNode))
+                nodes.add(elemento);
+        }
+        return nodes;
     }
     
     public void deleteNode(Node node) {
@@ -54,12 +88,21 @@ public class Modelo {
     
     private ArrayList<Node> buscarSiders() {
         ArrayList<Node> siders = new ArrayList<>();
-        int size = nodeDataArray.size();
-        for (int i = 0; i < size; i++) {
-            if (nodeDataArray.get(i).getCategory().compareToIgnoreCase("Row Sider") == 0)
-                siders.add(nodeDataArray.remove(i));
+        for (Node node : nodeDataArray) {
+            if (node.getCategory() != null)
+                if (node.getCategory().compareToIgnoreCase("Row Sider") == 0)
+                    siders.add(node);
         }
         return siders;
+    }
+    
+    public Node buscarSider(String nombre) {
+        int size = nodeDataArray.size();
+        for (int i = 0; i < size; i++) {
+            if (nodeDataArray.get(i).getKey().compareToIgnoreCase(nombre) == 0)
+                return nodeDataArray.get(i);
+        }
+        return null;
     }
     
     private ArrayList<Node> buscarColumnas() {
@@ -82,23 +125,30 @@ public class Modelo {
         return columnas;
     }
     
-    private Node crearNodoSider(Position position) {
-        Node node = new Node();
-        node.setKey("" + position.getId());
-        node.setRow(2);
-        node.setCategory("Row Sider");
-        node.setNombre(position.getName());
-        return node;
+    public ArrayList<Node> buscarNodo(int idTarea) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Node node : nodeDataArray) {
+            if (node.getTareaId() == idTarea)
+                nodes.add(node);
+        }
+        return nodes;
     }
     
-    private Node crearNodoColumna(CriticalyLevel level) {
-        Node node = new Node();
-        node.setKey("" + level.getId());
-        node.setCol(2);
-        node.setCategory("Column Header");
-        node.setNombre(level.getName());
-        node.setColorHeader(level.getColor());
-        return node;
+    public ArrayList<Edge> buscarLink(int idTarea) {
+        ArrayList<Edge> edges = new ArrayList<>();
+        for (Edge edge : linkDataArray) {
+            if (edge.getFrom().compareToIgnoreCase("" + idTarea) == 0 || edge.getTo().compareToIgnoreCase("" + idTarea) == 0)
+                edges.add(edge);
+        }
+        return edges;
+    }
+    
+    public ModelData getModelData() {
+        return modelData;
+    }
+    
+    public void setModelData(ModelData modelData) {
+        this.modelData = modelData;
     }
     
     public String getClase() {

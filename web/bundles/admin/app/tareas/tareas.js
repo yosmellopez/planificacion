@@ -18,10 +18,14 @@
         $scope.gerencia = "";
         $scope.direccion = "";
         $scope.nivelAlerta = "";
+        $scope.recurrente = 'false';
+        vm.selecciono = false;
         vm.usuario = usuarioService.usuario;
         vm.estadosTareas = estadoTareaService.estados;
         vm.criticidades = criticidadTareaService.criticidades;
         vm.gerencias = gerenciaService.gerencias;
+        vm.areas = areaService.areas;
+        vm.cargos = cargoService.cargos;
         vm.canales = canalService.canales;
         vm.eliminar = eliminar;
         vm.modalEliminar = modalEliminar;
@@ -145,7 +149,7 @@
                 MyApp.init();
 
                 $timeout(function () {
-                    TableEditableTareas.init(vm.urlPath);
+                    TableEditableTareas.init(vm.urlPath, $scope);
                 }, 1000);
             });
         }

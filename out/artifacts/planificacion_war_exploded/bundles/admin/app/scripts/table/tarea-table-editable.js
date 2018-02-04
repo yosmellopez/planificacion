@@ -7,78 +7,81 @@ var TableEditableTareas = function () {
     var rowDelete = null;
     var cont = 0;
     var idTareaEditar = 0;
+    var scopeTarea = null;
     var formTitle = "¿Deseas crear una nueva tarea? Sigue los siguientes pasos:";
 
     //Inicializa la tabla
-    var initTable = function () {
-        var table = $('#tarea-table-editable');
+    var initTable = function (scope) {
+            scopeTarea = scope;
+            var table = $('#tarea-table-editable');
 
-        var order = [[1, "desc"]];
-        var aoColumns = [
-            {"bSortable": false, "sWidth": '1%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '5%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '25%'},
-            {"bSortable": true, "sWidth": '25%'},
-            {"bSortable": true, "sWidth": '25%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '10%', "sClass": 'text-center'},
-            {"bSortable": false, "sWidth": '15%', "sClass": 'text-center'}
-        ];
-        CKEDITOR.replace('editor');
-        oTable = new Datatable();
+            var order = [[1, "desc"]];
+            var aoColumns = [
+                {"bSortable": false, "sWidth": '1%', "sClass": 'text-center'},
+                {"bSortable": true, "sWidth": '5%', "sClass": 'text-center'},
+                {"bSortable": true, "sWidth": '25%'},
+                {"bSortable": true, "sWidth": '25%'},
+                {"bSortable": true, "sWidth": '25%', "sClass": 'text-center'},
+                {"bSortable": true, "sWidth": '10%', "sClass": 'text-center'},
+                {"bSortable": false, "sWidth": '15%', "sClass": 'text-center'}
+            ];
+            CKEDITOR.replace('editor');
+            oTable = new Datatable();
 
-        oTable.setAjaxParam("fechaInicio", $('#fechaInicio').val());
-        oTable.setAjaxParam("fechaFin", $('#fechaFin').val());
-        oTable.setAjaxParam("criticidad_id", $('#filtro-criticidad').val());
-        oTable.setAjaxParam("filtrar", false);
+            oTable.setAjaxParam("fechaInicio", $('#fechaInicio').val());
+            oTable.setAjaxParam("fechaFin", $('#fechaFin').val());
+            oTable.setAjaxParam("criticidad_id", $('#filtro-criticidad').val());
+            oTable.setAjaxParam("filtrar", false);
 
-        oTable.init({
-            src: table,
-            onSuccess: function (grid) {
-                // execute some code after table records loaded
-            },
-            onError: function (grid) {
-                // execute some code on network or other general error
-            },
-            loadingMessage: 'Por favor espere...',
-            dataTable: {
-                "serverSide": false,
-                "lengthMenu": [
-                    [15, 25, 30, 50, -1],
-                    [15, 25, 30, 50, "Todos"]
-                ],
-                "pageLength": 15, // default record count per page
-                "ajax": {
-                    "url": "tarea/listarTareas" // ajax source
+            oTable.init({
+                src: table,
+                onSuccess: function (grid) {
+                    // execute some code after table records loaded
                 },
-                "order": order,
-                responsive: {
-                    details: {}
+                onError: function (grid) {
+                    // execute some code on network or other general error
                 },
-                "aoColumns": aoColumns
-            }
-        });
-        var tableWrapper = oTable.getTableWrapper(); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
-        tableWrapper.find('.dataTables_filter input').addClass("form-control input-sm input-inline");
-        tableWrapper.find('.dataTables_length select').select2({minimumResultsForSearch: Infinity}); // initialize select2 dropdown
-        //Checkboxes
-        table.find('.group-checkable').change(function () {
-            var set = jQuery(this).attr("data-set");
-            var checked = jQuery(this).is(":checked");
-            jQuery(set).each(function () {
-                if (checked) {
-                    $(this).prop("checked", true);
-                    $(this).parents('tr').addClass("active");
-                } else {
-                    $(this).prop("checked", false);
-                    $(this).parents('tr').removeClass("active");
+                loadingMessage: 'Por favor espere...',
+                dataTable: {
+                    "serverSide": false,
+                    "lengthMenu": [
+                        [15, 25, 30, 50, -1],
+                        [15, 25, 30, 50, "Todos"]
+                    ],
+                    "pageLength": 15, // default record count per page
+                    "ajax": {
+                        "url": "tarea/listarTareas" // ajax source
+                    },
+                    "order": order,
+                    responsive: {
+                        details: {}
+                    },
+                    "aoColumns": aoColumns
                 }
-                jQuery.uniform.update(this);
             });
-        });
-        table.on('change', 'tbody tr .checkboxes', function () {
-            $(this).parents('tr').toggleClass("active");
-        });
-    };
+            var tableWrapper = oTable.getTableWrapper(); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
+            tableWrapper.find('.dataTables_filter input').addClass("form-control input-sm input-inline");
+            tableWrapper.find('.dataTables_length select').select2({minimumResultsForSearch: Infinity}); // initialize select2 dropdown
+            //Checkboxes
+            table.find('.group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).prop("checked", true);
+                        $(this).parents('tr').addClass("active");
+                    } else {
+                        $(this).prop("checked", false);
+                        $(this).parents('tr').removeClass("active");
+                    }
+                    jQuery.uniform.update(this);
+                });
+            });
+            table.on('change', 'tbody tr .checkboxes', function () {
+                $(this).parents('tr').toggleClass("active");
+            });
+        }
+    ;
 
     //Init form
     var initForm = function () {
@@ -306,8 +309,14 @@ var TableEditableTareas = function () {
             var producto = $('#producto').val();
             var hito = ($('#hitoactivo').prop('checked')) ? true : false;
             var descripcion = CKEDITOR.instances.editor.getData();
-            var canal = $('#canal').val();
-            var recurrente = ($('#recurrenteactivo').prop('checked')) ? true : false;
+            var canales = $('#canales').val();
+            if (canales === null || canales === "")
+                canales = new Array();
+            var recurrente = ($('#recurrente-activo').prop('checked')) ? true : false;
+            var tiempoRecurrencia = 0;
+            if (recurrente)
+                tiempoRecurrencia = $('#tiempo-recurrencia').val();
+            var tranversal = ($('#tarea-tranversal-activa').prop('checked')) ? true : false;
             var cargo_id = $('#cargo').val();
             criticidad_id.forEach(function (item, index) {
                 if (item === "") {
@@ -326,14 +335,16 @@ var TableEditableTareas = function () {
                     'codigo': codigo,
                     'producto': producto,
                     'hito': hito,
+                    'tranversal': tranversal,
                     'nombre': nombre,
                     'descripcion': descripcion,
                     'modelos': modelos,
                     'criticidad_id': criticidad_id,
                     'estado': estado_id,
                     'cargo_id': cargo_id,
-                    'canal': canal,
-                    'recurrente': recurrente
+                    'canales_id': canales,
+                    'recurrente': recurrente,
+                    'tiempoRecurrencia': tiempoRecurrencia
                 }),
                 success: function (response) {
                     Metronic.unblockUI('#form-tarea .portlet-body');
@@ -411,11 +422,11 @@ var TableEditableTareas = function () {
                         formTitle = "Deseas actualizar la tarea \"" + response.tarea.nombre + "\" ? Sigue los siguientes pasos:";
                         $('#form-tarea-title').html(formTitle);
                         criticidad = response.tarea.criticidad_id;
-                        criticicades = new Array();
+                        criticidades = new Array();
                         for (i = 0; i < criticidad.length; i++)
-                            criticicades.push(criticidad[i].criticidad_id);
+                            criticidades.push(criticidad[i].criticidad_id);
                         select = $('#criticidad').select2();
-                        select.val(criticicades).trigger("change");
+                        select.val(criticidades).trigger("change");
                         $('#estado-tarea').select2('val', response.tarea.estado_id);
 
                         $('#codigo').val(response.tarea.codigo);
@@ -427,13 +438,35 @@ var TableEditableTareas = function () {
                         jQuery.uniform.update('#hitoactivo');
                         jQuery.uniform.update('#hitoinactivo');
 
-                        $('#recurrenteactivo').prop('checked', response.tarea.recurrente);
-                        $('#recurrenteinactivo').prop('checked', !response.tarea.recurrente);
-                        jQuery.uniform.update('#recurrenteactivo');
-                        jQuery.uniform.update('#recurrenteinactivo');
+                        if (response.tarea.recurrente) {
+                            scopeTarea.recurrente = "true";
+                            $('#tiempo-recurrencia').val(response.tarea.tiempoRecurrencia);
+                            $('#recurrente-activo').attr('checked', true);
+                            $('#recurrente-inactivo').removeAttr("checked");
+                            $('#recurrente-inactivo').prop('checked', false);
+                            jQuery.uniform.update('#recurrente-activo');
+                            jQuery.uniform.update('#recurrente-inactivo');
+                        } else {
+                            scopeTarea.recurrente = "false";
+                            $('#tiempo-recurrencia').val(response.tarea.tiempoRecurrencia);
+                            $('#recurrente-activo').attr('checked', false);
+                            $('#recurrente-inactivo').attr('checked', true);
+                            jQuery.uniform.update('#recurrente-activo');
+                            jQuery.uniform.update('#recurrente-inactivo');
+                        }
+
+                        $('#tarea-tranversal-activa').prop('checked', response.tarea.tranversal);
+                        $('#tarea-tranversal-inactiva').prop('checked', !response.tarea.tranversal);
+                        jQuery.uniform.update('#tarea-tranversal-activa');
+                        jQuery.uniform.update('#tarea-tranversal-inactiva');
 
                         CKEDITOR.instances.editor.setData(response.tarea.descripcion);
-                        $('#canal').select2('val', response.tarea.canal.canal_id);
+                        canales_id = response.tarea.canales_id;
+                        canales = new Array();
+                        for (i = 0; i < canales_id.length; i++)
+                            canales.push(canales_id[i].canal_id);
+                        selectCanales = $('#canales').select2();
+                        selectCanales.val(canales).trigger("change");
                         $('#estado').select2('val', response.tarea.estado_id);
                         modelos = response.tarea.modelos;
                         dibujarTablaModelos("#table-modelos");
@@ -453,7 +486,7 @@ var TableEditableTareas = function () {
                         //Cargos
                         var cargos = response.tarea.cargos;
                         for (var i = 0; i < cargos.length; i++) {
-                            $('#cargo').append(new Option(cargos[i].descripcion, cargos[i].cargo_id, false, false));
+                            $('#cargo').append(new Option(cargos[i].nombre, cargos[i].cargo_id, false, false));
                         }
                         $('#cargo').select2();
                         $('#cargo').select2('val', response.tarea.cargo_id);
@@ -619,11 +652,11 @@ var TableEditableTareas = function () {
             var acciones = '<a class="btn btn-icon-only green edit table-action" href="javascript:;"><i class="fa fa-edit fa-fw"></i></a> <a class="btn btn-icon-only red delete table-action" href="javascript:;"><i class="fa fa-trash-o fa-fw"></i></a> <a class="btn btn-icon-only yellow download table-action" href="' + download_url + '" target="_blank"><i class="fa fa-download fa-fw"></i></a>';
             var estado = (modelos[i].estado) ? 'Activo <i class="fa fa-check-circle ic-color-ok"></i>' : 'Inactivo <i class="fa fa-minus-circle ic-color-error"></i>';
             var tr = '<tr id="' + i + '">' +
-                '<td>' + (i + 1) + '</td>' +
-                '<td><a href="uploads/' + modelos[i].ruta + '">' + modelos[i].nombre + '</a></td>' +
-                '<td>' + (modelos[i].descripcion === null ? "" : modelos[i].descripcion) + '</td>' +
-                '<td>' + estado + '</td>' +
-                '<td class="text-center">' + acciones + '</td>' +
+                '<td style="width: 3%;">' + (i + 1) + '</td>' +
+                '<td style="width: 20%;"><a href="uploads/' + modelos[i].ruta + '" target="_new">' + modelos[i].ruta + '</a></td>' +
+                '<td style="width: 50%;">' + (modelos[i].descripcion === null ? "" : modelos[i].descripcion) + '</td>' +
+                '<td style="width: 10%;">' + estado + '</td>' +
+                '<td style="width: 15%;" class="text-center">' + acciones + '</td>' +
                 '</tr>';
             $(tr).appendTo(tabla_modelos + ' tbody');
         }
@@ -653,6 +686,9 @@ var TableEditableTareas = function () {
     //Boton nuevo archivo
     var btnClickNuevoModelo = function () {
         resetFormModelo();
+        var archivo = $('#archivo')[0];
+        $(archivo).css("display", "none");
+        $('#file').prop('required', true);
         $("#modal-modelo .modal-title").html("Nuevo Archivo");
         $('#modal-modelo').modal({
             'show': true
@@ -731,6 +767,7 @@ var TableEditableTareas = function () {
         } else {
             if ($('#modelo-form').valid()) {
                 var descripcion = $('#modelo-descripcion').val();
+                var nombre = $("#archivo").val();
                 var estado = ($('#estadoactivo').prop('checked')) ? true : false;
 
                 var posicion = $(nEditingRow).attr('id');
@@ -741,7 +778,7 @@ var TableEditableTareas = function () {
                     if ($('#file').prop('files')[0]) {
                         var formData = new FormData($('#modelo-form'));
                         formData.append($("#file").attr("name"), $('#file').prop('files')[0]);
-                        formData.append($("#modelo-nombre").attr("name"), nombre);
+                        formData.append($("#archivo").attr("name"), nombre);
                         formData.append($("#modelo-descripcion").attr("name"), descripcion);
                         formData.append($("#estadoactivo").attr("name"), estado);
                         formData.append("tareaId", idTareaEditar);
@@ -786,6 +823,35 @@ var TableEditableTareas = function () {
                                 $('.progress-value').html('0%');
                             }
                         });
+                    } else if (nombre !== "") {
+                        var idArchivo = $('#nombre-archivo')[0];
+                        var modelo_id = $(idArchivo).val();
+                        $.ajax({
+                            type: "POST",
+                            url: "documento/salvarArchivo",
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            data: JSON.stringify({
+                                'modelo_id': modelo_id,
+                                'nombre': nombre,
+                                'descripcion': descripcion,
+                                'activo': estado
+                            }),
+                            success: function (response) {
+                                Metronic.unblockUI('#form-tarea .portlet-body');
+                                if (response.success) {
+                                    CKEDITOR.instances.editor.setData('');
+                                    toastr.success(response.message, "Exito !!!");
+                                    dibujarTablaModelos("#table-modelos")
+                                } else {
+                                    toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
+                                }
+                            },
+                            failure: function (response) {
+                                Metronic.unblockUI('#form-tarea .portlet-body');
+                                toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
+                            }
+                        });
                     }
                 }
                 resetFormModelo();
@@ -803,6 +869,11 @@ var TableEditableTareas = function () {
             resetFormModelo();
         }
 
+        $('input[name=file]').change(function (ev) {
+            var archivo = $('#archivo')[0];
+            $(archivo).css("display", "none");
+        });
+
         $(document).on('click', "#table-modelos a.edit", function (e) {
             e.preventDefault();
             var nRow = $(this).parents('tr')[0];
@@ -814,9 +885,13 @@ var TableEditableTareas = function () {
                 resetFormModelo();
                 nEditingRow = nRow;
 
-                var nombre = modelos[posicion].nombre;
-                $('#modelo-nombre').val(nombre);
-
+                var nombre = modelos[posicion].ruta;
+                var archivo = $('#archivo')[0];
+                var idArchivo = $('#nombre-archivo')[0];
+                $(idArchivo).val(modelos[posicion].modelo_id);
+                $(archivo).css("display", "block");
+                $(archivo).val(nombre);
+                $('#file').prop('required', false);
                 var descripcion = modelos[posicion].descripcion;
                 $('#modelo-descripcion').val(descripcion);
 
@@ -944,7 +1019,7 @@ var TableEditableTareas = function () {
                     if (response.success) {
                         for (var i = 0; i < response.cargos.length; i++) {
                             var cargo_id = response.cargos[i].cargo_id;
-                            var descripcion = response.cargos[i].descripcion;
+                            var descripcion = response.cargos[i].nombre;
                             $('#cargo').append(new Option(descripcion, cargo_id, false, false));
                         }
                         $('#cargo').select2();
@@ -995,11 +1070,11 @@ var TableEditableTareas = function () {
 
     return {
         //main function to initiate the module
-        init: function (url) {
+        init: function (url, scope) {
             urlPath = url;
             //Inicializar fechas de filtro
             initFechasFiltro();
-            initTable();
+            initTable(scope);
             initForm();
             initFormModelo();
             if (cont === 0) {

@@ -98,7 +98,7 @@
                         <li>
                             <a href="#/gerencias">
                                 <i class="icon-list"></i>
-                                <span class="title">Gerencias</span>
+                                <span class="title">Unidades</span>
                             </a>
                         </li>
                         <li>
@@ -130,18 +130,18 @@
                         <span class="title">Listar Planes</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#/view-plan">
+                <li class="oculto">
+                    <a href="#/view-plan" ng-class="vm.usuario.rol === 1?'visible':'hidden'">
                         <i class="icon-list"></i>
                         <span class="title">Tareas</span>
                     </a>
                 </li>
-                <!--<li>-->
-                    <!--<a href="#/diagrama-planes">-->
-                        <!--<i class="icon-list"></i>-->
-                        <!--<span class="title">Diagrama</span>-->
-                    <!--</a>-->
-                <!--</li>-->
+                <li class="oculto">
+                    <a href="#/diagrama-planes" ng-class="vm.usuario.rol === 1?'visible':'hidden'">
+                        <i class="icon-list"></i>
+                        <span class="title">Diagrama</span>
+                    </a>
+                </li>
             </ul>
         </li>
 

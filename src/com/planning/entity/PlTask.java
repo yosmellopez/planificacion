@@ -7,23 +7,28 @@ package com.planning.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.*;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Nodo
  */
 @Entity
-@Table(name = "pl_task")
+@Table(name = "pl_task", uniqueConstraints = @UniqueConstraint(name = "plan_tarea_unica", columnNames = {"idtask", "idplan"}))
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "PlanTarea.tareas", attributeNodes = {
+                @NamedAttributeNode(value = "task", subgraph = "cargo")
+        }, subgraphs = {
+                @NamedSubgraph(name = "cargo", attributeNodes = @NamedAttributeNode(value = "position", subgraph = "area"))
+                , @NamedSubgraph(name = "area", attributeNodes = @NamedAttributeNode(value = "area", subgraph = "administracion"))
+                , @NamedSubgraph(name = "administracion", attributeNodes = @NamedAttributeNode(value = "management"))
+        })})
 public class PlTask implements Serializable {
     
     private static final long serialVersionUID = 1L;

@@ -35,7 +35,7 @@
 </h3>
 <div class="row" id="lista-plan">
     <div class="col-lg-12">
-        <div class="portlet light">
+        <div class="portlet light" id="form-diagrama">
             <div class="portlet-title" style="margin-bottom: 0px">
                 <div class="caption caption-md">
                     <i class="icon-grid font-apolo-sharp"></i>
@@ -58,8 +58,8 @@
                     <div class="form-group">
                         <div class="input-group">
                             <button
-                                    class="btn btn-primary"
-                                    type="button" ng-click="vm.mostrarDetalles()">
+                                class="btn btn-primary"
+                                type="button" ng-click="vm.mostrarDetalles()">
                                 <i class="fa fa-search fa-fw"></i> Seleccionar
                             </button>
                         </div>
@@ -94,13 +94,13 @@
     <div class="modal-dialog" ng-style="vm.mostrarColorVentana(tarea)">
         <div class="modal-content">
             <div class="modal-header blue-hoki">
-                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button" data-ng-click="vm.cerrarModal()"></button>
                 <h4 class="modal-title">{{tituloModal}}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <ul class="nivel-alerta-tareas" style="padding: 0 20px">
-                        <li ng-repeat="item in vm.criticidades" ng-style="vm.mostrarColor(item,tarea)">{{item.nombre}}</li>
+                        <li ng-repeat="item in vm.criticidades" ng-style="vm.mostrarColor(item, tarea)">{{item.nombre}}</li>
                     </ul>
                 </div>
                 <div class="row">
@@ -112,8 +112,8 @@
                             <div><strong style="display: inline-block;font-size: 12px;width: 8em;vertical-align: top;margin-right: 5px;">Observaciones: </strong>
                                 <p style="display: inline-block;width: 84.5%;text-align: justify" ng-bind-html="tarea.descripcion"></p>
                             </div>
-                            <div><strong style="display: inline-block;font-size: 12px;width:  8em;vertical-align: top;margin-right: 5px;">Canal: </strong>
-                                <p style="display: inline-block;width: 84.5%;text-align: justify">{{tarea.canal.nombre}}</p>
+                            <div><strong style="display: inline-block;font-size: 12px;width:  8em;vertical-align: top;margin-right: 5px;">Canales: </strong>
+                                <p style="display: inline-block;width: 84.5%;text-align: justify">{{tarea.canales}}</p>
                             </div>
                         </div>
                     </div>
@@ -134,6 +134,7 @@
                                                 <th>Nombre</th>
                                                 <th>Nivel de Alerta</th>
                                                 <th>Cargo</th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-antecesoras-cuerpo">
@@ -142,6 +143,11 @@
                                                 <td>{{elem.nombre}}</td>
                                                 <td>{{elem.criticidad}}</td>
                                                 <td>{{elem.cargo}}</td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-icon-only yellow view" data-dismiss="modal" ng-click="vm.mostrarMasDetalles(elem.tarea_id)">
+                                                        <i class="fa fa-eye fa-fw"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -165,14 +171,20 @@
                                                 <th>Nombre</th>
                                                 <th>Nivel de Alerta</th>
                                                 <th>Cargo</th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-relacionados-cuerpo">
-                                            <tr data-ng-repeat="elem in tarea.sucesoras" draggable="true">
+                                            <tr data-ng-repeat="elem in sucesoras" draggable="true">
                                                 <td>{{elem.codigo}}</td>
                                                 <td>{{elem.nombre}}</td>
                                                 <td>{{elem.criticidad}}</td>
                                                 <td>{{elem.cargo}}</td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-icon-only yellow view" data-dismiss="modal" ng-click="vm.mostrarMasDetalles(elem.tarea_id)">
+                                                        <i class="fa fa-eye fa-fw"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -199,8 +211,8 @@
                                         </thead>
                                         <tbody>
                                             <tr data-ng-repeat="item in tarea.modelos">
-                                                <td>{{item.nombre}}</td>
-                                                <td>{{item.descripcion}}</td>
+                                                <td style="width: 25%;"><a href="uploads/{{item.ruta}}" target="_blank">{{item.ruta}}</a></td>
+                                                <td style="width: 70%;">{{item.descripcion}}</td>
                                                 <td class="text-center">
                                                     <a class="btn btn-icon-only yellow download table-action" href="uploads/{{item.ruta}}" target="_blank" data-original-title="" title="">
                                                         <i class="fa fa-download fa-fw"></i>
@@ -216,7 +228,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn red" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn red" data-dismiss="modal" data-ng-click="vm.cerrarModal()">Cerrar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -276,4 +288,38 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modal-confirmar-crear" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">         
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title" id="modal-titulo">Confirmar</h4>                
+            </div>
+            <div class="modal-body">
+                <h5>¿Está seguro que desea crear la relación?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green" data-dismiss="modal" data-ng-click="vm.crearRelacion()">Si</button>
+                <button type="button" class="btn red" data-dismiss="modal">No</button>                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-confirmar-eliminar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">         
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title" id="modal-titulo-eliminar">Confirmar</h4>                
+            </div>
+            <div class="modal-body">
+                <h5>¿Está seguro que desea eliminar la relación?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green" data-dismiss="modal" data-ng-click="vm.eliminarRelacion()">Si</button>
+                <button type="button" class="btn red" data-dismiss="modal">No</button>                
+            </div>
+        </div>
+    </div>
 </div>

@@ -8,27 +8,16 @@ package com.planning.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Nodo
@@ -95,6 +84,10 @@ public class Users implements Serializable, UserDetails {
     @Column(name = "active")
     @ColumnDefault(value = "true")
     private boolean active = true;
+    
+    @Column(name = "titular")
+    @ColumnDefault(value = "0")
+    private boolean titular = true;
     
     public Users() {
     }
@@ -237,6 +230,14 @@ public class Users implements Serializable, UserDetails {
         ArrayList<Rol> roles = new ArrayList<>();
         roles.add(rol);
         return roles;
+    }
+    
+    public boolean isTitular() {
+        return titular;
+    }
+    
+    public void setTitular(boolean titular) {
+        this.titular = titular;
     }
     
     @Override

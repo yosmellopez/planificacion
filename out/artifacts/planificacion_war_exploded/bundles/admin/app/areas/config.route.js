@@ -12,7 +12,7 @@
             url: "/gerencias",
             templateUrl: urlPath + "/bundles/admin/app/areas/areas.html",
             data: {
-                pageTitle: ' - Gerencias'
+                pageTitle: ' - Unidades'
             },
             controller: "Areas",
             controllerAs: 'vm',

@@ -51,9 +51,8 @@
                                     <input type="checkbox" class="group-checkable"
                                            data-set="#cargo-table-editable .checkboxes"/>
                                 </th>
-                                <th class="all">Descripción</th>
-                                <th class="all">Gerencia</th>
-                                <th class="all">Código</th>
+                                <th class="all">Nombre</th>
+                                <th class="all">Unidad</th>
                                 <th class="all">Dirección</th>
                                 <th class="min-tablet">Acciones</th>
                             </tr>
@@ -98,7 +97,7 @@
                                 <div class="form-group ic-form-group">
                                     <key>
                                         <span class="ic-step-number">1</span>
-                                        Para comenzar, selecciona el área a la que pertenece el cargo
+                                        Para comenzar, selecciona la unidad a la que pertenece el cargo
                                         <span class="ic-small italic">(obligatorio)</span>
                                     </key>
                                     <p class="help-block"></p>
@@ -106,7 +105,7 @@
                                         <div class="col-md-6" id="select-area">
                                             <select data-ds-select2 class="form-control selectpicker" id="area"
                                                     name="area">
-                                                <option value="">Seleccione la gerencia</option>
+                                                <option value="">Seleccione la unidad</option>
                                                 <option data-ng-repeat="item in vm.areas"
                                                         value="{{item.area_id}}"
                                                         class="{{item.class}}"
@@ -127,24 +126,7 @@
                                         cargo una vez creado.</p>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <input type="text" class="form-control form-control-text"
-                                                   id="descripcion"
-                                                   name="descripcion"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group ic-form-group">
-                                    <key>
-                                        <span class="ic-step-number">3</span>
-                                        A continuación, ingrese el código del cargo
-                                        <span class="ic-small italic">(obligatorio)</span>
-                                    </key>
-                                    <p class="help-block">Inserte el código del cargo.</p>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control form-control-text"
-                                                   id="codigo"
-                                                   name="codigo"/>
+                                            <input type="text" class="form-control form-control-text" id="nombre" name="nombre"/>
                                         </div>
                                     </div>
                                 </div>

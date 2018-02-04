@@ -1,4 +1,4 @@
-/* global go, Metronic */
+/* global go, Metronic, TableLayout, TableEditablePlanes, MyApp, celdas, NaN, LinkShiftingTool */
 
 (function () {
     'use strict';
@@ -8,10 +8,10 @@
         .controller('Planes', Planes);
 
     Planes.$inject = ['$rootScope', '$scope', '$timeout', 'urlPath', 'estadoPlanService', 'criticidadPlanService', 'planService',
-        'criticidadTareaService', 'gerenciaService', 'estadoTareaService', 'canalService', 'logger'];
+        'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'estadoTareaService', 'canalService', 'logger'];
 
     function Planes($rootScope, $scope, $timeout, urlPath, estadoPlanService, criticidadPlanService, planService,
-                    criticidadTareaService, gerenciaService, estadoTareaService, canalService, logger) {
+                    cargoService, areaService, gerenciaService, criticidadTareaService, estadoTareaService, canalService, logger) {
         var vm = this;
         vm.urlPath = urlPath;
 
@@ -25,12 +25,25 @@
         vm.canales = canalService.canales;
         vm.tareas = planService.tareas;
         $scope.tituloDiagrama = "";
+        $scope.planId = 0;
         $scope.tareasSeleccionadas = new Array();
         $scope.tareasAntecesoras = new Array();
         $scope.todasTareas = new Array();
+        $scope.tareasAgrupadas = new Array();
+        $scope.tareasPorAgrupar = new Array();
+        $scope.historialTareas = new Array();
+        $scope.sucesoras = new Array();
+        $scope.antecesoras = new Array();
         $scope.nombreTarea = "";
         $scope.tituloModal = "";
         $scope.tarea = {};
+        $scope.fullScreen = false;
+        $scope.cargo = "";
+        $scope.gerencia = "";
+        $scope.direccion = "";
+        $scope.criticidad = "";
+        $scope.recurrente = 'false';
+        $scope.agrupada = false;
 
         vm.nuevo = nuevo;
         vm.eliminar = eliminar;
@@ -64,6 +77,14 @@
             $timeout(function () {
                 TableEditablePlanes.btnClickNuevo();
             }, 0);
+        }
+
+        vm.cambiarRecurrente = function (valor) {
+            $scope.recurrente = valor;
+        }
+
+        vm.cambiarValor = function () {
+            $scope.agrupada = !$scope.agrupada;
         }
 
         function eliminar() {
@@ -110,7 +131,7 @@
                         contieneCriticidad = true;
                         return;
                     }
-                })
+                });
                 var color = contieneCriticidad ? criticidad.color : "#bdbdbd";
                 return {
                     "border-color": color,
@@ -120,7 +141,7 @@
                 };
             }
             return {"background-color": "#bdbdbd"};
-        }
+        };
 
         vm.mostrarColorVentana = function (tarea) {
             if (tarea.criticidad_id) {
@@ -133,7 +154,7 @@
                 };
             }
             return {"background-color": color};
-        }
+        };
 
         function salvarForm() {
             TableEditablePlanes.btnClickSalvarForm();
@@ -187,11 +208,77 @@
             }, 0);
         }
 
+
+        vm.filtarTareasCargo = function () {
+            Metronic.unblockUI('#form-plan .portlet-body');
+            $scope.cargo = $("#cargo").val();
+            $scope.gerencia = $("#gerencia").val();
+            $scope.direccion = $("#direccion").val();
+            $scope.criticidad = $("#nivel-alerta").val();
+            $timeout(function () {
+                TableEditablePlanes.filtrarTareasPlan($scope.cargo, $scope.gerencia, $scope.direccion, $scope.criticidad);
+            }, 0);
+        }
+
+        vm.mostrarMasDetalles = function (idTarea) {
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+            $('#modal-tarea-detalle').modal('toggle');
+            $('.modal-backdrop').remove();
+            $timeout(function () {
+                planService.buscarTarea(idTarea, $scope.planId).then(success).catch(failed);
+            }, 0);
+
+            function success(response) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                $scope.tarea = response.data.tarea;
+                $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = $scope.tarea.nombre;
+                $('#modal-tarea-detalle').modal({
+                    show: true
+                });
+                $('#modal-tarea-detalle button.download').data("title", 'Descargar modelo').tooltip();
+                $('#modal-tarea-detalle button.view').data("title", 'Ver Detalles de la Tarea').tooltip();
+            }
+
+            function failed(error) {
+                logger.error('Error !!' + error.data);
+            }
+        };
+
+        vm.cerrarModal = function () {
+            $('.modal-backdrop').remove();
+        };
+
+        vm.fullScreen = function () {
+            var porlet = $("#pantallaCompleta")[0];
+            $("#myDiagramDiv").css("height", h + "px");
+            var w = $(window).width();
+            var h = $(window).height();
+            $(porlet).css("width", w + "px");
+            $(porlet).css("height", h + "px");
+            if (porlet.RequestFullScreen) {
+                porlet.RequestFullScreen();
+            } else if (porlet.webkitRequestFullScreen) {
+                porlet.webkitRequestFullScreen();
+            } else if (porlet.mozRequestFullScreen) {
+                porlet.mozRequestFullScreen();
+            } else if (porlet.msRequestFullscreen) {
+                porlet.msRequestFullscreen();
+            } else {
+                alert("This browser doesn't supporter fullscreen");
+            }
+        };
         vm.borrarDiagrama = function () {
             $timeout(function () {
                 TableEditablePlanes.btnClickBorrarDiagrama();
             }, 0);
-        }
+        };
+        vm.exportar = function () {
+            $timeout(function () {
+                TableEditablePlanes.exportar();
+            }, 0);
+        };
 
         function salvarDiagrama() {
             $timeout(function () {
@@ -207,11 +294,12 @@
                     var elem = buscarElemento(checkboxes[i].id, false);
                     if (elem !== null) {
                         $scope.tareasSeleccionadas.push(elem.item);
+                        $scope.todasTareas.splice(elem.posicion, 1);
                         $(checkboxes[i]).parent().parent().parent().remove();
                     }
                 }
             }
-        }
+        };
 
         function buscarElemento(id, seleccionados) {
             if (!seleccionados) {
@@ -246,7 +334,58 @@
                     }
                 }
             }
+        };
+
+        vm.agregarAgrupada = function () {
+            var checkboxes = $("#cuerpo-tareas-agrupar input[type=checkbox]");
+            var tam = checkboxes.length;
+            for (var i = 0; i < tam; i++) {
+                if (checkboxes[i].checked) {
+                    var elem = buscarElementoAgrupado(checkboxes[i].id, true);
+                    if (elem !== null) {
+                        $scope.tareasAgrupadas.push(elem.item);
+                        $(checkboxes[i]).parent().parent().parent().remove();
+                        $scope.tareasPorAgrupar.splice(elem.posicion, 1);
+                    }
+                }
+            }
+        };
+
+
+        function buscarElementoAgrupado(id, seleccionados) {
+            if (!seleccionados) {
+                var tam = $scope.tareasAgrupadas.length;
+                for (var i = 0; i < tam; i++) {
+                    if (parseInt($scope.tareasAgrupadas[i].tarea_id) === parseInt(id)) {
+                        return {posicion: i, item: $scope.tareasAgrupadas[i]};
+                    }
+                }
+                return null;
+            } else {
+                var tam = $scope.tareasPorAgrupar.length;
+                for (var i = 0; i < tam; i++) {
+                    if (parseInt($scope.tareasPorAgrupar[i].tarea_id) === parseInt(id)) {
+                        return {posicion: i, item: $scope.tareasPorAgrupar[i]};
+                    }
+                }
+                return null;
+            }
         }
+
+        vm.eliminarAgrupada = function () {
+            var checkboxes = $("#table-agrupadas-cuerpo input[type=checkbox]");
+            var tam = checkboxes.length;
+            for (var i = 0; i < tam; i++) {
+                if (checkboxes[i].checked) {
+                    var elem = buscarElementoAgrupado(checkboxes[i].id, false);
+                    if (elem !== null) {
+                        $scope.todasTareas.push(elem.item);
+                        $scope.tareasAgrupadas.splice(elem.posicion, 1);
+                        $(checkboxes[i]).parent().parent().parent().remove();
+                    }
+                }
+            }
+        };
 
         function activate() {
             $scope.$on('$viewContentLoaded', function () {
@@ -258,6 +397,53 @@
                     TableEditablePlanes.init(vm.urlPath, planService, $scope, logger);
                 }, 1000);
             });
+        }
+
+        vm.seleccionarElemento = function (config) {
+            var cargoSelect = $("#cargo");
+            var gerenciaSelect = $("#gerencia");
+            var direccionSelect = $("#direccion");
+            if (config.criticidad) {
+                cargoSelect.select2("val", "");
+                gerenciaSelect.select2("val", "");
+                direccionSelect.select2("val", "");
+                $scope.gerencia = "";
+                $scope.direccion = "";
+                $scope.cargo = "";
+                $scope.mensaje = "este nivel de alerta";
+            }
+            if (config.cargo) {
+                $scope.mensaje = "este cargo";
+            }
+            if (config.area) {
+                $scope.mensaje = "esta gerencia";
+                $scope.gerencia = $("#gerencia").val();
+                cargoSelect.select2("val", "");
+                $scope.cargo = "";
+                cargoService.getCargosArea($scope.gerencia).then(function (resp) {
+                    vm.cargos = resp.data.cargos;
+                }).catch(function () {
+
+                });
+            }
+            if (config.direccion) {
+                $scope.direccion = $("#direccion").val();
+                cargoSelect.select2("val", "");
+                gerenciaSelect.select2("val", "");
+                $scope.cargo = "";
+                $scope.gerencia = "";
+                areaService.getAreasGerencia($scope.direccion).then(function (resp) {
+                    vm.areas = resp.data.areas;
+                }).catch(function () {
+
+                });
+                cargoService.getCargosGerencia($scope.direccion).then(function (resp) {
+                    vm.cargos = resp.data.cargos;
+                }).catch(function () {
+
+                });
+                $scope.mensaje = "esta dirección";
+            }
         }
 
     }
@@ -285,6 +471,7 @@
         var tabla = null;
         $scope.cargo = "";
         $scope.antecesoras = new Array();
+        $scope.sucesoras = new Array();
         $scope.gerencia = "";
         $scope.direccion = "";
         $scope.criticidad = "";
@@ -328,17 +515,50 @@
             }
 
             function success(response) {
+                $scope.tarea = response.data.tarea;
+                $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = response.data.tarea.nombre;
                 $('#modal-tarea-detalle').modal({
                     'show': true
                 });
-                $scope.tarea = response.data.tarea;
-                $scope.antecesoras = response.data.antecesoras;
                 $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+                $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
             }
 
             function failed(error) {
                 logger.error('Error !!' + error.data);
             }
+        };
+
+        vm.mostrarMasDetalles = function (idTarea) {
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+            $('#modal-tarea-detalle').modal('toggle');
+            $('.modal-backdrop').remove();
+            $timeout(function () {
+                planService.buscarTarea(idTarea, $scope.idPlan).then(success).catch(failed);
+            }, 0);
+
+            function success(response) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                $scope.tarea = response.data.tarea;
+                $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = response.data.tarea.nombre;
+                $('#modal-tarea-detalle').modal({
+                    show: true
+                });
+                $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+                $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
+            }
+
+            function failed(error) {
+                logger.error('Error !!' + error.data);
+            }
+        };
+
+        vm.cerrarModal = function () {
+            $('.modal-backdrop').remove();
         };
 
         vm.mostrarColor = function (criticidad, tarea) {
@@ -514,8 +734,8 @@
         $scope.mostrarInicial = vm.planes.length === 1;
         $scope.planes = new Array();
         $scope.antecesoras = new Array();
+        $scope.sucesoras = new Array();
         var myDiagram = null;
-        var myPalette = null;
         var start = 0;
         activate();
 
@@ -576,6 +796,7 @@
                 MyApp.init();
                 if ($scope.mostrarInicial) {
                     $scope.planes[0] = vm.planes[0];
+                    $scope.planId = vm.planes[0].plan_id;
                     inicializarPlan(vm.planes[0]);
                 } else {
                     var plan = JSON.parse(localStorage.getItem("plan"));
@@ -602,6 +823,36 @@
             });
         }
 
+        vm.mostrarMasDetalles = function (idTarea) {
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+            $('#modal-tarea-detalle').modal('toggle');
+            $('.modal-backdrop').remove();
+            $timeout(function () {
+                planService.buscarTarea(idTarea, $scope.planId).then(success).catch(failed);
+            }, 0);
+
+            function success(response) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                $scope.tarea = response.data.tarea;
+                $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = response.data.tarea.nombre;
+                $('#modal-tarea-detalle').modal({
+                    show: true
+                });
+                $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+                $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
+            }
+
+            function failed(error) {
+                logger.error('Error !!' + error.data);
+            }
+        };
+
+        vm.cerrarModal = function () {
+            $('.modal-backdrop').remove();
+        };
+
         vm.mostrarDetallesTarea = function (idTarea) {
             var tareas = $scope.planes[0].tareas;
             var cant = tareas.length;
@@ -626,6 +877,8 @@
                 });
                 $scope.tarea = response.data.tarea;
                 $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = response.data.tarea.nombre;
                 $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
             }
 
@@ -765,6 +1018,16 @@
             myDiagram = $(go.Diagram, "myDiagramDiv", {
                 "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
                 initialContentAlignment: go.Spot.Center,
+                //Nuevas opciones
+                "InitialLayoutCompleted": function (e) {
+                    // var div = e.diagram.div;
+                    // var height = parseInt(e.diagram.documentBounds.height / 2) + 24;
+                    //
+                    // div.style.height = height + 'px';
+                    // e.diagram.requestUpdate();
+                },
+                hasVerticalScrollbar: false,
+                scale: 0.5,
                 layout: $(TableLayout, $(go.RowColumnDefinition, {
                     row: 1,
                     height: 22
@@ -772,12 +1035,17 @@
                 "SelectionMoved": function (e) {
                     e.diagram.layoutDiagram(true);
                 },
+                "SelectionDeleted": function (e) {
+                    myDiagram.commandHandler.undo();
+                },
+                "LinkDrawn": function (e) {
+                    myDiagram.commandHandler.undo();
+                },
                 "ExternalObjectsDropped": function (e) {
                     pintarBorde(plan);
-                    myPalette.remove(myPalette.selection.first());
                 },
                 "resizingTool": new LaneResizingTool(),
-                "linkingTool.isEnabled": false,
+                "linkingTool.isEnabled": true,
                 allowDrop: true,
                 // feedback that dropping in the background is not allowed
                 mouseDragOver: function (e) {
@@ -785,11 +1053,17 @@
                 },
                 // when dropped in the background, not on a Node or a Group, cancel the drop
                 mouseDrop: function (e) {
-                    e.diagram.currentTool.doCancel();
+                    // e.diagram.currentTool.doCancel();
                 },
                 "animationManager.isInitial": false,
-                "undoManager.isEnabled": true
+                "undoManager.isEnabled": true,
+                "linkReshapingTool": new OrthogonalLinkReshapingTool(),
+                "LinkReshaped": function (e) {
+                    e.subject.routing = go.Link.Orthogonal;
+                }
             });
+
+            myDiagram.toolManager.mouseDownTools.add($(LinkShiftingTool));
 
             myDiagram.nodeTemplateMap.add("Column Header", $(go.Part, "Spot", {
                     row: 1, rowSpan: 9999, column: 2,
@@ -846,13 +1120,17 @@
 
             myDiagram.nodeTemplateMap.add("Start", $(go.Node, "Spot", {
                     margin: new go.Margin(10, 10, 10, 10),
-
+                    locationSpot: go.Spot.Center,
+                    click: function (e, node) {
+                        showConnections(node);
+                    },
                     doubleClick: function (e, node) {
                         vm.mostrarDetallesTarea(node.data.tarea_id);
                     }
-                }, new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+                }, /*new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+                new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
                 {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: false},
-                {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
+                {resizable: false, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
                 new go.Binding("row"),
                 new go.Binding("column", "col"),
                 $(go.Panel, "Auto", $(go.Shape, "DividedEvent", {
@@ -861,6 +1139,8 @@
                         height: 110,
                         stroke: "transparent",
                         portId: "",
+                        fromSpot: go.Spot.Right,
+                        toSpot: go.Spot.Left,
                         fromLinkable: true,
                         toLinkable: true,
                         margin: new go.Margin(10, 0, 10, 0)
@@ -887,7 +1167,7 @@
                             row: 1, column: 0, columnSpan: 3,
                             textAlign: "right",
                             margin: new go.Margin(10, 5, 0, 5)
-                        }, new go.Binding("text", "nombre").makeTwoWay()),
+                        }, new go.Binding("text").makeTwoWay()),
                         $(go.Shape, "LineH", {name: "LINEA", fill: "white", stroke: "#000"}, {
                             row: 2, column: 0, columnSpan: 3,
                             margin: new go.Margin(0, 0, 0, 0),
@@ -906,74 +1186,63 @@
 
             myDiagram.nodeTemplateMap.add("Hito", $(go.Node, "Spot", {
                     margin: new go.Margin(10, 10, 10, 10),
+                    locationSpot: go.Spot.Center,
                     click: function (e, node) {
                         showConnections(node);
                     },
                     doubleClick: function (e, node) {
                         vm.mostrarDetallesTarea(node.data.tarea_id);
                     }
-                }, new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+                }, /*new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
                 {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: false},
-                {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
+                {resizable: false, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
                 new go.Binding("row"),
                 new go.Binding("column", "col"),
+                new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
                 $(go.Panel, "Auto", $(go.Shape, "Parallelogram2", {
-                        fill: "white",
-                        strokeWidth: 1,
-                        stroke: "transparent",
-                        portId: "",
-                        minSize: new go.Size(250, 70),
-                        fromLinkable: true,
-                        toLinkable: true
-                    }, new go.Binding("fill", "color"), new go.Binding("stroke", "color_borde")),
-                    $(go.Panel, "Table", {
-                            margin: new go.Margin(0, 0, 10, 0),
-                            defaultAlignment: go.Spot.Left
-                        },
-                        $(go.RowColumnDefinition, {column: 0, width: 200}),
-                        $(go.TextBlock, {font: "10pt bold Segoe UI,sans-serif", stroke: "#000"}, {
-                            row: 0,
-                            column: 0,
-                            columnSpan: 4,
-                            textAlign: "center",
-                            margin: new go.Margin(5, 5, 0, 15)
-                        }, new go.Binding("text", "nombre").makeTwoWay())))));
-
-            myDiagram.nodeTemplateMap.add("Grupo", $(go.Node, "Spot", {
-                    padding: 16,
-                    selectionAdornmentTemplate: // adornment when a group is selected
-                        $(go.Adornment, "Auto", $(go.Shape, "RoundedRectangle",
-                            {fill: null, stroke: "dodgerblue", strokeWidth: 3}),
-                            $(go.Placeholder)
-                        ),
-                    toSpot: go.Spot.AllSides, // links coming into groups at any side
-                }, $(go.Panel, "Auto"), $(go.TextBlock, {
-                    name: "GROUPTEXT",
-                    alignment: go.Spot.TopCenter,
-                    alignmentFocus: new go.Spot(0, 0, 4, 4),
-                    font: "Bold 10pt Sans-Serif"
-                },
-                new go.Binding("text", "nombre")), {
-                    toolTip: $(go.Adornment, "Auto", $(go.Shape, {fill: "#EFEFCC"}), $(go.TextBlock, {margin: 4}, new go.Binding("text", "nombre")))
-                }
-            ));
+                    fill: "white",
+                    strokeWidth: 1,
+                    stroke: "transparent",
+                    portId: "",
+                    minSize: new go.Size(250, 70),
+                    fromSpot: go.Spot.Right,
+                    toSpot: go.Spot.Left,
+                    fromLinkable: true,
+                    toLinkable: true
+                }, new go.Binding("fill", "color"), new go.Binding("stroke", "color_borde")), $(go.Panel, "Table", {
+                    margin: new go.Margin(0, 0, 10, 0),
+                    defaultAlignment: go.Spot.Left
+                }, $(go.RowColumnDefinition, {
+                    column: 0,
+                    width: 200
+                }), $(go.TextBlock, {font: "10pt bold Segoe UI,sans-serif", stroke: "#000"}, {
+                    row: 0,
+                    column: 0,
+                    columnSpan: 4,
+                    textAlign: "center",
+                    margin: new go.Margin(5, 5, 0, 15)
+                }, new go.Binding("text").makeTwoWay())))));
 
             myDiagram.nodeTemplate = $(go.Node, "Auto", {
                     margin: new go.Margin(10, 10, 10, 10),
+                    locationSpot: go.Spot.Center,
                     click: function (e, node) {
                         showConnections(node);
                     },
                     doubleClick: function (e, node) {
                         vm.mostrarDetallesTarea(node.data.tarea_id);
                     }
-                }, new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+                }, /* new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+                new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
                 {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: false},
-                {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
+                {resizable: false, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
                 new go.Binding("row"), new go.Binding("column", "col"), $(go.Shape, "Rectangle", {
                     fill: "white",
                     strokeWidth: 1,
                     stroke: "transparent",
                     portId: "",
+                    fromSpot: go.Spot.Right,
+                    toSpot: go.Spot.Left,
                     fromLinkable: true,
                     toLinkable: true
                 }, new go.Binding("fill", "color").makeTwoWay(), new go.Binding("stroke", "color_borde").makeTwoWay()),
@@ -997,7 +1266,7 @@
                         columnSpan: 3,
                         textAlign: "center",
                         margin: new go.Margin(0, 5, 0, 5)
-                    }, new go.Binding("text", "nombre").makeTwoWay()),
+                    }, new go.Binding("text").makeTwoWay()),
                     $(go.Shape, "LineH", {name: "LINEA", fill: "white", stroke: "#000"}, {
                         row: 2,
                         column: 0,
@@ -1021,7 +1290,7 @@
                     selectable: false,
                     computesBoundsAfterDrag: true,
                     computesBoundsIncludingLocation: true,
-                    handlesDragDropForMembers: true, // don't need to define handlers on member Nodes and Links
+                    handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                     mouseDragEnter: function (e, group, prev) {
                         group.isHighlighted = true;
                     },
@@ -1029,26 +1298,9 @@
                         group.isHighlighted = false;
                     },
                     mouseDrop: function (e, group) {
-                        // if any dropped part wasn't already a member of this group, we'll want to let the group's row
-                        // column allow themselves to be resized automatically, in case the row height or column width
-                        // had been set manually by the LaneResizingTool
-                        var anynew = e.diagram.selection.any(function (p) {
-                            return p.containingGroup !== group;
-                        });
-                        // Don't allow headers/siders to be dropped
-                        var anyHeadersSiders = e.diagram.selection.any(function (p) {
-                            return p.category === "Column Header" || p.category === "Row Sider";
-                        });
-                        if (!anyHeadersSiders && group.addMembers(e.diagram.selection, true)) {
-                            if (anynew) {
-                                e.diagram.layout.getRowDefinition(group.row).height = NaN;
-                                e.diagram.layout.getColumnDefinition(group.column).width = NaN;
-                            }
-                        } else {  // failure upon trying to add parts to this group
-                            e.diagram.currentTool.doCancel();
-                        }
+
                     }
-                }, new go.Binding("row"), new go.Binding("column", "col"), new go.Binding('location', 'loc', go.Point.parse),
+                }, new go.Binding("row"), new go.Binding("column", "col"), new go.Binding('location', 'loc', go.Point.parse), new go.Binding("columnSpan", "colSpan").makeTwoWay(),
                 // the group is normally unseen -- it is completely transparent except when given a color or when highlighted
                 $(go.Shape, {
                     fill: "transparent", stroke: "transparent",
@@ -1062,85 +1314,28 @@
                         return new go.Spot(0, 0, m.top, m.left);
                     })(myDiagram.nodeTemplate.margin),
                     padding: (function (m) {
-                        return new go.Margin(0, m.right, m.bottom, 0);
+                        return new go.Margin(50, m.right + 50, m.bottom + 50, 50);
                     })(myDiagram.nodeTemplate.margin)
                 })
             );
 
-            //Datos del modelo
-            var model = [];
-            var columnas = plan.columnas;
-            var siders = plan.siders;
-            var colores = plan.colores;
-            //Header columnas
-            var col = 2;
-            for (var i = 0; i < columnas.length; i++) {
-                model.push({
-                    key: "ch" + columnas[i].identificador,
-                    text: columnas[i].nombre,
-                    col: col,
-                    category: "Column Header",
-                    color_header: colores[i]
-                });
-                col++;
-            }
-            //Rows sider
-            var row = 2;
-            for (var i = 0; i < siders.length; i++) {
-                model.push({
-                    key: "sd" + siders[i].idSider,
-                    text: siders[i].nombre,
-                    row: row,
-                    category: "Row Sider"
-                });
-                row++;
-            }
-            //Celdas
-            var celdas = new Array();
-            for (var i = 0; i < siders.length; i++) {
-                for (var j = 0; j < columnas.length; j++) {
-                    var celda = "Celda(" + siders[i].idSider + "," + columnas[j].identificador + ")";
-                    model.push({
-                        key: celda,
-                        text: celda,
-                        col: j + 2,
-                        row: i + 2,
-                        isGroup: true
-                    });
-                    celdas[celda] = 0;
-                }
-            }
-            var tareasGrafico = plan.tareas;
-            var tam = tareasGrafico.length;
-            for (var i = 0; i < tam; i++) {
-                var celda = "Celda(" + tareasGrafico[i].idGerencia + "," + tareasGrafico[i].idCriticidad + ")";
-                //Buscar la tarea para la celda
-                var objetoPlan = {
-                    key: "" + tareasGrafico[i].tarea_id,
-                    text: tareasGrafico[i].nombre,
-                    cargo: tareasGrafico[i].cargo,
-                    producto: tareasGrafico[i].producto,
-                    partida: tareasGrafico[i].partida,
-                    loc: celdas[celda] % 2 === 0 ? "" + (50 * celdas[celda]) + " " + (150 * celdas[celda]) : "" + (1000 + i * 4) + " " + (100 * (celdas[celda] - 1)),
-                    tarea_id: tareasGrafico[i].tarea_id,
-                    color_borde: tareasGrafico[i].color,
-                    color: tareasGrafico[i].hito ? tareasGrafico[i].color : tareasGrafico[i].partida ? tareasGrafico[i].color : "#ffebee",
-                    group: celda,
-                    category: tareasGrafico[i].hito ? "Hito" : tareasGrafico[i].partida ? "Start" : ""
-                }
-                celdas[celda]++;
-                model.push(objetoPlan);
-            }
-
             myDiagram.linkTemplate = $(go.Link, {
-                    routing: go.Link.AvoidsNodes,
-                    toShortLength: 4,
-                    corner: 20,
-                }, {
+                    //Nuevas opciones
                     relinkableFrom: true,
                     relinkableTo: true,
-                    selectable: true
+                    reshapable: true,
+                    resegmentable: true,
+                    layerName: "Background"
+                }, {
+                    routing: go.Link.AvoidsNodes,
+                    adjusting: go.Link.End,
+                    curve: go.Link.JumpOver,
+                    toShortLength: 4
                 },
+                ///Nuevas opciones
+                new go.Binding("points").makeTwoWay(),
+                // new go.Binding("routing", "routing", go.Binding.parseEnum(go.Link, go.Link.AvoidsNodes)).makeTwoWay(go.Binding.toString),
+                //End Nuevas opciones
                 $(go.Shape, {isPanelMain: true, stroke: "black", strokeWidth: 3},
                     // the Shape.stroke color depends on whether Link.isHighlighted is true
                     new go.Binding("stroke", "isHighlighted", function (h) {
@@ -1156,25 +1351,208 @@
                         return h ? 5 : 3;
                     }).ofObject()));
 
-            //Links
-            // myDiagram.linkTemplate = $(go.Link, {routing: go.Link.AvoidsNodes, corner: 5}, {
-            //     relinkableFrom: true,
-            //     relinkableTo: true
-            // }, $(go.Shape), $(go.Shape, {toArrow: "Standard"}));
             var links = plan.links;
-
-            myDiagram.model = new go.GraphLinksModel(model, links);
 
             if (plan.diagrama !== "" && plan.diagrama !== null) {
                 myDiagram.model = go.Model.fromJson(plan.diagrama);
+                var pos = myDiagram.model.modelData.position;
+                if (pos)
+                    myDiagram.initialPosition = go.Point.parse(pos);
+                // myDiagram.delayInitialization(relayoutDiagram);
+            } else {
+                //Datos del modelo
+                var model = [];
+                var columnas = plan.columnas;
+                var siders = plan.siders;
+                var colores = plan.colores;
+                //Header columnas
+                var col = 2;
+                for (var i = 0; i < columnas.length; i++) {
+                    model.push({
+                        key: "ch" + columnas[i].identificador,
+                        text: columnas[i].nombre,
+                        col: col,
+                        category: "Column Header",
+                        peso: columnas[i].peso,
+                        color_header: columnas[i].color
+                    });
+                    col++;
+                }
+                //Rows sider
+                var row = 2;
+                var filas = new Array();
+                for (var i = 0; i < siders.length; i++) {
+                    model.push({
+                        key: "sd" + siders[i].idSider,
+                        text: siders[i].nombre,
+                        row: row,
+                        peso: siders[i].peso,
+                        category: "Row Sider"
+                    });
+                    filas.push({idGerencia: siders[i].idSider, fila: row});
+                    row++;
+                }
+                //Celdas
+                var celdas = new Array();
+                var cont = new Array();
+                for (var i = 0; i < siders.length; i++) {
+                    for (var j = 0; j < columnas.length; j++) {
+                        var celda = "Celda(" + siders[i].idSider + "," + columnas[j].identificador + ")";
+                        cont["Fila(" + siders[i].idSider + ")"] = 0;
+                        model.push({
+                            key: celda,
+                            text: celda,
+                            col: j + 2,
+                            row: i + 2,
+                            isGroup: true
+                        });
+                        // Tareas Invisibles
+                        model.push({
+                            key: generateUUID(),
+                            text: "",
+                            color: "white",
+                            size: "3 3",
+                            group: celda
+                        });
+                        celdas[celda] = {pos: 0, x: 0, y: 0};
+                    }
+                }
+                var tareasGrafico = plan.tareas;
+                var tam = tareasGrafico.length;
+                var gruposDiagrama = new Array();
+                for (var i = 0; i < tam; i++) {
+                    var celda = "Celda(" + tareasGrafico[i].idGerencia + "," + tareasGrafico[i].idCriticidad + ")";
+                    //Buscar la tarea para la celda
+                    if (tareasGrafico[i].partida) {
+                        celdas[celda].x = 0;
+                        celdas[celda].y = 0;
+                    }
+                    var objetoPlan = {
+                        key: "" + tareasGrafico[i].key,
+                        text: tareasGrafico[i].nombre,
+                        cargo: tareasGrafico[i].cargo,
+                        producto: tareasGrafico[i].producto,
+                        partida: tareasGrafico[i].partida,
+                        bounds: celdas[celda].x + " " + celdas[celda].y,
+                        tarea_id: tareasGrafico[i].tarea_id,
+                        color_borde: tareasGrafico[i].color,
+                        color: tareasGrafico[i].hito ? tareasGrafico[i].color : tareasGrafico[i].partida ? tareasGrafico[i].color : "#ffebee",
+                        group: celda,
+                        category: tareasGrafico[i].hito ? "Hito" : tareasGrafico[i].partida ? "Start" : ""
+                    }
+                    model.push(objetoPlan);
+                    celdas[celda].pos++;
+                    celdas[celda].x += 500;
+                    if (celdas[celda].pos % 3 === 0) {
+                        celdas[celda].x = 0;
+                        celdas[celda].y += 300;
+                    }
+                }
+                var yTranversal = 150;
+                var tareasTranversales = plan.tareasTranversales;
+                var tamTranversal = tareasTranversales.length;
+                for (var i = 0; i < tamTranversal; i++) {
+                    var celda = "Celda(" + tareasTranversales[i].idGerencia + "," + tareasTranversales[i].idCriticidad + ")";
+                    var texto = "Fila(" + tareasTranversales[i].idGerencia + ")";
+                    //Buscar la tarea para la celda
+                    var fila = buscarFila(filas, tareasTranversales[i].idGerencia);
+                    var columna = tareasTranversales[i].col;
+                    var nombreGrupo = "tv" + fila + tareasTranversales[i].grupo;
+                    // var celdaMayorCantidad = buscarMaximoFila(columnas, tareasTranversales[i].idGerencia, tareasTranversales[i].idCriticidad, tareasTranversales[i].colSpan);
+                    var grupo = {
+                        key: nombreGrupo,
+                        text: "",
+                        color: "white",
+                        // bounds: celdaMayorCantidad.x + " " + celdaMayorCantidad.y,
+                        col: columna,
+                        colSpan: tareasTranversales[i].colSpan,
+                        row: fila,
+                        isGroup: true
+                    };
+                    if (!existeGrupo(gruposDiagrama, grupo.key)) {
+                        gruposDiagrama.push(grupo);
+                        model.push(grupo);
+                    }
+                    model.push({
+                        key: generateUUID(),
+                        text: "",
+                        color: "white",
+                        bounds: 0 + " " + yTranversal,
+                        size: "0 " + 200,
+                        group: nombreGrupo
+                    });
+                    var objetoTranversal = {
+                        key: "" + tareasTranversales[i].key,
+                        text: tareasTranversales[i].nombre,
+                        size: tareasTranversales[i].colSpan * (tam + tamTranversal + 600) + " " + 100,
+                        bounds: 0 + " " + yTranversal,
+                        partida: tareasTranversales[i].partida,
+                        tarea_id: tareasTranversales[i].tarea_id,
+                        cargo: tareasTranversales[i].cargo,
+                        producto: tareasTranversales[i].producto,
+                        color_borde: tareasTranversales[i].color,
+                        color: tareasTranversales[i].hito ? tareasTranversales[i].color : tareasTranversales[i].partida ? tareasTranversales[i].color : "#ffebee",
+                        group: nombreGrupo,
+                        category: ""
+                    };
+                    console.log(yTranversal);
+                    yTranversal += 300;
+                    model.push(objetoTranversal);
+                }
+                myDiagram.model = new go.GraphLinksModel(model, links);
             }
-            //Centrar el grafico
-            setTimeout(function () {
-                vm.zoomToFit();
-                myDiagram.commandHandler.increaseZoom(5);
-                myDiagram.scrollToRect(new go.Rect(0, 0, 20, 20));
-            }, 100);
+        };
+
+        var buscarMaximoFila = function (columnas, idGerencia, idCriticidad, colSpand) {
+            var pos = 0;
+            var posInicial = buscarPosicionNivelAlerta(columnas, idCriticidad);
+            var celda = "Celda(" + idGerencia + "," + idCriticidad + ")";
+            celdas[celda].y += 100;
+            celdas[celda].x = 0;
+            celdas[celda].pos += 2;
+            while (pos < colSpand && posInicial < columnas.length - 1) {
+                var celdaSiguiente = "Celda(" + idGerencia + "," + columnas[posInicial + 1].identificador + ")";
+                if (celdas[celda].y < celdas[celdaSiguiente].y)
+                    celda = celdaSiguiente;
+                pos++;
+                posInicial++;
+                celdas[celdaSiguiente].y += 300;
+                celdas[celdaSiguiente].x = 0;
+                celdas[celdaSiguiente].pos += 2;
+            }
+            celdas[celda].y += 300;
+            celdas[celda].x = 0;
+            celdas[celda].pos += 2;
+            return celdas[celda];
         }
+
+        var buscarPosicionNivelAlerta = function (columnas, idCriticidad) {
+            for (var i = 0; i < columnas.length; i++) {
+                if (parseInt(idCriticidad) === parseInt(columnas[i].identificador))
+                    return i;
+            }
+            return -1;
+        }
+
+        function existeGrupo(grupos, clave) {
+            var tam = grupos.length;
+            for (i = 0; i < tam; i++) {
+                if (grupos[i].key === clave) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var generateUUID = function () {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        };
 
         function showConnections(node) {
             var myDiagram = node.diagram;
@@ -1190,6 +1568,26 @@
                 n.isHighlighted = true;
             });
             myDiagram.commitTransaction("highlight");
+        }
+
+        function buscarFila(filas, idGerencia) {
+            var tam = filas.length;
+            for (var i = 0; i < tam; i++) {
+                if (parseInt(filas[i].idGerencia) === parseInt(idGerencia)) {
+                    return filas[i].fila;
+                }
+            }
+            return null;
+        }
+
+        function existeGrupo(grupos, clave) {
+            var tam = grupos.length;
+            for (var i = 0; i < tam; i++) {
+                if (grupos[i].key === clave) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         var existePrimeraTarea = function () {
@@ -1268,7 +1666,15 @@
                 });
             }
         };
-
+        vm.generateUUID = function () {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        };
         vm.destroyDiagrama = function () {
             $('#div-diagrama').html('<div id="myDiagramDiv" style="height:500px;"></div>');
             $('#div-paleta').html('<div id="myPaletteDiv" style="height:500px;"></div>');

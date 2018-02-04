@@ -24,18 +24,18 @@
                 gerenciasPrepService: gerenciasPrepService,
                 canalPrepService: canalPrepService,
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    return $ocLazyLoad.load({
-                        name: 'app',
-                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
-                        files: [
-                            urlPath + '/bundles/admin/assets/bootstrap-fileinput/bootstrap-fileinput.css',
-                            urlPath + '/bundles/admin/assets/bootstrap-fileinput/bootstrap-fileinput.js',
-                            urlPath + '/bundles/admin/app/scripts/OrthogonalLinkReshapingTool.js',
-                            urlPath + '/bundles/admin/app/scripts/LinkShiftingTool.js',
-                            urlPath + '/bundles/admin/app/scripts/table/plan-table-editable.js'
-                        ]
-                    });
-                }]
+                        return $ocLazyLoad.load({
+                            name: 'app',
+                            insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                            files: [
+                                urlPath + '/bundles/admin/assets/bootstrap-fileinput/bootstrap-fileinput.css',
+                                urlPath + '/bundles/admin/assets/bootstrap-fileinput/bootstrap-fileinput.js',
+                                urlPath + '/bundles/admin/app/scripts/OrthogonalLinkReshapingTool.js',
+                                urlPath + '/bundles/admin/app/scripts/LinkShiftingTool.js',
+                                urlPath + '/bundles/admin/app/scripts/table/plan-table-editable.js'
+                            ]
+                        });
+                    }]
             }
         });
         $stateProvider.state('plan-view', {
@@ -65,6 +65,16 @@
             resolve: {
                 planPrepService: planPrepService,
                 criticidadesTareasPrepService: criticidadesTareasPrepService,
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'app',
+                            insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                            files: [
+                                urlPath + '/bundles/admin/app/scripts/OrthogonalLinkReshapingTool.js',
+                                urlPath + '/bundles/admin/app/scripts/LinkShiftingTool.js'
+                            ]
+                        });
+                    }]
             }
         });
         //Carga las gerencias

@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -42,16 +43,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/bundles/**", "/img/**", "/icons/**", "/font/**", "/fonts/**", "/flaty/**", "/docs/**", "/app/**", "/theme-classic/**", "/recursos/**");
+        web.ignoring().antMatchers("/bundles/**", "/img/**", "/icons/**", "/font/**", "/fonts/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().headers().frameOptions().disable().and()
                 .authorizeRequests()
-                .antMatchers("/").authenticated()
+                .antMatchers("/", "/area/**", "/canal/**", "/criticidad-tarea/**", "/criticidad-plan/**", "/documento/**", "/gerencia/**", "/planTarea/**", "/plan/**",
+                        "/cargo/**", "/perfil/**", "/estado-plan/**", "/estado-tarea/**", "/tarea/**", "/usuario/**").authenticated()
                 .antMatchers("/login.html").permitAll()
-                .antMatchers("/usuario.html", "/slider.html", "/noticia.html", "/trazas.html", "/planPostgrado.html").hasAuthority("Administrador").and()
+                .antMatchers("/usuario.html").hasAuthority("Administrador").and()
                 .formLogin().loginPage("/login.html").loginProcessingUrl("/usuario/autenticar").successHandler(autenticacionExitosa()).failureHandler(autenticacionAjaxFallida())
                 .usernameParameter("email").passwordParameter("pass").and()
                 .logout().logoutSuccessHandler(manejadorLogout()).logoutUrl("/logout").logoutSuccessUrl("/login.html").and()
@@ -77,6 +79,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ShaPasswordEncoder passwordEncoder() {
         return new ShaPasswordEncoder(1);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

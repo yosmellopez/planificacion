@@ -5,23 +5,17 @@
  */
 package com.planning.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
@@ -55,10 +49,6 @@ public class StatusPlan implements Serializable {
     @JsonProperty(value = "estado")
     @ColumnDefault(value = "true")
     private boolean active;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusplanid")
-    private Set<Plan> planSet;
 
     public StatusPlan() {
     }
@@ -98,15 +88,6 @@ public class StatusPlan implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @XmlTransient
-    public Set<Plan> getPlanSet() {
-        return planSet;
-    }
-
-    public void setPlanSet(Set<Plan> planSet) {
-        this.planSet = planSet;
     }
 
     @Override

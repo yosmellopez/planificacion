@@ -51,9 +51,11 @@
     <orderEntry type="library" name="Thymeleaf 3.0.8" level="application" />
     <orderEntry type="library" name="Wavemaker 7" level="application" />
     <orderEntry type="library" name="Liquibase" level="application" />
-    <orderEntry type="library" name="Oracle Driver" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.24" level="application_server_libraries" />
     <orderEntry type="library" name="JUnit 4.12" level="application" />
     <orderEntry type="library" name="Hamcrest" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.27" level="application_server_libraries" />
+    <orderEntry type="library" name="JWT" level="application" />
+    <orderEntry type="library" name="Hibernate Validator 6.0.7" level="application" />
+    <orderEntry type="library" name="JPA Validation" level="application" />
   </component>
 </module>

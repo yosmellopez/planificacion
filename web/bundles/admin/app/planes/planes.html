@@ -12,6 +12,7 @@
     .botones-centrales button {
         margin-top: 5px;
     }
+
     .modal-body .nivel-alerta-tareas li {
         list-style: none;
         display: inline-block;
@@ -186,19 +187,64 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="portlet-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6" id="select-nivel-alerta">
+                                                    <select data-ds-select2 class="form-control selectpicker" id="nivel-alerta" name="nivel-alerta" ng-model="nivelAlerta" ng-change="vm.seleccionarElemento({criticidad:true,cargo:false,area:false,direccion:false});">
+                                                        <option value="">Seleccione nivel de alerta</option>
+                                                        <option data-ng-repeat="item in vm.criticidades" value="{{item.criticidad_id}}">{{item.nombre}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-bottom: 20px;"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-3" id="select-direccion">
+                                                    <select data-ds-select2 class="form-control selectpicker" id="direccion" name="direccion" ng-model="direccion" ng-change="vm.seleccionarElemento({criticidad:false,cargo:false,area:false,direccion:true});">
+                                                        <option value="">Seleccione la dirección</option>
+                                                        <option data-ng-repeat="item in vm.gerencias" value="{{item.gerencia_id}}">{{item.descripcion}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3" id="select-gerencia">
+                                                    <select data-ds-select2 class="form-control selectpicker" id="gerencia" name="gerencia" ng-model="gerencia" ng-change="vm.seleccionarElemento({criticidad:false,cargo:false,area:true,direccion:false});">
+                                                        <option value="">Seleccione la unidad</option>
+                                                        <option data-ng-repeat="item in vm.areas" value="{{item.area_id}}">{{item.nombre}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3" id="select-cargo">
+                                                    <select data-ds-select2 class="form-control selectpicker" id="cargo" name="cargo" ng-model="cargo" ng-change="vm.seleccionarElemento({criticidad:false,cargo:true,area:false,direccion:false});">
+                                                        <option value="">Seleccione el cargo</option>
+                                                        <option data-ng-repeat="item in vm.cargos" value="{{item.cargo_id}}">{{item.nombre}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <button
+                                                                    class="btn btn-primary"
+                                                                    type="button" ng-click="vm.filtarTareasCargo()">
+                                                                <i class="fa fa-search fa-fw"></i> Ver Tareas
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="space20"></div>
                                         <table class="table table-advance table-bordered table-hover table-striped"
                                                id="table-tareas">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">#</th>
                                                     <th>Código</th>
                                                     <th>Nombre</th>
                                                     <th>Cargo</th>
                                                     <th>Nivel de Alerta</th>
-                                                    <th class="text-center">Partida</th>
-                                                    <th class="text-center">Acciones</th>
+                                                    <th>Partida</th>
+                                                    <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -249,7 +295,7 @@
                     </a>
                 </div>
             </div>
-            <div class="portlet-body form">
+            <div class="portlet-body form" id="pantallaCompleta">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="btn-toolbar margin-bottom-10">
@@ -260,18 +306,30 @@
                                 <button class="btn btn-default" data-ng-click="vm.decreaseZoom()">Disminuir Zoom</button>
                                 <button class="btn btn-default" data-ng-click="vm.borrarDiagrama()">Borrar Diagrama Guardado</button>
                                 <button class="btn btn-default" data-ng-click="vm.salvarDiagrama()">Salvar</button>
+                                <button class="btn btn-default" data-ng-click="vm.exportar()">Exportar</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12" id="div-diagrama">
-                        <div id="myDiagramDiv" style="height:700px;"></div>
+                        <div id="myDiagramDiv" style="height:800px;"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modal-imagen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" style="z-index: 10000;width: 80%;height: 50%;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="" id="diagrama-imagen"/>
+                <a download="Diagrama.png" class="btn btn-default" id="a-diagrama-imagen">Descargar</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div>
 
 <div class="row ng-hide" id="view-plan">
@@ -546,18 +604,21 @@
                                     <input type="hidden" id="codigo-tarea"/>
                                     <input type="hidden" id="plan-configurar-id"/>
                                     <div class="form-group ic-form-group">
-                                        <key>
-                                            <span class="ic-step-number">1</span>
-                                            Nombre de la tarea para añadir al plan
-                                        </key>
-                                        <p class="help-block"></p>
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <key>
+                                                <span class="ic-step-number">1</span>
+                                                Nombre de la tarea para añadir al plan
+                                            </key>
+                                            <p class="help-block"></p>
+                                            <div class="col-md-6">
                                                 <input type="text" class="form-control" id="tarea-configurar-nombre" name="nombre" disabled/>
+                                            </div>
+                                            <div class="col-md-6" style="position: relative;top: 10px;">
+                                                <input type="checkbox" class="form-control" id="tarea-configurar-agrupada" name="agrupada" ng-model="agrupada" ng-change="vm.cambiarValor()">La Tarea "{{tituloModal}}" es Agrupada?
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group ic-form-group">
+                                    <div class="form-group ic-form-group" ng-show="!agrupada">
                                         <key>
                                             <span class="ic-step-number">2</span>
                                             Seguidamente, seleccione el nivel de alerta de la tarea
@@ -576,7 +637,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group ic-form-group">
+                                    <div class="form-group ic-form-group" ng-show="!agrupada">
                                         <key>
                                             <span class="ic-step-number">3</span>
                                             Luego, seleccione un cargo para la tarea <span class="ic-small italic">(opcional)</span>
@@ -584,18 +645,15 @@
                                         <p class="help-block"></p>
                                         <div class="row">
                                             <div class="col-md-4" id="select-gerencia-tarea">
-                                                <key>Seleccione dirección para filtrar las gerencias</key>
-                                                <select data-ds-select2 class="form-control selectpicker"
-                                                        id="gerencia-tarea"
-                                                        name="gerencia">
+                                                <key>Seleccione dirección para filtrar las unidades</key>
+                                                <select data-ds-select2 class="form-control selectpicker" id="gerencia-tarea" name="gerencia">
                                                     <option value="">Seleccione</option>
-                                                    <option data-ng-repeat="item in vm.gerencias"
-                                                            value="{{item.gerencia_id}}">{{item.descripcion}}
+                                                    <option data-ng-repeat="item in vm.gerencias" value="{{item.gerencia_id}}">{{item.descripcion}}
                                                     </option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4" id="select-area-tarea">
-                                                <key>Seleccione gerencia para filtrar los cargos</key>
+                                                <key>Seleccione unidad para filtrar los cargos</key>
                                                 <select data-ds-select2 class="form-control selectpicker" id="area-tarea"
                                                         name="area">
                                                     <option value="">Seleccione</option>
@@ -610,7 +668,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group ic-form-group">
+                                    <div class="form-group ic-form-group" ng-show="!agrupada">
                                         <key>
                                             <span class="ic-step-number">4</span>
                                             Luego, ingrese las observaciones de la tarea
@@ -619,13 +677,13 @@
                                         <p class="help-block">Ingrese las observaciones para la tarea.</p>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                    <textarea type="text" class="form-control ckeditor" id="editor"
-                                                              name="editor" rows="6"></textarea>
+                                                <textarea type="text" class="form-control ckeditor" id="editor"
+                                                          name="editor" rows="6"></textarea>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group ic-form-group">
+                                    <div class="form-group ic-form-group" ng-show="!agrupada">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <key>
@@ -636,8 +694,8 @@
                                                 <p class="help-block"></p>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <select data-ds-select2 class="form-control selectpicker" id="canal-tarea" name="canal">
-                                                            <option value="">Seleccione el canal</option>
+                                                        <select data-ds-select2 class="form-control selectpicker" id="canal-tarea" name="canal" multiple>
+                                                            <option value="">Seleccione los canales</option>
                                                             <option data-ng-repeat="item in vm.canales"
                                                                     value="{{item.canal_id}}">{{item.descripcion}}
                                                             </option>
@@ -665,17 +723,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group ic-form-group">
+                                    <div class="form-group ic-form-group" ng-show="!agrupada">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <key><span class="ic-step-number">7</span>Define si la tarea será de partida</key>
                                                 <div class="form-group">
                                                     <key class="radio-inline">
-                                                        <input type="radio" name="radiopartida" id="partidaactivo-tarea">
+                                                        <input type="radio" name="radiopartida" id="partidaactivo-tarea" style="left: 11px;position: relative;">
                                                         <span class="ic-small">SI</span>
                                                     </key>
                                                     <key class="radio-inline">
-                                                        <input type="radio" name="radiopartida" id="partidainactivo-tarea" checked>
+                                                        <input type="radio" name="radiopartida" id="partidainactivo-tarea" checked style="left: 11px;position: relative;">
                                                         <span class="ic-small">NO</span>
                                                     </key>
                                                 </div>
@@ -691,31 +749,55 @@
                                                     <input type="text" class="form-control" id="producto" name="producto"/>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" ng-show="!agrupada">
                                                 <key><span class="ic-step-number">9</span>Define si la tarea será recurrente</key>
                                                 <div class="form-group">
                                                     <key class="radio-inline">
-                                                        <input type="radio" name="radiorecurrente"
-                                                               id="recurrenteactivo">
+                                                        <input type="radio" name="recurrente" ng-model="recurrente" value="true" checked="false" id="recurrente-activo" style="left: 11px;position: relative;">
                                                         <span class="ic-small">SI</span>
                                                     </key>
                                                     <key class="radio-inline">
-                                                        <input type="radio" name="radiorecurrente"
-                                                               id="recurrenteinactivo" checked>
+                                                        <input type="radio" name="recurrente" ng-model="recurrente" value="false" checked="true" id="recurrente-inactivo" style="left: 11px;position: relative;">
                                                         <span class="ic-small">NO</span>
                                                     </key>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6" ng-disabled="recurrente=='false'">
+                                                <key ng-disabled="recurrente">
+                                                    <span class="ic-step-number" ng-disabled="recurrente=='false'">10</span>
+                                                    Inserte cada que tiempo se ejecutará la tarea en caso de ser recurrente<span class="ic-small italic">(obligatorio)</span>
+                                                </key>
+                                                <p class="help-block" ng-disabled="recurrente=='false'">Inserte el tiempo de recurrencia. Debe seleccionar el tiempo en minutos.</p>
+                                                <div id="tiempo-recurrencia-div" ng-disabled="recurrente=='false'">
+                                                    <input type="number" class="form-control" id="tiempo-recurrencia" name="tiempoRecurrencia" ng-disabled="recurrente=='false'"/>
+                                                </div>
+                                            </div>
                                             <div class="col-md-6">
-                                                <key><span class="ic-step-number">10</span>A continuación, define si la tarea será un hito de la tarea</key>
+                                                <key><span class="ic-step-number">11</span>A continuación, define si la tarea será un hito de la tarea</key>
                                                 <div class="row">
-                                                    <div class="form-group">
+                                                    <div class="form-group" style="padding-left: 15px;">
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="radiohito" id="hitoactivo">
+                                                            <input type="radio" name="radiohito" id="hitoactivo" style="left: 11px;position: relative;">
                                                             <span class="ic-small">Si</span>
                                                         </key>
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="radiohito" id="hitoinactivo" checked>
+                                                            <input type="radio" name="radiohito" id="hitoinactivo" checked style="left: 11px;position: relative;">
+                                                            <span class="ic-small">No</span>
+                                                        </key>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <key><span class="ic-step-number">12</span>A continuación, define si la tarea será tranversal</key>
+                                                <p class="help-block">Tenga en cuenta que para una tarea ser tranversal los niveles de alerta deben ser consecutivos</p>
+                                                <div class="row">
+                                                    <div class="form-group" style="padding-left: 17px;">
+                                                        <key class="radio-inline">
+                                                            <input type="radio" name="tranversal" id="tarea-tranversal-activa" style="left: 11px;position: relative;">
+                                                            <span class="ic-small">Si</span>
+                                                        </key>
+                                                        <key class="radio-inline">
+                                                            <input type="radio" name="tranversal" id="tarea-tranversal-inactiva" style="left: 11px;position: relative;" checked>
                                                             <span class="ic-small">No</span>
                                                         </key>
                                                     </div>
@@ -724,12 +806,11 @@
                                         </div>
                                     </div>
                                 </uib-tab>
-                                <uib-tab heading="Archivos" id="tab-archivo">
+                                <uib-tab heading="Archivos" id="tab-archivo" ng-show="!agrupada">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="space20"></div>
-                                            <table class="table table-advance table-bordered table-hover table-striped"
-                                                   id="table-archivos">
+                                            <table class="table table-advance table-bordered table-hover table-striped" id="table-archivos">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -851,7 +932,99 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody style="max-height: 700px;overflow: hidden" id="cuerpo-tareas-seleccionar">
-                                                                <tr data-ng-repeat="item in todasTareas | filter:nombreTarea" draggable="true">
+                                                                <tr data-ng-repeat="item in todasTareas| filter:nombreTarea" draggable="true">
+                                                                    <td class=" text-center" tabindex="0">
+                                                                        <span><input type="checkbox" class="group-checkable" data-set="#tarea-table-editable .checkboxes" id="{{item.tarea_id}}"></span>
+                                                                    </td>
+                                                                    <td>{{item.codigo}}</td>
+                                                                    <td>{{item.nombre}}</td>
+                                                                    <td>{{item.cargo}}</td>
+                                                                    <td>{{item.criticidad}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab heading="Agrupación" id="tab-agrupada" ng-show="agrupada">
+                                    <div class="row">
+                                        <div class="col-md-5" id="div-table-agrupados">
+                                            <div class="portlet light">
+                                                <div class="portlet-title">
+                                                    <div class="caption caption-md">
+                                                        <i class="icon-bar-chart font-apolo-haze hide"></i>
+                                                        <span class="caption-subject font-apolo-haze bold uppercase">Tareas Agrupadas</span>
+                                                        <span class="caption-helper"></span>
+                                                    </div>
+                                                    <div class="actions">
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-advance table-bordered table-hover table-striped"
+                                                               id="table-agrupadas" style="max-height: 700px;overflow: scroll">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center"></th>
+                                                                    <th>Código</th>
+                                                                    <th>Nombre</th>
+                                                                    <th>Nivel de Alerta</th>
+                                                                    <th>Cargo</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="table-agrupadas-cuerpo">
+                                                                <tr data-ng-repeat="elem in tareasAgrupadas" draggable="true">
+                                                                    <td class=" text-center" tabindex="0">
+                                                                        <span><input type="checkbox" class="group-checkable" data-set="#tarea-table-editable .checkboxes" id="{{elem.tarea_id}}"></span>
+                                                                    </td>
+                                                                    <td>{{elem.codigo}}</td>
+                                                                    <td>{{elem.nombre}}</td>
+                                                                    <td>{{elem.criticidad}}</td>
+                                                                    <td>{{elem.cargo}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 botones-centrales" style="padding: 120px 0 10px 0;max-width: 50px;text-align: center">
+                                            <button class="btn btn-icon-only blue table-action" ng-click="vm.agregarAgrupada()"><i class="fa fa-angle-left fa-fw"></i></button>
+                                            <button class="btn btn-icon-only blue table-action" ng-click="vm.eliminarAgrupada()"><i class="fa fa-angle-right fa-fw"></i></button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="portlet light">
+                                                <div class="portlet-title">
+                                                    <div class="caption caption-md">
+                                                        <i class="icon-bar-chart font-apolo-haze hide"></i>
+                                                        <span class="caption-subject font-apolo-haze bold uppercase">Buscar Tareas</span>
+                                                        <span class="caption-helper"></span>
+                                                    </div>
+                                                    <div class="inputs col-md-6">
+                                                        <input class="col-md-6" name="nombre" ng-model="nombreTarea"/>
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body">
+                                                    <div class="table-container">
+                                                        <table class="table table-bordered table-striped"
+                                                               id="agrupadar-table-editable" style="max-height: 700px;overflow: scroll">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="table-checkbox all">
+                                                                        <input type="checkbox" class="group-checkable"
+                                                                               data-set="#tarea-table-editable .checkboxes"/>
+                                                                    </th>
+                                                                    <th class="all">Código</th>
+                                                                    <th class="all">Nombre</th>
+                                                                    <th class="desktop">Cargo</th>
+                                                                    <th class=desktop">Nivel de Alerta</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody style="max-height: 700px;overflow: hidden" id="cuerpo-tareas-agrupar">
+                                                                <tr data-ng-repeat="item in tareasPorAgrupar| filter:nombreTarea" draggable="true">
                                                                     <td class=" text-center" tabindex="0">
                                                                         <span><input type="checkbox" class="group-checkable" data-set="#tarea-table-editable .checkboxes" id="{{item.tarea_id}}"></span>
                                                                     </td>
@@ -885,13 +1058,13 @@
     <div class="modal-dialog" ng-style="vm.mostrarColorVentana(tarea)">
         <div class="modal-content">
             <div class="modal-header blue-hoki">
-                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button" data-ng-click="vm.cerrarModal()"></button>
                 <h4 class="modal-title">{{tituloModal}}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <ul class="nivel-alerta-tareas" style="padding: 0 20px">
-                        <li ng-repeat="item in vm.criticidades" ng-style="vm.mostrarColor(item,tarea)">{{item.nombre}}</li>
+                        <li ng-repeat="item in vm.criticidades" ng-style="vm.mostrarColor(item, tarea)">{{item.nombre}}</li>
                     </ul>
                 </div>
                 <div class="row">
@@ -903,8 +1076,8 @@
                             <div><strong style="display: inline-block;font-size: 12px;width: 8em;vertical-align: top;margin-right: 5px;">Observaciones: </strong>
                                 <p style="display: inline-block;width: 84.5%;text-align: justify" ng-bind-html="tarea.descripcion"></p>
                             </div>
-                            <div><strong style="display: inline-block;font-size: 12px;width:  8em;vertical-align: top;margin-right: 5px;">Canal: </strong>
-                                <p style="display: inline-block;width: 84.5%;text-align: justify">{{tarea.canal.nombre}}</p>
+                            <div><strong style="display: inline-block;font-size: 12px;width:  8em;vertical-align: top;margin-right: 5px;">Canales: </strong>
+                                <p style="display: inline-block;width: 84.5%;text-align: justify">{{tarea.canales}}</p>
                             </div>
                         </div>
                     </div>
@@ -925,6 +1098,7 @@
                                                 <th>Nombre</th>
                                                 <th>Nivel de Alerta</th>
                                                 <th>Cargo</th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-antecesoras-cuerpo">
@@ -933,6 +1107,11 @@
                                                 <td>{{elem.nombre}}</td>
                                                 <td>{{elem.criticidad}}</td>
                                                 <td>{{elem.cargo}}</td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-icon-only yellow view" data-id="36" data-dismiss="modal" ng-click="vm.mostrarMasDetalles(elem.tarea_id)">
+                                                        <i class="fa fa-eye fa-fw"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -956,14 +1135,20 @@
                                                 <th>Nombre</th>
                                                 <th>Nivel de Alerta</th>
                                                 <th>Cargo</th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-relacionados-cuerpo-detalle">
-                                            <tr data-ng-repeat="elem in tarea.sucesoras" draggable="true">
+                                            <tr data-ng-repeat="elem in sucesoras" draggable="true">
                                                 <td>{{elem.codigo}}</td>
                                                 <td>{{elem.nombre}}</td>
                                                 <td>{{elem.criticidad}}</td>
                                                 <td>{{elem.cargo}}</td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-icon-only yellow view" data-dismiss="modal" ng-click="vm.mostrarMasDetalles(elem.tarea_id)">
+                                                        <i class="fa fa-eye fa-fw"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -990,8 +1175,8 @@
                                         </thead>
                                         <tbody>
                                             <tr data-ng-repeat="item in tarea.modelos">
-                                                <td>{{item.nombre}}</td>
-                                                <td>{{item.descripcion}}</td>
+                                                <td style="width: 25%;"><a href="uploads/{{item.ruta}}" target="_blank">{{item.ruta}}</a></td>
+                                                <td style="width: 70%;">{{item.descripcion}}</td>
                                                 <td class="text-center">
                                                     <a class="btn btn-icon-only yellow download table-action" href="uploads/{{item.ruta}}" target="_blank" data-original-title="" title="">
                                                         <i class="fa fa-download fa-fw"></i>
@@ -1007,10 +1192,44 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn red" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn red" data-dismiss="modal" data-ng-click="vm.cerrarModal()">Cerrar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modal-confirmar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title" id="modal-titulo">Confirmar</h4>
+            </div>
+            <div class="modal-body">
+                <h5 id="cuerpo-confirmar">¿Esta seguro de realizar la Acción?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-confirmar-si" class="btn green" data-dismiss="modal">Si</button>
+                <button type="button" id="btn-confirmar-no" class="btn red" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-confirmar-eliminar-tarea" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title">Confirmar</h4>
+            </div>
+            <div class="modal-body">
+                <h5>¿Esta seguro de realizar la Acción?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-confirmar-tarea-si" class="btn green" data-dismiss="modal">Si</button>
+                <button type="button" id="btn-confirmar-tarea-no" class="btn red" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Modal -->
 <div data-ng-include="vm.urlPath + '/bundles/admin/app/layout/modal-eliminar.html'"></div>

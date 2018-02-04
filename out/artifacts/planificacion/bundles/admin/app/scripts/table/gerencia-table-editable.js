@@ -12,9 +12,8 @@ var TableEditableGerencias = function () {
         var order = [[1, "asc"]];
         var aoColumns = [
             {"bSortable": false, "sWidth": '1%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '45%'},
+            {"bSortable": true, "sWidth": '65%'},
             {"bSortable": true, "sWidth": '35%'},
-            {"bSortable": true, "sWidth": '10%', "sClass": 'text-center'},
             {"bSortable": false, "sWidth": '9%', "sClass": 'text-center'}
         ];
 
@@ -219,7 +218,6 @@ var TableEditableGerencias = function () {
             success: function (response) {
                 Metronic.unblockUI('#gerencia-table-editable');
                 if (response.success) {
-
                     oTable.getDataTable().ajax.reload();
                     toastr.success(response.message, "Exito !!!");
 
@@ -244,9 +242,7 @@ var TableEditableGerencias = function () {
 
 
         if ($('#gerencia-form').valid()) {
-
             var gerencia_id = $('#gerencia_id').val();
-
             var descripcion = $('#descripcion').val();
             var peso = $('#peso').val();
 
@@ -290,23 +286,18 @@ var TableEditableGerencias = function () {
         $(document).on('click', "#gerencia-table-editable a.edit", function (e) {
             e.preventDefault();
             resetForms();
-
             var gerencia_id = $(this).data('id');
             $('#gerencia_id').val(gerencia_id);
-
             $('#form-gerencia').removeClass('ng-hide');
             $('#lista-gerencia').addClass('ng-hide');
-
             editRow(gerencia_id);
         });
 
         function editRow(gerencia_id) {
-
             Metronic.blockUI({
                 target: '#form-gerencia .portlet-body',
                 animate: true
             });
-
             $.ajax({
                 type: "POST",
                 url: "gerencia/cargarDatos",
@@ -320,8 +311,7 @@ var TableEditableGerencias = function () {
                         //Datos gerencia
                         $('#descripcion').val(response.gerencia.descripcion);
                         $('#peso').val(response.gerencia.peso);
-
-                        formTitle = "Deseas actualizar la gerencia \"" + response.gerencia.descripcion + "\" ? Sigue los siguientes pasos:";
+                        formTitle = "Deseas actualizar la dirección \"" + response.gerencia.descripcion + "\" ? Sigue los siguientes pasos:";
                         $('#form-gerencia-title').html(formTitle);
 
                     } else {
@@ -341,7 +331,6 @@ var TableEditableGerencias = function () {
     var initAccionEliminar = function () {
         $(document).on('click', "#gerencia-table-editable a.delete", function (e) {
             e.preventDefault();
-
             rowDelete = $(this).data('id');
             $('#modal-eliminar').modal({
                 'show': true

@@ -17,8 +17,10 @@
         vm.gerencias = gerenciaService.gerencias;
         vm.criticidades = criticidadTareaService.criticidades;
         vm.planes = planService.planes;
+        vm.planId = 0;
 
         vm.nuevo = nuevo;
+        vm.selecciono = false;
         vm.mostrarNuevo = true;
         $scope.titulo = "Tablero de Tareas";
         $scope.cargo = "";
@@ -40,9 +42,6 @@
 
         vm.nuevoModelo = nuevoModelo;
         vm.salvarModelo = salvarModelo;
-        vm.filtarTareasCargo = filtarTareasCargo;
-        vm.seleccionarElemento = seleccionarElemento;
-
         // set sidebar closed and body solid layout mode
         $rootScope.settings.layout.pageBodySolid = true;
         $rootScope.settings.layout.pageSidebarClosed = false;
@@ -78,9 +77,9 @@
             TableEditableTareas.btnClickSalvarForm();
         }
 
-        function seleccionarElemento(config) {
-            var cargoSelect = $("#cargo");
-            var gerenciaSelect = $("#gerencia");
+        vm.seleccionarElemento = function (config) {
+            var cargoSelect = $("#cargo-filtro");
+            var gerenciaSelect = $("#gerencia-filtro");
             var direccionSelect = $("#direccion");
             if (config.criticidad) {
                 cargoSelect.select2("val", "");
@@ -123,7 +122,40 @@
                 });
                 $scope.mensaje = "esta dirección";
             }
-        }
+        };
+
+        vm.filtarTareasCargo = function () {
+            Metronic.blockUI({target: '#lista-tarea .portlet-body', animate: true});
+            var objeto = {};
+            $scope.nivelAlerta = $("#nivel-alerta").val();
+            $scope.cargo = $("#cargo").val();
+            $scope.gerencia = $("#gerencia").val();
+            $scope.direccion = $("#direccion").val();
+            if ($scope.cargo !== "") {
+                objeto = {cargo: $scope.cargo};
+            } else if ($scope.gerencia !== "") {
+                objeto = {area: $scope.gerencia};
+            } else if ($scope.direccion !== "") {
+                objeto = {direccion: $scope.direccion};
+            } else if ($scope.nivelAlerta !== "") {
+                objeto = {criticidad: $scope.nivelAlerta};
+            }
+            tableroService.buscarTablero(objeto).then(function (response) {
+                $timeout(function () {
+                    Metronic.unblockUI('#lista-tarea .portlet-body');
+                    if (response.data.board.datos.length === 0) {
+                        toastr.error("No se encontraron tareas para " + $scope.mensaje + ".", "Error !!!", {"positionClass": "toast-top-center"});
+                    } else {
+                        $('#kanban').jqxKanban('destroy');
+                        var contenedor = angular.element("#kanbanBox1");
+                        contenedor.append(angular.element('<div id="kanban" style="padding: 0 10px 0 10px;"></div>'));
+                        iniciarKaban(response.data.board);
+                    }
+                }, 1000);
+            }).catch(function (error) {
+
+            });
+        };
 
         vm.mostrarColor = function (criticidad, tarea) {
             if (tarea.criticidad_id) {
@@ -164,48 +196,48 @@
             var seleccionado = false;
             for (var i = 0; i < tam; i++) {
                 if (parseInt(vm.planes[i].plan_id) === parseInt(planId)) {
+                    vm.planId = planId;
                     localStorage.setItem("plan", JSON.stringify(vm.planes[i]));
                     toastr.success("Plan - " + vm.planes[i].nombre + " seleccionado", "Exito !!!");
                     seleccionado = true;
+                    var elemento = $(".oculto a.hidden");
+                    elemento.attr('class', 'visible');
                 }
             }
             if (!seleccionado) {
                 toastr.error("No se ha seleccionado ningún plan", "Error !!!");
             }
-        }
+        };
 
-        function filtarTareasCargo() {
-            Metronic.blockUI({target: '#lista-tarea .portlet-body', animate: true});
-            var objeto = {};
-            $scope.cargo = $("#cargo").val();
-            $scope.gerencia = $("#gerencia").val();
-            $scope.direccion = $("#direccion").val();
-            if ($scope.cargo !== "") {
-                objeto = {cargo: $scope.cargo};
-            } else if ($scope.gerencia !== "") {
-                objeto = {area: $scope.gerencia};
-            } else if ($scope.direccion !== "") {
-                objeto = {direccion: $scope.direccion};
-            } else if ($scope.nivelAlerta !== "") {
-                objeto = {criticidad: $scope.nivelAlerta};
+        vm.mostrarMasDetalles = function (idTarea) {
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+            $('#modal-tarea-detalle').modal('toggle');
+            $('.modal-backdrop').remove();
+            $timeout(function () {
+                planService.buscarTarea(idTarea, vm.planId).then(success).catch(failed);
+            }, 0);
+
+            function success(response) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                $scope.tarea = response.data.tarea;
+                $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = response.data.tarea.nombre;
+                $('#modal-tarea-detalle').modal({
+                    show: true
+                });
+                $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+                $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
             }
-            tableroService.buscarTablero(objeto).then(function (response) {
-                $timeout(function () {
-                    Metronic.unblockUI('#lista-tarea .portlet-body');
-                    if (response.data.board.datos.length === 0) {
-                        toastr.error("No se encontraron tareas para " + $scope.mensaje + ".", "Error !!!", {"positionClass": "toast-top-center"});
-                    } else {
-                        $('#kanban').jqxKanban('destroy');
-                        var contenedor = angular.element("#kanbanBox1");
-                        contenedor.append(angular.element('<div id="kanban" style="padding: 0 10px 0 10px;"></div>'));
-                        iniciarKaban(response.data.board);
-                    }
-                }, 1000);
-            }).catch(function (error) {
 
-            });
+            function failed(error) {
+                logger.error('Error !!' + error.data);
+            }
+        };
 
-        }
+        vm.cerrarModal = function () {
+            $('.modal-backdrop').remove();
+        };
 
         function nuevoModelo() {
             TableEditableTareas.btnClickNuevoModelo();
@@ -314,7 +346,8 @@
             angular.element("button.subir").click(function (event) {
                 var idTarea = $(this).attr("data-id");
                 $timeout(function () {
-                    tableroService.buscarTarea(idTarea, vm.planes[0].plan_id).then(success).catch(failed);
+                    vm.planId = vm.planes[0].plan_id;
+                    tableroService.buscarTarea(idTarea, vm.planId).then(success).catch(failed);
                 }, 0);
 
                 function success(response) {

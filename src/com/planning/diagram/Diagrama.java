@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
+import java.util.TreeSet;
 
 /**
  * @author Nodo
  */
 public class Diagrama {
     
-    private ArrayList<Columna> columnas;
+    private TreeSet<Columna> columnas;
     
     private String descripcion;
     
@@ -25,36 +25,35 @@ public class Diagrama {
     @JsonProperty(value = "plan_id")
     private String planId;
     
-    private ArrayList<Sider> siders;
+    private TreeSet<Sider> siders;
     
-    private ArrayList<TareaDiagrama> tareas;
+    private TreeSet<TareaDiagrama> tareas;
+    
+    private ArrayList<TareaDiagrama> tareasTranversales;
     
     private ArrayList<Edge> links;
     
     public Diagrama() {
-        columnas = new ArrayList<>();
-        siders = new ArrayList<>();
-        tareas = new ArrayList<>();
+        columnas = new TreeSet<>();
+        siders = new TreeSet<>();
+        tareas = new TreeSet<>();
         links = new ArrayList<>();
+        tareasTranversales = new ArrayList<>();
     }
     
-    public ArrayList<Columna> getColumnas() {
+    public TreeSet<Columna> getColumnas() {
         return columnas;
     }
     
     public void addColumna(Columna columna) {
-        if (!existeColumnaEnLista(columnas, columna.getNombre())) {
-            columnas.add(columna);
-        }
+        columnas.add(columna);
     }
     
     public void addEdge(Edge edge) {
-        if (!existEdge(edge) && edge.isValid())
-            links.add(edge);
+        links.add(edge);
     }
     
-    
-    public void setColumnas(ArrayList<Columna> columnas) {
+    public void setColumnas(TreeSet<Columna> columnas) {
         this.columnas = columnas;
     }
     
@@ -82,25 +81,23 @@ public class Diagrama {
         this.planId = planId;
     }
     
-    public ArrayList<Sider> getSiders() {
+    public TreeSet<Sider> getSiders() {
         return siders;
     }
     
-    public void setSiders(ArrayList<Sider> siders) {
+    public void setSiders(TreeSet<Sider> siders) {
         this.siders = siders;
     }
     
     public void addSiders(Sider sider) {
-        if (!existeSiderEnLista(siders, sider)) {
-            siders.add(sider);
-        }
+        siders.add(sider);
     }
     
-    public ArrayList<TareaDiagrama> getTareas() {
+    public TreeSet<TareaDiagrama> getTareas() {
         return tareas;
     }
     
-    public void setTareas(ArrayList<TareaDiagrama> tareas) {
+    public void setTareas(TreeSet<TareaDiagrama> tareas) {
         this.tareas = tareas;
     }
     
@@ -108,74 +105,8 @@ public class Diagrama {
         tareas.add(task);
     }
     
-    private boolean existeSiderEnLista(ArrayList<Sider> elementos, Sider sider) {
-        if (elementos.isEmpty()) {
-            return false;
-        }
-        for (Sider elemento : elementos) {
-            if (elemento.getIdSider() == sider.getIdSider()) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean existeEnLista(ArrayList<String> elementos, String elem) {
-        if (elementos.isEmpty()) {
-            return false;
-        }
-        for (String elemento : elementos) {
-            if (elemento.compareToIgnoreCase(elem) == 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean existeTareaEnLista(ArrayList<TareaDiagrama> elementos, TareaDiagrama elem) {
-        if (elementos.isEmpty()) {
-            return false;
-        }
-        for (TareaDiagrama elemento : elementos) {
-            if (Objects.equals(elemento.getId(), elem.getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean existeColumnaEnLista(ArrayList<Columna> elementos, String elem) {
-        if (elementos.isEmpty()) {
-            return false;
-        }
-        for (Columna elemento : elementos) {
-            if (elemento.getNombre().compareToIgnoreCase(elem) == 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean existeColorEnLista(ArrayList<Color> elementos, Color elem) {
-        if (elementos.isEmpty()) {
-            return false;
-        }
-        for (Color elemento : elementos) {
-            if (elemento.getColor().compareToIgnoreCase(elem.getColor()) == 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    
-    private boolean existEdge(Edge edge) {
-        for (Edge edg : links) {
-            if (edg.getFrom().compareTo(edge.getFrom()) == 0 && edg.getTo().compareTo(edge.getTo()) == 0) {
-                return true;
-            }
-        }
-        return false;
+    public void addTareaTranversal(TareaDiagrama task) {
+        tareasTranversales.add(task);
     }
     
     public ArrayList<Edge> getLinks() {
@@ -186,12 +117,15 @@ public class Diagrama {
         this.links = links;
     }
     
-    public void sortColumns() {
-        Collections.sort(siders, (Sider s1, Sider s2) -> {
-            return s1.getPeso() < s2.getPeso() ? -1 : s1.getPeso() == s2.getPeso() ? 0 : 1;
-        });
-        Collections.sort(columnas, (Columna o1, Columna o2) -> {
-            return o1.getPeso() < o2.getPeso() ? -1 : o1.getPeso() == o2.getPeso() ? 0 : 1;
-        });
+    public ArrayList<TareaDiagrama> getTareasTranversales() {
+        return tareasTranversales;
+    }
+    
+    public void setTareasTranversales(ArrayList<TareaDiagrama> tareasTranversales) {
+        this.tareasTranversales = tareasTranversales;
+    }
+    
+    public void ordenarTareasTranversales() {
+        Collections.sort(tareasTranversales, (o1, o2) -> o1.getColSpan() - o2.getColSpan());
     }
 }

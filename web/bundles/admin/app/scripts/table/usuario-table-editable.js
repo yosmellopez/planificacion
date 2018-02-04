@@ -1,3 +1,5 @@
+/* global Metronic */
+
 var TableEditableUsuarios = function () {
 
     var oTable;
@@ -89,7 +91,7 @@ var TableEditableUsuarios = function () {
 
         //Limipiar select
         $('#area option').each(function (e) {
-            if ($(this).val() != "")
+            if ($(this).val() !== "")
                 $(this).remove();
         });
         $('#area').select2();
@@ -105,7 +107,7 @@ var TableEditableUsuarios = function () {
         $element.removeClass('has-error').tooltip("destroy");
 
         $element.closest('.form-group')
-                .removeClass('has-error');
+            .removeClass('has-error');
 
     };
     //Restablecer portlet
@@ -173,12 +175,12 @@ var TableEditableUsuarios = function () {
                     var $element = $(element);
 
                     $element.data("title", "") // Clear the title - there is no error associated anymore
-                            .removeClass("has-error")
-                            .tooltip("destroy");
+                        .removeClass("has-error")
+                        .tooltip("destroy");
 
                     $element
-                            .closest('.form-group')
-                            .removeClass('has-error').addClass('success');
+                        .closest('.form-group')
+                        .removeClass('has-error').addClass('success');
                 });
 
                 // Create new tooltips for invalid elements
@@ -186,17 +188,17 @@ var TableEditableUsuarios = function () {
                     var $element = $(error.element);
 
                     $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-                            .data("title", error.message)
-                            .addClass("has-error")
-                            .tooltip({
-                                placement: 'bottom'
-                            }); // Create a new tooltip based on the error messsage we just set in the title
+                        .data("title", error.message)
+                        .addClass("has-error")
+                        .tooltip({
+                            placement: 'bottom'
+                        }); // Create a new tooltip based on the error messsage we just set in the title
 
                     $element.closest('.form-group')
-                            .removeClass('has-success').addClass('has-error');
+                        .removeClass('has-success').addClass('has-error');
 
                 });
-            },
+            }
         });
 
         $("#password").rules("add", {
@@ -333,6 +335,7 @@ var TableEditableUsuarios = function () {
             password = (password !== "") ? hex_sha1(password) : "";
 
             var estado = ($('#estadoactivo').prop('checked')) ? 1 : 0;
+            var titular = ($('#titular').prop('checked')) ? true : false;
             var cargo_id = $('#cargo').val();
 
             Metronic.blockUI({target: '#form-usuario .portlet-body', animate: true});
@@ -350,6 +353,7 @@ var TableEditableUsuarios = function () {
                     'passwordcodificada': password,
                     'nombre': nombre,
                     'apellidos': apellidos,
+                    'titular': titular,
                     'email': email
                 }),
                 success: function (response) {
@@ -373,11 +377,11 @@ var TableEditableUsuarios = function () {
             if (rol_id === "") {
                 var $element = $('#select-rol .selectpicker');
                 $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-                        .data("title", "Este campo es obligatorio")
-                        .addClass("has-error")
-                        .tooltip({
-                            placement: 'bottom'
-                        }); // Create a new tooltip based on the error messsage we just set in the title
+                    .data("title", "Este campo es obligatorio")
+                    .addClass("has-error")
+                    .tooltip({
+                        placement: 'bottom'
+                    }); // Create a new tooltip based on the error messsage we just set in the title
 
                 $element.closest('.form-group').removeClass('has-success').addClass('has-error');
             }
@@ -428,6 +432,12 @@ var TableEditableUsuarios = function () {
                             jQuery.uniform.update('#estadoactivo');
                             jQuery.uniform.update('#estadoinactivo');
                         }
+                        if (response.usuario.titular) {
+                            $('#titular').prop('checked', true);
+                            $('#no-titular').prop('checked', false);
+                            jQuery.uniform.update('#titular');
+                            jQuery.uniform.update('#backup');
+                        }
                         //Gerencia
                         $("#gerencia").unbind('change', cargarAreas);
                         $('#gerencia').select2('val', response.usuario.gerencia_id);
@@ -443,7 +453,7 @@ var TableEditableUsuarios = function () {
                         //Cargos
                         var cargos = response.usuario.cargos;
                         for (var i = 0; i < cargos.length; i++) {
-                            $('#cargo').append(new Option(cargos[i].descripcion, cargos[i].cargo_id, false, false));
+                            $('#cargo').append(new Option(cargos[i].nombre, cargos[i].cargo_id, false, false));
                         }
                         $('#cargo').select2();
                         $('#cargo').select2('val', response.usuario.cargo_id);
@@ -544,7 +554,7 @@ var TableEditableUsuarios = function () {
                     if (response.success) {
                         for (var i = 0; i < response.cargos.length; i++) {
                             var cargo_id = response.cargos[i].cargo_id;
-                            var descripcion = response.cargos[i].descripcion;
+                            var descripcion = response.cargos[i].nombre;
 
                             $('#cargo').append(new Option(descripcion, cargo_id, false, false));
                         }
@@ -566,7 +576,7 @@ var TableEditableUsuarios = function () {
     };
     var initSeletArea = function () {
         $("#area").bind('change', cargarCargos);
-    }
+    };
 
     //Cargar areas
     var cargarAreas = function (e) {
@@ -604,7 +614,7 @@ var TableEditableUsuarios = function () {
                     if (response.success) {
                         for (var i = 0; i < response.areas.length; i++) {
                             var area_id = response.areas[i].area_id;
-                            var descripcion = response.areas[i].descripcion;
+                            var descripcion = response.areas[i].nombre;
                             $('#area').append(new Option(descripcion, area_id, false, false));
                         }
 
@@ -626,7 +636,7 @@ var TableEditableUsuarios = function () {
     };
     var initSeletGerencia = function () {
         $("#gerencia").bind('change', cargarAreas);
-    }
+    };
 
     return {
         //main function to initiate the module

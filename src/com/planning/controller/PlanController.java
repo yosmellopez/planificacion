@@ -5,8 +5,12 @@ package com.planning.controller;
 
 import com.planning.diagram.*;
 import com.planning.entity.*;
+import com.planning.exception.OracleException;
 import com.planning.service.*;
-import com.planning.util.*;
+import com.planning.util.ArregloCreator;
+import com.planning.util.JsonId;
+import com.planning.util.MapeadorObjetos;
+import com.planning.util.RestModelAndView;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.hibernate.exception.SQLGrammarException;
@@ -16,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.ModelMap;
@@ -75,6 +78,9 @@ public class PlanController {
     private DocumentService documentService;
     
     @Autowired
+    private GrupoRepository grupoRepository;
+    
+    @Autowired
     private MapeadorObjetos mapeadorObjetos;
     
     @RequestMapping(value = "/listarTodosPlanes", method = RequestMethod.GET)
@@ -83,11 +89,11 @@ public class PlanController {
         LOGGER.debug("Rendering Plans list");
         List<Plan> planes = planService.findAll();
         for (Plan instance : planes) {
-            Set<PlTask> tasks = instance.getPlTasks();
+            Set<PlTask> tasks = new HashSet<>(plTaskService.findByPlan(instance));
             for (PlTask task : tasks) {
                 MiTarea miTarea = new MiTarea();
                 Task tarea = taskService.findOne(task.getTask().getId());
-                miTarea.setCanal(task.getTask().getChannel());
+//                miTarea.setCanal(task.getTask().getChannel());
                 miTarea.setCargoId(task.getTask().getPosition().getId());
                 miTarea.setCodigo(tarea.getCode());
                 miTarea.setCriticidad_id(task.getTask().getCriticalyLevels());
@@ -136,6 +142,7 @@ public class PlanController {
         LOGGER.debug("Rendering Plans list");
         Plan plan = planService.findOne(id);
         plan.setDiagrama(null);
+        plan.setModeloAgrupado(null);
         planService.saveAndFlush(plan);
         map.put("success", true);
         map.put("message", "La operación se realizó correctamente");
@@ -209,7 +216,25 @@ public class PlanController {
     public ModelAndView buscarTareas(@RequestParam("plan_id") Integer id, Integer cargo, Integer area, Integer direccion, Integer criticidad) {
         LOGGER.debug("Rendering Tasks list");
         Plan plan = planService.findOne(id);
-        if (cargo != null) {
+        if (criticidad != null) {
+            CriticalyLevel criticalyLevel = levelService.findOne(criticidad);
+            if (cargo != null) {
+                Position position = positionService.findOne(cargo);
+                List<PlTask> plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContainsAndTask_Position(plan, criticalyLevel, position);
+                plan.setPlTasks(new HashSet<>(plTasks));
+            } else if (area != null) {
+                Area areaBd = areaService.findOne(area);
+                List<PlTask> plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area(plan, criticalyLevel, areaBd);
+                plan.setPlTasks(new HashSet<>(plTasks));
+            } else if (direccion != null) {
+                Management management = managementService.findOne(direccion);
+                List<PlTask> plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area_Management(plan, criticalyLevel, management);
+                plan.setPlTasks(new HashSet<>(plTasks));
+            } else {
+                List<PlTask> plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContains(plan, criticalyLevel);
+                plan.setPlTasks(new HashSet<>(plTasks));
+            }
+        } else if (cargo != null) {
             Position position = positionService.findOne(cargo);
             List<PlTask> plTasks = plTaskService.findByPlanAndTask_Position(plan, position);
             plan.setPlTasks(new HashSet<>(plTasks));
@@ -221,13 +246,10 @@ public class PlanController {
             Management management = managementService.findOne(direccion);
             List<PlTask> plTasks = plTaskService.findByPlanAndTask_Position_Area_Management(plan, management);
             plan.setPlTasks(new HashSet<>(plTasks));
-        } else if (criticidad != null) {
-            CriticalyLevel criticalyLevel = levelService.findOne(criticidad);
-            List<PlTask> plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContains(plan, criticalyLevel);
-            plan.setPlTasks(new HashSet<>(plTasks));
         }
         List<Task> tareas = new ArrayList<>();
-        plan.getPlTasks().forEach((PlTask plTask) -> {
+        List<PlTask> plTasks = plTaskService.findByPlan(plan);
+        plTasks.forEach((PlTask plTask) -> {
             tareas.add(plTask.getTask());
         });
         return new RestModelAndView(tareas(tareas));
@@ -273,17 +295,8 @@ public class PlanController {
     @ApiOperation(value = "Returns the Plan instance associated with the given id.")
     public ModelAndView cargarDatos(@RequestParam("plan_id") Integer id, ModelMap map) {
         Plan instance = planService.findOne(id);
-        Set<PlTask> plTasks = instance.getPlTasks();
-        ArrayList<ModelMap> modelMap = new ArrayList<>();
-        for (PlTask plTask : plTasks) {
-            Task t = taskService.findOne(plTask.getTask().getId());
-            List<Area> areas = areaService.findByManagementId(plTask.getTask().getPosition().getArea().getManagement().getId());
-            List<Position> positions = positionService.findByAreaId(plTask.getTask().getPosition().getArea().getId());
-            List<Document> documents = documentService.findByTaskId(t.getId());
-            modelMap.add(ArregloCreator.cargarTarea(plTask, areas, positions, documents));
-        }
         map.put("success", true);
-        map.put("plan", ArregloCreator.cargarPlan(instance, modelMap));
+        map.put("plan", ArregloCreator.cargarPlan(instance));
         map.put("niveles", levelService.findAll());
         LOGGER.debug("Plan details with id: {}", instance);
         return new RestModelAndView(map);
@@ -293,12 +306,12 @@ public class PlanController {
     @ApiOperation(value = "Returns the Plan instance associated with the given id.")
     public ModelAndView cargarDatosPlan(@RequestParam("plan_id") Integer id, ModelMap map, @AuthenticationPrincipal Users u) {
         Plan instance = planService.findOne(id);
-        Set<PlTask> tasks = instance.getPlTasks();
+        Set<PlTask> tasks = new HashSet<>(plTaskService.findByPlan(instance));
         List<MiTarea> tareas = instance.getTareas();
         for (PlTask task : tasks) {
             MiTarea miTarea = new MiTarea();
             Task tarea = taskService.findOne(task.getTask().getId());
-            miTarea.setCanal(task.getTask().getChannel());
+//            miTarea.setCanal(task.getTask().getChannel());
             miTarea.setCargoId(task.getTask().getPosition().getId());
             miTarea.setCodigo(tarea.getCode());
             miTarea.setCriticidad_id(task.getTask().getCriticalyLevels());
@@ -339,7 +352,7 @@ public class PlanController {
         for (PlTask task : tareasOrdenadas) {
             MiTarea miTarea = new MiTarea();
             Task tarea = taskService.findOne(task.getTask().getId());
-            miTarea.setCanal(task.getTask().getChannel());
+//            miTarea.setCanal(task.getTask().getChannel());
             miTarea.setCargoId(task.getTask().getPosition().getId());
             miTarea.setCodigo(tarea.getCode());
             miTarea.setPartida(task.isStart());
@@ -416,10 +429,10 @@ public class PlanController {
             }
             if (modelo != null) {
                 modelo.deleteNode(new Node(plTask));
-            }
-            if (modelo != null && modelo.isModificado()) {
-                plan.setDiagrama(mapeadorObjetos.writeValueAsString(modelo));
-                planService.saveAndFlush(plan);
+                if (modelo.isModificado()) {
+                    plan.setDiagrama(mapeadorObjetos.writeValueAsString(modelo));
+                    planService.saveAndFlush(plan);
+                }
             }
             plTaskService.delete(plTask.getId());
         }
@@ -437,7 +450,9 @@ public class PlanController {
         PlTask plTask = plTaskService.findByPlanAndTask(planService.findOne(id), taskService.findOne(idTarea));
         plTask.setStart(!plTask.isStart());
         plTaskService.saveAndFlush(plTask);
-        
+        Task task = plTask.getTask();
+        task.setStart(plTask.isStart());
+        taskService.saveAndFlush(task);
         map.put("success", true);
         map.put("message", "La operación se realizó correctamente");
         map.put("tareas", cargarTareas(planService.findOne(id), false));
@@ -461,20 +476,27 @@ public class PlanController {
     @ApiOperation(value = "Updates the Plan instance associated with the given id.")
     public ModelAndView cargarDatosDiagrama(@RequestParam("plan_id") Integer id, @AuthenticationPrincipal Users u, ModelMap map) {
         Plan plan = planService.findOne(id);
-        map.put("plan", construirDiagrama(plan, u));
+        if (plan.getDiagrama() == null) {
+            map.put("plan", construirDiagrama(plan, u));
+        } else {
+            map.put("plan", plan);
+        }
         map.put("success", true);
         return new RestModelAndView(map);
     }
     
     private Diagrama construirDiagrama(Plan plan, Users u) {
         Diagrama diagrama = new Diagrama();
-        List<PlTask> planTareas = plTaskService.findByPlan(plan, new Sort(Sort.Direction.ASC, "id"));
+        List<PlTask> planTareas = plTaskService.findByPlan(plan);
         List<CriticalyLevel> criticalyLevels = levelService.findAll();
         for (CriticalyLevel level : criticalyLevels) {
             diagrama.addColumna(new Columna(level.getId(), level.getOrder(), level.getName(), level.getColor()));
         }
+        List<Grupo> grupos = grupoRepository.findByPlan(plan);
         for (PlTask planTarea : planTareas) {
             Task task = planTarea.getTask();
+            List<Task> taskAgrupadas = grupos.parallelStream().map(grupo -> grupo.getTaskAgrupada()).collect(Collectors.toList());
+            Set<Task> setTaskGrupo = grupos.parallelStream().map(grupo -> grupo.getTaskGrupo()).collect(Collectors.toSet());
             planTarea.setStart(planTarea.isStart());
             Management management = task.getPosition().getArea().getManagement();
             diagrama.addSiders(new Sider(management.getId(), management.getName(), management.getOrder()));
@@ -483,20 +505,67 @@ public class PlanController {
             }
             List<ChildTask> childTasks = childTaskService.findByFromAndIsChild(planTarea, true);
             for (ChildTask child : childTasks) {
-                diagrama.addEdge(new Edge("" + child.getFrom().getTask().getId(), "" + child.getTo().getTask().getId()));
+                if (!taskAgrupadas.contains(child.getFrom().getTask()) && !taskAgrupadas.contains(child.getTo().getTask())) {
+                    diagrama.addEdge(new Edge("" + child.getFrom().getTask().getId(), "" + child.getTo().getTask().getId()));
+                }
             }
-            Set<CriticalyLevel> levels = task.getCriticalyLevels();
-            ArrayList<CriticalyLevel> arrayList = new ArrayList<>(levels);
-            for (CriticalyLevel level : arrayList) {
-                Long cantidad = childTaskService.countByFromOrTo(planTarea, planTarea);
-                diagrama.addTarea(new TareaDiagrama(planTarea, level.getName(), level.getId(), level.getColor(), cantidad != 0));
+            if (setTaskGrupo.contains(task)) {
+                List<Task> taskList = grupos.parallelStream().filter(grupo -> grupo.getTaskGrupo().equals(task)).map(grupo -> grupo.getTaskAgrupada()).collect(Collectors.toList());
+                if (!taskList.isEmpty()) {
+                    Punto point = calcularNivelesAlerta(taskList, planTarea);
+                    diagrama.addTarea(new TareaDiagrama(planTarea, point, "red"));
+                }
+            } else {
+                if (!taskAgrupadas.contains(task)) {
+                    Set<CriticalyLevel> levels = task.getCriticalyLevels();
+                    TreeSet<CriticalyLevel> arrayList = new TreeSet<>(levels);
+                    int i = 0;
+                    for (CriticalyLevel level : arrayList) {
+                        if (planTarea.getTask().isTranversal()) {
+                            diagrama.addTareaTranversal(new TareaDiagrama(planTarea, level.getId(), level.getOrder() + 1, level.getColor(), i++ == 0));
+                            break;
+                        }
+                        diagrama.addTarea(new TareaDiagrama(planTarea, level.getId(), level.getOrder(), level.getColor(), i++ == 0));
+                    }
+                }
             }
         }
-        diagrama.sortColumns();
+        diagrama.ordenarTareasTranversales();
         diagrama.setPlanId("" + plan.getId());
         diagrama.setDescripcion(plan.getName());
         diagrama.setDiagrama(plan.getDiagrama());
         return diagrama;
+    }
+    
+    private Punto calcularNivelesAlerta(List<Task> taskList, PlTask plTask) {
+        Set<CriticalyLevel> todosNiveles = new TreeSet<>();
+        Set<CriticalyLevel> nivelesAlertaTarea = plTask.getTask().getCriticalyLevels();
+        List<CriticalyLevel> nivelesOrdenados = nivelesAlertaTarea.parallelStream().sorted((o1, o2) -> o1.getOrder() > o2.getOrder() ? 1 : o1.getOrder() == o2.getOrder() ? 0 : -1).collect(Collectors.toList());
+        for (Task task : taskList) {
+            Set<CriticalyLevel> criticalyLevels = task.getCriticalyLevels();
+            criticalyLevels.forEach(todosNiveles::add);
+        }
+        int columna = 0, colSpan = 0, idCriticidadInicial = 0, i = 0;
+        int size = todosNiveles.size();
+        boolean tengoInicio = false;
+        if (!nivelesOrdenados.isEmpty()) {
+            idCriticidadInicial = nivelesOrdenados.get(0).getId();
+            columna = nivelesOrdenados.get(0).getOrder();
+            tengoInicio = true;
+        }
+        for (CriticalyLevel level : todosNiveles) {
+            if (i == 0 && !tengoInicio) {
+                columna = level.getOrder() + 1;
+                idCriticidadInicial = level.getId();
+            }
+            if (i == size - 1) {
+                colSpan = level.getOrder();
+            }
+            i++;
+        }
+        colSpan -= columna;
+        colSpan = colSpan < 0 ? 0 : colSpan;
+        return new Punto(columna, colSpan, idCriticidadInicial);
     }
     
     @RequestMapping(value = "/salvarPlan", method = RequestMethod.POST)
@@ -521,25 +590,23 @@ public class PlanController {
                 plTask.getTask().setStatusTask(statusTaskService.findOne(tarea.getEstadoId()));
                 plTask.setIsrecurrent(tarea.isRecurrente());
                 plTask.setStart(tarea.isPartida());
-                plTask.getTask().setChannel(tarea.getCanal());
+//                plTask.getTask().setChannel(tarea.getCanal());
                 plTask.setName(tarea.getNombre());
                 plTask.getTask().setPosition(positionService.findOne(tarea.getCargoId()));
                 plTaskService.saveAndFlush(plTask);
             }
         }
-        LOGGER.debug("Created Plan with information: {}", plan);
         map.put("message", "La operación se realizó correctamente");
         map.put("success", true);
         map.put("planes", planService.findAll());
         return new RestModelAndView(map);
     }
     
-    
     @RequestMapping(value = "/clonarPlan", method = RequestMethod.POST)
     @ApiOperation(value = "Clone a Plan instance.")
     public ModelAndView clonarPlan(@RequestParam("plan_id") Integer id, @RequestParam String nombre, ModelMap map) {
         Plan plan = planService.findOne(id);
-        Set<PlTask> plTasks = plan.getPlTasks();
+        Set<PlTask> plTasks = new HashSet<>(plTaskService.findByPlan(plan));
         plan.setId(null);
         plan.setName(nombre);
         plan.setPlTasks(new HashSet<>());
@@ -553,15 +620,6 @@ public class PlanController {
         map.put("message", "La operación se realizó correctamente");
         map.put("success", true);
         return new RestModelAndView(map);
-    }
-    
-    /**
-     * This setter method should only be used by unit tests
-     *
-     * @param service
-     */
-    protected void setPlanService(PlanService service) {
-        this.planService = service;
     }
     
     private ModelMap planes(Page<Plan> page) {

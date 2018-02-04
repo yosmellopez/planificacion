@@ -17,9 +17,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -36,35 +36,37 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
 @PropertySource(name = "configuracion", value = {"/WEB-INF/configuracion.properties"})
-@Import(value = {DataSourceDev.class, DataSourceProd.class})
 public class AppConfig {
-    
+
     @Autowired
     Environment environment;
-    
-    @Autowired
-    DataSource dataSource;
-    
+
+    @Bean(destroyMethod = "")
+    public DataSource dataSource() {
+        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+        dsLookup.setResourceRef(true);
+        DataSource dataSource = dsLookup.getDataSource("java:comp/env/jdbc/planificacionDB");
+        return dataSource;
+    }
+
     @Bean
     public PlatformTransactionManager transactionManager() {
         EntityManagerFactory factory = entityManagerFactory().getObject();
         return new JpaTransactionManager(factory);
     }
-    
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(Boolean.TRUE);
+        vendorAdapter.setGenerateDdl(true);
         vendorAdapter.setShowSql(false);
-        vendorAdapter.setDatabase(Database.ORACLE);
         Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
         properties.put("hibernate.cache.use_second_level_cache", "true");
         properties.put("hibernate.cache.use_query_cache", "true");
-        properties.put("hibernate.default_schema", environment.getProperty("db.planning.hibernate.default_schema"));
         properties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory");
-        
-        factory.setDataSource(dataSource);
+        factory.setDataSource(dataSource());
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.planning.entity");
         factory.setPersistenceUnitName("Planificacion");
@@ -72,12 +74,12 @@ public class AppConfig {
         factory.afterPropertiesSet();
         return factory;
     }
-    
+
     @Bean(name = "springFrameworkCache")
     public CacheManager cacheManager() {
         return new EhCacheCacheManager(ehCacheCacheManager().getObject());
     }
-    
+
     @Bean(name = "springFrameworkEhCache")
     public EhCacheManagerFactoryBean ehCacheCacheManager() {
         EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
@@ -87,12 +89,12 @@ public class AppConfig {
         cmfb.setShared(true);
         return cmfb;
     }
-    
+
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
-    
+
     //    @Bean
 //    public SpringLiquibase liquibase() {
 //        SpringLiquibase liquibase = new SpringLiquibase();

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.planning.entity.CriticalyLevel;
+import com.planning.entity.Management;
 import com.planning.entity.PlTask;
+import com.planning.entity.Task;
 
 import java.io.Serializable;
 
@@ -29,6 +31,9 @@ public class Node implements Serializable {
     
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer peso;
+    
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer colSpan;
     
     @JsonProperty(value = "color_header")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -71,26 +76,31 @@ public class Node implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String size;
     
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String bounds;
+    
     public Node() {
     }
     
     public Node(PlTask tarea) {
+        Task task = tarea.getTask();
         final int[] idCriticidad = {0};
-        key = "" + tarea.getTask().getId();
-        nombre = tarea.getTask().getName();
-        cargo = tarea.getTask().getCargo();
-        partida = tarea.getTask().isStart();
-        producto = tarea.getTask().getProduct();
-        loc = null;
-        tareaId = tarea.getTask().getId();
-        tarea.getTask().getCriticalyLevels().forEach((CriticalyLevel c) -> {
+        key = "" + task.getId();
+        nombre = task.getName();
+        cargo = task.getCargo();
+        partida = task.isStart();
+        producto = task.getProduct();
+        loc = partida ? "0 0" : null;
+        tareaId = task.getId();
+        task.getCriticalyLevels().forEach((CriticalyLevel c) -> {
             color = c.getColor();
             idCriticidad[0] = c.getId();
         });
         colorBorde = color;
-        color = tarea.getTask().isHito() ? color : tarea.getTask().isStart() ? color : "#ffebee";
-        group = "Celda(" + tarea.getTask().getPosition().getArea().getManagement().getId() + "," + idCriticidad[0] + ")";
-        category = tarea.getTask().isHito() ? "Hito" : tarea.getTask().isStart() ? "Start" : "";
+        color = task.isHito() ? color : task.isStart() ? color : "#ffebee";
+        Management management = task.getPosition().getArea().getManagement();
+        group = "Celda(" + management.getId() + "," + idCriticidad[0] + ")";
+        category = task.isHito() ? "Hito" : task.isStart() ? "Start" : "";
     }
     
     public String getKey() {
@@ -229,8 +239,37 @@ public class Node implements Serializable {
         this.size = size;
     }
     
+    public Integer getColSpan() {
+        return colSpan;
+    }
+    
+    public void setColSpan(Integer colSpan) {
+        this.colSpan = colSpan;
+    }
+    
+    public String getBounds() {
+        return bounds;
+    }
+    
+    public void setBounds(String bounds) {
+        this.bounds = bounds;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Node)) return false;
+        Node node = (Node) o;
+        return key.compareToIgnoreCase(node.key) == 0;
+    }
+    
+    @Override
+    public int hashCode() {
+        return key.hashCode();
+    }
+    
     @Override
     public String toString() {
-        return "Node[key:" + key + ", nombre:" + nombre + "]";
+        return "Node[key:" + key + ", nombre:" + nombre + ", idTarea:" + tareaId + "]";
     }
 }

@@ -40,6 +40,24 @@ public class ArregloCreator {
         return map;
     }
     
+    public static ModelMap crearTareaPlan(Task task) {
+        ModelMap map = new ModelMap();
+        map.put("DT_RowId", task.getId());
+        map.put("0", task.getCode());
+        map.put("1", task.getName());
+        map.put("2", task.getPosition().getName());
+        map.put("3", task.getCriticidad());
+        map.put("4", task.isStart() ? "Si <i class=\"fa fa-check-circle ic-color-ok\"></i>" : "No <i class=\"fa fa-minus-circle ic-color-error\"></i>");
+        map.put("5", listarAccionesTarea(task.getId()));
+        return map;
+    }
+    
+    private static String listarAccionesTarea(Integer id) {
+        return "<a class='btn btn-icon-only green edit table-action' href='javascript:;' data-id='" + id + "'><i class='fa fa-edit fa-fw'></i></a>" +
+                "<a class='btn btn-icon-only red delete table-action' href='javascript:;' data-id='" + id + "'><i class='fa fa-trash-o fa-fw'></i></a>" +
+                "<a class='btn btn-icon-only yellow partida table-action' href='javascript:;' data-id='" + id + "'><i class='fa fa-hourglass-start fa-fw'></i></a>";
+    }
+    
     public static ModelMap crearTareaImportarMap(Task task, int number) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", task.getId());
@@ -56,6 +74,7 @@ public class ArregloCreator {
         return "<a class='btn btn-icon-only green edit' href='javascript:;' data-id='" + id + "'><i class='fa fa-edit fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only red delete' href='javascript:;' data-id='" + id + "'><i class='fa fa-trash-o fa-fw'></i></a>";
     }
+    
     
     private static String listarAccionesUsuarioTarea(Integer id) {
         return "<a class='btn btn-icon-only yellow view' href='javascript:;' data-id='" + id + "'><i class='fa fa-eye fa-fw'></i></a>";
@@ -113,13 +132,12 @@ public class ArregloCreator {
         return map;
     }
     
-    public static ModelMap cargarPlan(Plan plan, ArrayList<ModelMap> tareas) {
+    public static ModelMap cargarPlan(Plan plan) {
         ModelMap map = new ModelMap();
         map.put("plan_id", plan.getId());
         map.put("nombre", plan.getName());
         map.put("descripcion", plan.getDescription());
         map.put("estado_id", plan.getStatusplanid().getId());
-        map.put("tareas", tareas);
         return map;
     }
     
@@ -165,19 +183,22 @@ public class ArregloCreator {
         return map;
     }
     
-    public static ModelMap cargarTarea(Task task, List<Area> areas, List<Position> positions, List<Document> documents, boolean partida) {
+    public static ModelMap cargarTarea(Task task, List<Area> areas, List<Position> positions, List<Document> documents) {
         ModelMap map = new ModelMap();
         map.put("tarea_id", task.getId());
         map.put("nombre", task.getName());
         map.put("descripcion", task.getDescription());
         map.put("codigo", task.getCode());
         map.put("recurrente", task.isIsrecurrent());
-        map.put("canal", task.getChannel());
+        map.put("tiempoRecurrencia", task.getTiempoRecurrencia());
+        map.put("canales", task.getCanales());
+        map.put("canales_id", task.getChannels());
         map.put("producto", task.getProduct());
-        map.put("partida", partida);
+        map.put("partida", task.isStart());
         map.put("hito", task.isHito());
+        map.put("tranversal", task.isTranversal());
         map.put("fechaCreacion", task.getFechaCreacion());
-        map.put("estado", task.getPosition().getCode());
+        map.put("estado", task.getPosition().getName());
         map.put("criticidad_id", task.getCriticalyLevels());
         map.put("criticidad", task.getCriticidad());
         map.put("estado_id", task.getStatusTask().getId());
@@ -189,7 +210,34 @@ public class ArregloCreator {
         map.put("areas", areas);
         map.put("cargos", positions);
         map.put("modelos", documents);
-        map.put("sucesoras", task.getRelacionadas());
+        return map;
+    }
+    
+    public static ModelMap cargarTarea(Task task, List<Area> areas, List<Position> positions) {
+        ModelMap map = new ModelMap();
+        map.put("tarea_id", task.getId());
+        map.put("nombre", task.getName());
+        map.put("descripcion", task.getDescription());
+        map.put("codigo", task.getCode());
+        map.put("recurrente", task.isIsrecurrent());
+        map.put("tiempoRecurrencia", task.getTiempoRecurrencia());
+        map.put("canales", task.getCanales());
+        map.put("canales_id", task.getChannels());
+        map.put("producto", task.getProduct());
+        map.put("partida", task.isStart());
+        map.put("hito", task.isHito());
+        map.put("tranversal", task.isTranversal());
+        map.put("estado", task.getPosition().getName());
+        map.put("criticidad_id", task.getCriticalyLevels());
+        map.put("criticidad", task.getCriticidad());
+        map.put("estado_id", task.getStatusTask().getId());
+        map.put("estado", task.getStatusTask().getName());
+        map.put("cargo", task.getPosition().getName());
+        map.put("cargo_id", task.getPosition().getId());
+        map.put("gerencia_id", task.getPosition().getArea().getManagement().getId());
+        map.put("area_id", task.getPosition().getArea().getId());
+        map.put("areas", areas);
+        map.put("cargos", positions);
         return map;
     }
     
@@ -209,6 +257,7 @@ public class ArregloCreator {
         map.put("perfil", user.getName());
         map.put("nombre", user.getName());
         map.put("apellidos", user.getLastname());
+        map.put("titular", user.isTitular());
         map.put("email", user.getEmail());
         map.put("habilitado", user.isEnabled());
         map.put("cargo_id", user.getPosition().getId());
@@ -234,9 +283,8 @@ public class ArregloCreator {
         map.put("DT_RowId", gerencia.getId());
         map.put("0", "<input type='checkbox' class='checkboxes' value='1' data-id='" + gerencia.getId() + " '/>");
         map.put("1", gerencia.getName());
-        map.put("2", gerencia.getCode());
-        map.put("3", gerencia.getOrder());
-        map.put("4", listarAcciones(gerencia.getId()));
+        map.put("2", gerencia.getOrder());
+        map.put("3", listarAcciones(gerencia.getId()));
         return map;
     }
     
@@ -257,9 +305,8 @@ public class ArregloCreator {
         map.put("0", "<input type='checkbox' class='checkboxes' value='1' data-id='" + cargo.getId() + " '/>");
         map.put("1", cargo.getName());
         map.put("2", cargo.getArea().getName());
-        map.put("3", cargo.getCode());
-        map.put("4", cargo.getArea().getManagement().getName());
-        map.put("5", listarAcciones(cargo.getId()));
+        map.put("3", cargo.getArea().getManagement().getName());
+        map.put("4", listarAcciones(cargo.getId()));
         return map;
     }
     
@@ -307,11 +354,13 @@ public class ArregloCreator {
         map.put("codigo", t.getTask().getCode());
         map.put("nombre", t.getTask().getName());
         map.put("criticidad", t.getTask().getCriticidad());
-        map.put("canal", t.getTask().getChannel());
+        map.put("canales", t.getTask().getChannels());
         map.put("estado", t.getTask().getStatusTask().getName());
         map.put("estado_id", t.getTask().getStatusTask().getId());
         map.put("recurrente", t.isIsrecurrent());
         map.put("partida", t.isStart());
+        map.put("tranversal", t.getTask().isTranversal());
+        map.put("hito", t.getTask().isHito());
         map.put("producto", t.getTask().getProduct());
         map.put("criticidad_id", t.getTask().getCriticalyLevels());
         map.put("cargo_id", t.getTask().getPosition().getId());
@@ -331,7 +380,7 @@ public class ArregloCreator {
         map.put("codigo", t.getTask().getCode());
         map.put("nombre", t.getTask().getName());
         map.put("criticidad", t.getCriticidad());
-        map.put("canal", t.getChannel());
+        map.put("canales", t.getChannels());
         map.put("producto", t.getTask().getProduct());
         map.put("partida", t.isPartida());
         map.put("estado", t.getStatusTask().getName());

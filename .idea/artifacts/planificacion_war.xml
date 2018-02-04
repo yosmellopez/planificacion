@@ -23,6 +23,9 @@
           <element id="library" level="application" name="Oracle Driver" />
           <element id="library" level="application" name="JUnit 4.12" />
           <element id="library" level="application" name="Hamcrest" />
+          <element id="library" level="application" name="JWT" />
+          <element id="library" level="application" name="Hibernate Validator 6.0.7" />
+          <element id="library" level="application" name="JPA Validation" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="planificacion/web/Web" />

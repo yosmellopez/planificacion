@@ -1,3 +1,5 @@
+/* global Metronic */
+
 var TableEditableCargos = function () {
 
     var oTable;
@@ -11,12 +13,11 @@ var TableEditableCargos = function () {
 
         var order = [[1, "asc"]];
         var aoColumns = [
-            {"bSortable": false, "sWidth": '2%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '30%'},
-            {"bSortable": true, "sWidth": '30%'},
-            {"bSortable": true, "sWidth": '10%'},
-            {"bSortable": true, "sWidth": '30%'},
-            {"bSortable": false, "sWidth": '20%', "sClass": 'text-center'}
+            {"bSortable": false, "sWidth": '1%', "sClass": 'text-center'},
+            {"bSortable": true, "sWidth": '35%'},
+            {"bSortable": true, "sWidth": '25%'},
+            {"bSortable": true, "sWidth": '25%'},
+            {"bSortable": false, "sWidth": '9%', "sClass": 'text-center'}
         ];
 
         oTable = new Datatable();
@@ -172,7 +173,7 @@ var TableEditableCargos = function () {
             if ($(this).prop('checked'))
                 ids += $(this).attr('data-id') + ',';
         });
-        if (ids != '') {
+        if (ids !== '') {
             $('#modal-eliminar-seleccion').modal({
                 'show': true
             });
@@ -258,12 +259,11 @@ var TableEditableCargos = function () {
 
         var area_id = $('#area').val();
 
-        if ($('#cargo-form').valid() && area_id != "") {
+        if ($('#cargo-form').valid() && area_id !== "") {
 
             var cargo_id = $('#cargo_id').val();
-            var descripcion = $('#descripcion').val();
-            var codigo_id = $('#codigo').val();
-
+            var nombre = $('#nombre').val();
+            var peso = $('#peso').val();
             Metronic.blockUI({target: '#form-cargo .portlet-body', animate: true});
 
             $.ajax({
@@ -274,8 +274,8 @@ var TableEditableCargos = function () {
                 data: JSON.stringify({
                     'cargo_id': cargo_id === "" ? null : cargo_id,
                     'area_id': area_id,
-                    'code': codigo_id,
-                    'descripcion': descripcion
+                    'peso': peso,
+                    'nombre': nombre
                 }),
                 success: function (response) {
                     Metronic.unblockUI('#form-cargo .portlet-body');
@@ -295,7 +295,7 @@ var TableEditableCargos = function () {
                 }
             });
         } else {
-            if (area_id == "") {
+            if (area_id === "") {
                 var $element = $('#select-area .selectpicker');
                 $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
                         .data("title", "Este campo es obligatorio")
@@ -346,10 +346,10 @@ var TableEditableCargos = function () {
                         //Datos cargo
 
                         $('#area').select2('val', response.cargo.area_id);
-                        $('#descripcion').val(response.cargo.descripcion);
-                        $('#codigo').val(response.cargo.code);
+                        $('#nombre').val(response.cargo.nombre);
+                        $('#peso').val(response.cargo.peso);
 
-                        formTitle = "Deseas actualizar el cargo \"" + response.cargo.descripcion + "\" ? Sigue los siguientes pasos:";
+                        formTitle = "Deseas actualizar el cargo \"" + response.cargo.nombre + "\" ? Sigue los siguientes pasos:";
                         $('#form-cargo-title').html(formTitle);
 
                     } else {
@@ -380,7 +380,7 @@ var TableEditableCargos = function () {
     //Poner disabled a las opciones padres
     var initDisabledSelect = function () {
         $('#area option').each(function (e) {
-            if ($(this).attr('data-value-disabled') == 'true') {
+            if ($(this).attr('data-value-disabled') === 'true') {
                 $(this).attr('disabled', 'disabled');
             }
         });
@@ -394,7 +394,7 @@ var TableEditableCargos = function () {
             initTable();
             initForm();
             initDisabledSelect();
-            if (cont == 0) {
+            if (cont === 0) {
                 initAccionEditar();
                 initAccionEliminar();
             }

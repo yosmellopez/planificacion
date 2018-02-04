@@ -35,7 +35,7 @@ public class GeneralController {
     
     @RequestMapping(value = "/inicio.html", method = RequestMethod.GET)
     public String inicio(@AuthenticationPrincipal Users usuario) {
-        return "redirect:/#/" + (usuario.getRol().getId() == 1 ? "dashboard" : "view-plan");
+        return "redirect:/#/" + (usuario.getRol().getId() == 1 ? "dashboard" : "dashboard");
     }
     
     @RequestMapping(value = "/iniciado.html", method = RequestMethod.GET)

@@ -1,11 +1,19 @@
 package com.planning.diagram;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.planning.entity.CriticalyLevel;
 import com.planning.entity.PlTask;
+import com.planning.entity.Task;
 
-import java.util.Date;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class TareaDiagrama {
+public class TareaDiagrama implements Comparable<TareaDiagrama> {
+    
+    private String key;
     
     @JsonProperty(value = "tarea_id")
     private Integer id;
@@ -17,49 +25,86 @@ public class TareaDiagrama {
     @JsonProperty(value = "nombre")
     private String name;
     
-    @JsonProperty(value = "codigo")
-    private String code;
-    
-    @JsonProperty(value = "descripcion")
-    private String description = "";
-    
-    private String gerencia = "";
-    
-    private String criticidad = "";
-    
     private String producto;
     
     private String cargo;
+    
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private Integer colSpan;
+    
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private Integer col = null;
+    
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private String grupo = null;
+    
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private String loc;
     
     private boolean hito;
     
     private Boolean partida;
     
-    private Boolean recurrente;
+    private boolean agrupado = false;
     
-    private boolean grupo = false;
-    
-    private Date fechaCreacion = new Date();
+    private boolean tranversal = false;
     
     private String color = "#333333";
     
-    public TareaDiagrama(PlTask task, String criticidad, Integer idCriticidad, String color, boolean grupo) {
-        id = task.getTask().getId();
-        name = task.getTask().getName();
-        code = task.getTask().getCode();
-        description = task.getTask().getDescription();
-        producto = task.getTask().getProduct();
-        cargo = task.getTask().getPosition().getName();
+    public TareaDiagrama(PlTask task, Integer idCriticidad, int orden, String color, boolean primero) {
+        Task tarea = task.getTask();
+        int idTask = tarea.getId();
+        key = primero ? "" + idTask : idTask + "-" + idCriticidad;
+        id = idTask;
+        name = tarea.getName();
+        producto = tarea.getProduct();
+        cargo = tarea.getPosition().getName();
         partida = task.isStart();
-        recurrente = task.isIsrecurrent();
-        fechaCreacion = task.getTask().getFechaCreacion();
-        gerencia = task.getTask().getPosition().getArea().getManagement().getName();
-        idGerencia = task.getTask().getPosition().getArea().getManagement().getId();
-        hito = task.getTask().isHito();
+        loc = partida ? "0 0" : null;
+        idGerencia = tarea.getPosition().getArea().getManagement().getId();
+        hito = tarea.isHito();
         this.idCriticidad = idCriticidad;
-        this.criticidad = criticidad;
         this.color = color;
-        this.grupo = grupo;
+        tranversal = tarea.isTranversal();
+        if (tranversal) {
+            LinkedList<CriticalyLevel> criticalyLevels = new LinkedList<>(tarea.getCriticalyLevels());
+            Collections.sort(criticalyLevels, (CriticalyLevel c1, CriticalyLevel c2) -> {
+                return c1.getOrder() > c2.getOrder() ? 1 : Objects.equals(c1.getOrder(), c2.getOrder()) ? 0 : -1;
+            });
+            grupo = criticalyLevels.stream().map(level -> "" + level.getId()).collect(Collectors.joining("-"));
+            colSpan = criticalyLevels.size();
+            col = orden;
+        }
+    }
+    
+    public TareaDiagrama(PlTask task, Punto punto, String color) {
+        Task tarea = task.getTask();
+        int idTask = tarea.getId();
+        key = "" + idTask;
+        id = idTask;
+        name = tarea.getName();
+        producto = "";
+        cargo = "";
+        partida = task.isStart();
+        loc = partida ? "0 0" : null;
+        idGerencia = tarea.getPosition().getArea().getManagement().getId();
+        hito = tarea.isHito();
+        this.color = color;
+        tranversal = true;
+        agrupado = true;
+        this.colSpan = punto.getColSpan();
+        tranversal = colSpan != 0;
+        this.col = punto.getColumna();
+        grupo = "-" + this.col + "-" + this.colSpan;
+        idCriticidad = punto.getComienzo();
+    }
+    
+    public String getKey() {
+        return key;
+    }
+    
+    public void setKey(String key) {
+        this.key = key;
     }
     
     public Integer getId() {
@@ -86,30 +131,6 @@ public class TareaDiagrama {
         this.name = name;
     }
     
-    public String getCode() {
-        return code;
-    }
-    
-    public void setCode(String code) {
-        this.code = code;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-    
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-    
     public String getColor() {
         return color;
     }
@@ -134,30 +155,6 @@ public class TareaDiagrama {
         this.partida = partida;
     }
     
-    public Boolean getRecurrente() {
-        return recurrente;
-    }
-    
-    public void setRecurrente(Boolean recurrente) {
-        this.recurrente = recurrente;
-    }
-    
-    public String getGerencia() {
-        return gerencia;
-    }
-    
-    public void setGerencia(String gerencia) {
-        this.gerencia = gerencia;
-    }
-    
-    public String getCriticidad() {
-        return criticidad;
-    }
-    
-    public void setCriticidad(String criticidad) {
-        this.criticidad = criticidad;
-    }
-    
     public Integer getIdGerencia() {
         return idGerencia;
     }
@@ -174,12 +171,12 @@ public class TareaDiagrama {
         this.idCriticidad = idCriticidad;
     }
     
-    public boolean isGrupo() {
-        return grupo;
+    public boolean isAgrupado() {
+        return agrupado;
     }
     
-    public void setGrupo(boolean grupo) {
-        this.grupo = grupo;
+    public void setAgrupado(boolean agrupado) {
+        this.agrupado = agrupado;
     }
     
     public boolean isHito() {
@@ -188,5 +185,64 @@ public class TareaDiagrama {
     
     public void setHito(boolean hito) {
         this.hito = hito;
+    }
+    
+    public String getLoc() {
+        return loc;
+    }
+    
+    public void setLoc(String loc) {
+        this.loc = loc;
+    }
+    
+    public boolean isTranversal() {
+        return tranversal;
+    }
+    
+    public void setTranversal(boolean tranversal) {
+        this.tranversal = tranversal;
+    }
+    
+    public String getGrupo() {
+        return grupo;
+    }
+    
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+    
+    public Integer getColSpan() {
+        return colSpan;
+    }
+    
+    public void setColSpan(Integer colSpan) {
+        this.colSpan = colSpan;
+    }
+    
+    public Integer getCol() {
+        return col;
+    }
+    
+    public void setCol(Integer col) {
+        this.col = col;
+    }
+    
+    @Override
+    public int compareTo(TareaDiagrama o) {
+        return key.compareToIgnoreCase(o.key);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TareaDiagrama)) return false;
+        TareaDiagrama that = (TareaDiagrama) o;
+        boolean iguales = key.compareTo(that.key) == 0;
+        return iguales;
+    }
+    
+    @Override
+    public int hashCode() {
+        return key.hashCode();
     }
 }

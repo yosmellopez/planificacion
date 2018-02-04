@@ -19,13 +19,13 @@ public interface PlTaskService extends JpaRepository<PlTask, Integer> {
     
     public List<PlTask> findByPlan(Plan plan, Sort sort);
     
+    public List<PlTask> findByPlanAndTask_Tranversal(Plan plan, boolean tranversal);
+    
     public Optional<PlTask> findByLastInserted(boolean last);
     
     public PlTask findByPlanAndLastInserted(Plan plan, boolean last);
     
     public PlTask findByPlanAndTask(Plan plan, Task task);
-    
-    public PlTask findByPlanAndTaskAndPosition(Plan plan, Task task, int weight);
     
     public List<PlTask> findByPlanAndTask_Position(Plan plan, Position position);
     
@@ -34,6 +34,12 @@ public interface PlTaskService extends JpaRepository<PlTask, Integer> {
     public List<PlTask> findByPlanAndTask_Position_Area_Management(Plan plan, Management management);
     
     public List<PlTask> findByPlanAndTask_CriticalyLevelsContains(Plan plan, CriticalyLevel criticalyLevel);
+    
+    public List<PlTask> findByPlanAndTask_CriticalyLevelsContainsAndTask_Position(Plan plan, CriticalyLevel criticalyLevel, Position position);
+    
+    public List<PlTask> findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area(Plan plan, CriticalyLevel criticalyLevel, Area area);
+    
+    public List<PlTask> findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area_Management(Plan plan, CriticalyLevel criticalyLevel, Management management);
     
     public Optional<PlTask> findByPlanAndTaskAndStart(Plan plan, Task task, boolean start);
     

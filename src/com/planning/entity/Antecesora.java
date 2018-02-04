@@ -10,6 +10,7 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Antecesora {
     
+    @JsonProperty(value = "tarea_id")
     private Integer id;
     
     @JsonProperty(value = "nombre")
@@ -34,6 +35,14 @@ public class Antecesora {
         code = plTask.getTask().getCode();
         position = plTask.getTask().getPosition();
         criticalyLevels = plTask.getTask().getCriticalyLevels();
+    }
+    
+    public Antecesora(Task task) {
+        id = task.getId();
+        name = task.getName();
+        code = task.getCode();
+        position = task.getPosition();
+        criticalyLevels = task.getCriticalyLevels();
     }
     
     public Integer getId() {
@@ -106,7 +115,15 @@ public class Antecesora {
     }
     
     @Override
-    public boolean equals(Object obj) {
-        return id.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Antecesora)) return false;
+        Antecesora that = (Antecesora) o;
+        return id.equals(that.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }

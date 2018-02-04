@@ -6,9 +6,14 @@ import com.planning.entity.Area;
 import com.planning.entity.Management;
 import com.planning.entity.Position;
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionService extends JpaRepository<Position, Integer> {
+
+    @Override
+    @EntityGraph(value = "Cargo.area")
+    public List<Position> findAll();
 
     public List<Position> findByAreaId(Integer id);
 

@@ -1,9 +1,9 @@
-// Type definitions for GoJS v1.7
+// Type definitions for GoJS v1.8
 // Project: https://gojs.net
 // Definitions by: Northwoods Software <https://github.com/NorthwoodsSoftware>
 // Definitions: https://github.com/NorthwoodsSoftware/GoJS
 
-/* Copyright (C) 1998-2017 by Northwoods Software Corporation. */
+/* Copyright (C) 1998-2018 by Northwoods Software Corporation. */
 
 declare namespace go {
     /** A number in place of a Margin object is treated as a uniform Margin with that thickness */
@@ -539,6 +539,9 @@ declare namespace go {
         /**Gets or sets the Margin (or number for a uniform Margin) that describes a scrollable area that surrounds the document bounds, allowing the user to scroll into empty space.*/
         scrollMargin: MarginLike;
 
+        /**Gets or sets whether the page may be scrolled when the diagram receives focus.*/
+        scrollsPageOnFocus: boolean;
+
         /**Gets or sets the function used to determine the position that this Diagram can be scrolled or moved to.*/
         positionComputation: (d: Diagram, p: Point) => Point;
 
@@ -776,6 +779,20 @@ declare namespace go {
         * Deselect all selected Parts.
         */
         clearSelection(): void;
+
+        /**
+        * Starts a new transaction, calls the provided function, and commits the transaction.
+        * Code is called within a try-finally loop.
+        * If the function does not return normally, this rolls back the transaction rather than committing it.
+        * Example usage:
+        * <pre>
+        * diagram.commit(d => d.model.addNodeData({ counter: myCounter++ }), "Added Node");
+        * </pre>
+        * @param {function(Diagram)} func
+        * @param {(string|null)=} tname a descriptive name for the transaction, or null to temporarily set {@link #skipsUndoManager} to true;
+        *        if no string transaction name is given, an empty string is used as the transaction name
+        */
+        commit(func: (d: Diagram) => void, tname?: string|null): void;
 
         /**
         * Commit the changes of the current transaction.
@@ -1208,6 +1225,7 @@ declare namespace go {
         /**This value for Diagram.scrollMode states that the viewport does not constrain scrolling to the Diagram document bounds.*/
         static InfiniteScroll: EnumValue;
 
+        delaysLayout: boolean;  // undocumented
         getRenderingHint(name: string): any;  // undocumented
         setRenderingHint(name: string, val: any): void;  // undocumented
         getInputOption(name: string): any;  // undocumented
@@ -1218,7 +1236,6 @@ declare namespace go {
         simulatedMouseMove(e: Event, modelpt: Point, overdiag?: Diagram): boolean;  // undocumented
         simulatedMouseUp(e: Event, other: Diagram, modelpt: Point, curdiag?: Diagram): boolean;  // undocumented
         computePixelRatio(): number;  // undocumented
-        commit(func: (d: Diagram) => void, tname?: string): void;  // undocumented
     }
 
     /**
@@ -2885,6 +2902,9 @@ declare namespace go {
         /**Gets whether this part is not member of any Group node nor is it a label node for a Link.*/
         isTopLevel: boolean;
 
+        /**This read-only property returns the key of the model data of this Part.*/
+        key: Key | undefined;  // read-only property
+
         /**This read-only property returns the Layer that this Part is in.*/
         layer: Layer;
 
@@ -3161,8 +3181,6 @@ declare namespace go {
 
         /**This is the default value for the Part.layoutConditions property: the Layout responsible for the Part is invalidated when the Part is added or removed from the Diagram or Group or when it changes visibility or size or when a Group's layout has been performed.*/
         static LayoutStandard: number;
-
-        key: string | number | undefined;  // undocumented read-only property
     }
 
     /**
@@ -5607,6 +5625,20 @@ declare namespace go {
         protected cloneProtected(copy: Model): void;
 
         /**
+        * Starts a new transaction, calls the provided function, and commits the transaction.
+        * Code is called within a try-finally loop.
+        * If the function does not return normally, this rolls back the transaction rather than committing it.
+        * Example usage:
+        * <pre>
+        * model.commit(m => m.addNodeData({ counter: myCounter++ }), "Added Node");
+        * </pre>
+        * @param {function(Model)} func
+        * @param {(string|null)=} tname a descriptive name for the transaction, or null to temporarily set {@link #skipsUndoManager} to true;
+        *        if no string transaction name is given, an empty string is used as the transaction name
+        */
+        commit(func: (m: Model) => void, tname?: string|null): void;
+
+        /**
         * Commit the changes of the current transaction.
         * This just calls UndoManager.commitTransaction.
         * @param {string=} tname a descriptive name for the transaction.
@@ -5785,6 +5817,14 @@ declare namespace go {
         setCategoryForNodeData(nodedata: Object, cat: string): void;
 
         /**
+        * A synonym for setDataProperty.
+        * @param {Object} data a JavaScript object representing a Node, Link, Group, simple Part, or item in a Panel.itemArray.
+        * @param {string} propname a string that is not null or the empty string.
+        * @param {*} val the new value for the property.
+        */
+        set(data: Object, propname: string, val: any): void;
+
+        /**
         * Change the value of some property of a node data, a link data, or an item data, given a string naming the property
         * and the new value, in a manner that can be undone/redone and that automatically updates any bindings.
         * This gets the old value of the property; if the value is the same as the new value, no side-effects occur.
@@ -5865,9 +5905,6 @@ declare namespace go {
         *   otherwise update only those bindings using this source property name.
         */
         updateTargetBindings(data: Object, srcpropname?: string): void;
-
-        commit(func: (m: Model) => void, tname?: string): void;  // undocumented
-        set(data: Object, propname: string, val: any): void;  // undocumented synonym for setDataProperty
     }
 
     /**
@@ -6314,6 +6351,9 @@ declare namespace go {
 
         /**Gets or sets a threshold for the distance beyond which the electrical charge forces may be ignored.*/
         infinityDistance: number;
+
+        /**Gets or sets how far a vertex may be moved in an iteration.*/
+        moveLimit: number;
 
         /**Gets or sets the maximum number of iterations to perform when doing the force-directed auto layout.*/
         maxIterations: number;
@@ -8616,8 +8656,14 @@ declare namespace go {
         /**Gets or sets the HTMLInfo or HTML Element that edits the text.*/
         defaultTextEditor: HTMLInfo | Element;  // Element is deprecated
 
+        /** Gets or sets whether to select (highlight) the editable text when the TextEditingTool is activated. The default is true.*/
+        selectsTextOnActivate: boolean;
+
         /**Gets or sets how user gestures can start in-place editing of text.*/
         starting: EnumValue;
+
+        /** Gets or sets the state of the TextEditingTool.*/
+        state: EnumValue;
 
         /**Gets or sets the TextBlock that is being edited.*/
         textBlock: TextBlock;
@@ -8674,6 +8720,9 @@ declare namespace go {
         * @param {string} newstr the proposed new string value.
         */
         isValidText(textblock: TextBlock, oldstr: string, newstr: string): boolean;
+
+        /**This method returns a temporary TextBlock used for measuring text during editing.*/
+        measureTemporaryTextBlock(text: string): TextBlock;
 
         /**The user has typed ENTER.*/
         static Enter: EnumValue;

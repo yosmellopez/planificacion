@@ -17,7 +17,9 @@
             buscarPlan: buscarPlan,
             getTareas: getTareas,
             getTareasRelacionadas: getTareasRelacionadas,
-            salvarDiagrama: salvarDiagrama
+            salvarDiagrama: salvarDiagrama,
+            insertarEliminarLink: insertarEliminarLink,
+            eliminarTareaGrafico: eliminarTareaGrafico
         };
 
         return service;
@@ -131,6 +133,16 @@
                 params: parametros
             };
             return $http.get("plan/buscarTareas?plan_id=" + plan, settings);
+        }
+
+        function insertarEliminarLink(from, to, accion, planId) {
+            var settings = {};
+            return $http.post("planTarea/insertarEliminarLink?from=" + from + "&to=" + to + "&accion=" + accion + "&planId=" + planId, settings);
+        }
+
+        function eliminarTareaGrafico(tareaId, planId) {
+            var settings = {};
+            return $http.post("planTarea/eliminarTareaGrafico?tareaId=" + tareaId + "&planId=" + planId, settings);
         }
     }
 })();

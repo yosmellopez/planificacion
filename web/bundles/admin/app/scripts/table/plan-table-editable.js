@@ -1,4 +1,4 @@
-/* global go, CKEDITOR, Metronic, NaN */
+/* global go, CKEDITOR, Metronic, NaN, LinkShiftingTool, TableLayout */
 
 var TableEditablePlanes = function () {
 
@@ -179,7 +179,6 @@ var TableEditablePlanes = function () {
             .removeClass('has-error');
         //Tareas
         var tareas = new Array();
-        dibujarTablaTareas();
         $('#tab-general a').click();
 //        destroyDiagrama();
     };
@@ -266,7 +265,6 @@ var TableEditablePlanes = function () {
         $('#lista-plan').addClass('ng-hide');
         tareas = new Array();
         localStorage.removeItem("tareasImportadas");
-        dibujarTablaTareas();
     };
     //Boton eliminar
     var btnClickEliminar = function () {
@@ -416,6 +414,7 @@ var TableEditablePlanes = function () {
 
     //Funciones jquery
     //Editar
+    var tablaTareasPlan = null;
     var initAccionEditar = function () {
         $(document).on('click', "#plan-table-editable a.edit", function (e) {
             e.preventDefault();
@@ -426,12 +425,14 @@ var TableEditablePlanes = function () {
             $('#form-plan').removeClass('ng-hide');
             $('#lista-plan').addClass('ng-hide');
             tareaimportada = false;
+            mostrarTareasPlan(plan_id);
             editRow(plan_id);
         });
 
         function editRow(plan_id) {
             localStorage.removeItem("tareasImportadas");
             currentPlanId = plan_id;
+            scopePlan.planId = plan_id;
             Metronic.blockUI({target: '#form-plan .portlet-body', animate: true});
             $.ajax({
                 type: "POST",
@@ -449,10 +450,7 @@ var TableEditablePlanes = function () {
                         $('#descripcion').val(response.plan.descripcion);
                         $('#nombrePlan').val(response.plan.nombre);
                         $('#estado').select2('val', response.plan.estado_id);
-                        tareas = response.plan.tareas;
                         criticidadesTareas = response.niveles;
-                        dibujarTablaTareas();
-
                     } else {
                         toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
                     }
@@ -464,7 +462,76 @@ var TableEditablePlanes = function () {
             });
 
         }
+
+        function mostrarTareasPlan(planId) {
+            var table = $('#table-tareas');
+            var order = [[2, "desc"]];
+            var aoColumns = [
+                {"bSortable": false, "sWidth": '5%', "sClass": 'text-center'},
+                {"bSortable": false, "sWidth": '35%'},
+                {"bSortable": false, "sWidth": '20%'},
+                {"bSortable": false, "sWidth": '20%'},
+                {"bSortable": true, "sWidth": '5%', "sClass": 'text-center'},
+                {"bSortable": false, "sWidth": '15%', "sClass": 'text-center'}
+            ];
+            tablaTareasPlan = new Datatable();
+            tablaTareasPlan.setAjaxParam("planId", planId);
+            tablaTareasPlan.setAjaxParam("cargo", null);
+            tablaTareasPlan.setAjaxParam("gerencia", null);
+            tablaTareasPlan.setAjaxParam("direccion", null);
+            tablaTareasPlan.setAjaxParam("criticidad", null);
+            tablaTareasPlan.init({
+                src: table,
+                onSuccess: function (grid) {
+                    // execute some code after table records loaded
+                    setTimeout(function () {
+                        $("#table-tareas a.edit")
+                            .data("title", 'Editar tarea')
+                            .tooltip();
+                        $("#table-tareas a.delete")
+                            .data("title", 'Eliminar Tarea')
+                            .tooltip();
+                        $("#table-tareas a.partida")
+                            .data("title", 'Seleccionar tarea partida')
+                            .tooltip();
+                    }, 1000);
+                },
+                onError: function (grid) {
+                    // execute some code on network or other general error
+                },
+                loadingMessage: 'Por favor espere...',
+                dataTable: {
+                    "serverSide": false,
+                    "destroy": true,
+                    "lengthMenu": [
+                        [15, 25, 30, 50, -1],
+                        [15, 25, 30, 50, "Todos"]
+                    ],
+                    "pageLength": 15, // default record count per page
+                    "ajax": {
+                        "url": "planTarea/listarTareasPlan/" + planId // ajax source
+                    },
+                    "order": order,
+                    responsive: {
+                        details: {}
+                    },
+                    "aoColumns": aoColumns
+                }
+            });
+            var tableWrapper = tablaTareasPlan.getTableWrapper();
+            tableWrapper.find('.dataTables_filter input').addClass("form-control input-sm input-inline");
+            tableWrapper.find('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
+        }
     };
+
+    var filtrarTareasPlan = function (cargo, gerencia, direccion, criticidad) {
+        tablaTareasPlan.setAjaxParam("planId", currentPlanId);
+        tablaTareasPlan.setAjaxParam("cargo", cargo);
+        tablaTareasPlan.setAjaxParam("gerencia", gerencia);
+        tablaTareasPlan.setAjaxParam("direccion", direccion);
+        tablaTareasPlan.setAjaxParam("criticidad", criticidad);
+        tablaTareasPlan.getDataTable().ajax.reload();
+    }
 
     //Eliminar
     var initAccionEliminar = function () {
@@ -659,6 +726,7 @@ var TableEditablePlanes = function () {
             success: function (response) {
                 Metronic.unblockUI('#modal-importar .modal-body');
                 if (response.success) {
+                    tablaTareasPlan.getDataTable().ajax.reload();
                     $("#" + idTareaImportar).remove();
                     //Definir archivos de la tarea
                     resetFormTarea();
@@ -673,7 +741,6 @@ var TableEditablePlanes = function () {
                         tareasImportadas.push(tarea);
                         localStorage.setItem("tareasImportadas", JSON.stringify(tareasImportadas));
                     }
-                    dibujarTablaTareas();
                     toastr.success("La tarea se adicionó correctamente", "Exito !!!");
                 } else {
                     toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
@@ -689,147 +756,20 @@ var TableEditablePlanes = function () {
     //Tareas
     var tareas = new Array();
     var nEditingRowTarea = null;
-    var dibujarTablaTareas = function () {
-        var tabla = '#table-tareas';
-        //Limpiar
-        $(tabla + ' tbody tr').each(function (e) {
-            $(this).remove();
-        });
-        //Agregar fila vacia
-        if (tareas.length === 0) {
-            var tr = '<tr>' +
-                '<td colspan="6">No existen tareas</td>' +
-                '</tr>';
-            $(tr).appendTo(tabla + ' tbody');
-        }
-        //Agregar elementos
-        tam = tareas.length;
-        for (var i = 0; i < tam; i++) {
-            var acciones = '<a class="btn btn-icon-only green edit table-action" href="javascript:;"><i class="fa fa-edit fa-fw"></i></a>' +
-                '<a class="btn btn-icon-only red delete table-action" href="javascript:;"><i class="fa fa-trash-o fa-fw"></i></a>' +
-                '<a class="btn btn-icon-only yellow partida table-action" href="javascript:;"><i class="fa fa-hourglass-start fa-fw"></i></a>';
-
-            var recurrente = (tareas[i].recurrente) ? 'SI <i class="fa fa-check-circle ic-color-ok"></i>' : 'NO <i class="fa fa-minus-circle ic-color-error"></i>';
-            var partida = (tareas[i].partida) ? 'SI <i class="fa fa-check-circle ic-color-ok"></i>' : 'NO <i class="fa fa-minus-circle ic-color-error"></i>';
-            var tr = '<tr id="' + i + '" data-id=' + tareas[i].tarea_id + '>' +
-                '<td class="text-center">' + (i + 1) + '</td>' +
-                '<td>' + tareas[i].codigo + '</td>' +
-                '<td>' + tareas[i].nombre + '</td>' +
-                '<td>' + tareas[i].cargo + '</td>' +
-                '<td>' + tareas[i].criticidad + '</td>' +
-                '<td class="text-center tareaPartida">' + partida + '</td>' +
-                '<td class="text-center" style="width: 180px">' + acciones + '</td>' +
-                '</tr>';
-            $(tr).appendTo(tabla + ' tbody');
-        }
-        $(tabla + ' .subir') // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-            .data("title", 'Subir tarea')
-            .tooltip();
-        $(tabla + ' .bajar') // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-            .data("title", 'Bajar tarea')
-            .tooltip();
-        $(tabla + ' .edit') // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-            .data("title", 'Editar tarea')
-            .tooltip();
-        $(tabla + ' .delete') // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-            .data("title", 'Eliminar tarea')
-            .tooltip();
-        $(tabla + ' .partida') // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-            .data("title", 'Seleccionar tarea partida')
-            .tooltip();
-        $(tabla + ' .boton-desabilitado').off("click");
-    };
     var initTableTareas = function () {
-
         $(document).on('click', "#table-tareas a.edit", function (e) {
             e.preventDefault();
-            var nRow = $(this).parents('tr')[0];
-            var posicion = $(nRow).attr('id');
-            if (tareas[posicion]) {
-                //Reset form tarea
-                resetFormTarea();
-                nEditingRowTarea = nRow;
-                posicionTareaEditar = posicion;
-                $('#modal-configurar-tarea').modal({
-                    'show': true
-                });
-                editarTarea(tareas[posicion]);
-            }
-        });
-
-        $(document).on('click', "#table-tareas a.subir", function (e) {
-            e.preventDefault();
-            var nRow = $(this).parents('tr')[0];
-            var posicion = $(nRow).attr('id');
-            if (tareas[posicion]) {
-                //Reset form tarea
-                idTareaImportar = tareas[posicion].tarea_id;
-                Metronic.blockUI({target: '#table-tareas', animate: true});
-                $.ajax({
-                    type: "POST",
-                    url: "plan/cambiarTareaPosicion",
-                    dataType: "json",
-                    data: {
-                        'plan_id': currentPlanId,
-                        'tarea_id': tareas[posicion].tarea_id,
-                        'subir': true
-                    },
-                    success: function (response) {
-                        Metronic.unblockUI('#table-tareas');
-                        if (response.success) {
-                            toastr.success(response.message, "Exito !!!");
-                            tareas = response.tareas;
-                            dibujarTablaTareas();
-                        } else {
-                            toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                        }
-                    },
-                    failure: function (response) {
-                        Metronic.unblockUI('#table-tareas');
-                        toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                    }
-                });
-            }
-        });
-        $(document).on('click', "#table-tareas a.bajar", function (e) {
-            e.preventDefault();
-            var nRow = $(this).parents('tr')[0];
-            var posicion = $(nRow).attr('id');
-            if (tareas[posicion]) {
-                //Reset form tarea
-                idTareaImportar = tareas[posicion].tarea_id;
-                Metronic.blockUI({target: '#table-tareas', animate: true});
-                $.ajax({
-                    type: "POST",
-                    url: "plan/cambiarTareaPosicion",
-                    dataType: "json",
-                    data: {
-                        'plan_id': currentPlanId,
-                        'tarea_id': tareas[posicion].tarea_id,
-                        'subir': false
-                    },
-                    success: function (response) {
-                        Metronic.unblockUI('#table-tareas');
-                        if (response.success) {
-                            toastr.success(response.message, "Exito !!!");
-                            tareas = response.tareas;
-                            dibujarTablaTareas();
-                        } else {
-                            toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                        }
-                    },
-                    failure: function (response) {
-                        Metronic.unblockUI('#table-tareas');
-                        toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                    }
-                });
-            }
+            var idTarea = $(this).data('id');
+            //Reset form tarea
+            resetFormTarea();
+            Metronic.blockUI({target: '#table-tareas', animate: true});
+            editarTarea(idTarea);
         });
 
         $(document).on('click', "#table-tareas a.delete", function (e) {
             e.preventDefault();
             var nRow = $(this).parents('tr')[0];
-            var posicion = $(nRow).attr('id');
+            var tareaId = $(this).data('id');
             if (planNuevo) {
                 tareasImportadas.forEach(function (item, index) {
                     if (parseInt(item.tarea_id) === parseInt(tareas[posicion].tarea_id)) {
@@ -837,24 +777,50 @@ var TableEditablePlanes = function () {
                     }
                 });
             }
-            if (tareas[posicion]) {
-                var tarea_id = tareas[posicion].tarea_id;
-                if (tarea_id !== "") {
+            if (tareaId !== "") {
+                Metronic.blockUI({target: '#table-tareas', animate: true});
+                $.ajax({
+                    type: "POST",
+                    url: "plan/eliminarTarea",
+                    dataType: "json",
+                    data: {
+                        'plan_id': currentPlanId,
+                        'tarea_id': tareaId
+                    },
+                    success: function (response) {
+                        Metronic.unblockUI('#table-tareas');
+                        if (response.success) {
+                            toastr.success(response.message, "Exito !!!");
+                            tablaTareasPlan.getDataTable().ajax.reload();
+                        } else {
+                            toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
+                        }
+                    },
+                    failure: function (response) {
+                        Metronic.unblockUI('#table-tareas');
+                        toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
+                    }
+                });
+            }
+        });
+        $(document).on('click', "#table-tareas a.partida", function (e) {
+            var tareaId = $(this).data('id');
+            if (!planNuevo) {
+                if (tareaId !== "") {
                     Metronic.blockUI({target: '#table-tareas', animate: true});
                     $.ajax({
                         type: "POST",
-                        url: "plan/eliminarTarea",
+                        url: "plan/cambiarTareaPartida",
                         dataType: "json",
                         data: {
                             'plan_id': currentPlanId,
-                            'tarea_id': tareas[posicion].tarea_id
+                            'tarea_id': tareaId
                         },
                         success: function (response) {
                             Metronic.unblockUI('#table-tareas');
                             if (response.success) {
                                 toastr.success(response.message, "Exito !!!");
-                                tareas = response.tareas;
-                                dibujarTablaTareas();
+                                tablaTareasPlan.getDataTable().ajax.reload();
                             } else {
                                 toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
                             }
@@ -867,55 +833,18 @@ var TableEditablePlanes = function () {
                 } else {
                     deleteTarea(nRow);
                 }
-            }
-        });
-        $(document).on('click', "#table-tareas a.partida", function (e) {
-            var nRow = $(this).parents('tr')[0];
-            var posicion = $(nRow).attr('id');
-            if (tareas[posicion]) {
-                var tarea_id = tareas[posicion].tarea_id;
-                if (!planNuevo) {
-                    if (tarea_id !== "") {
-                        Metronic.blockUI({target: '#table-tareas', animate: true});
-                        $.ajax({
-                            type: "POST",
-                            url: "plan/cambiarTareaPartida",
-                            dataType: "json",
-                            data: {
-                                'plan_id': currentPlanId,
-                                'tarea_id': tarea_id
-                            },
-                            success: function (response) {
-                                Metronic.unblockUI('#table-tareas');
-                                if (response.success) {
-                                    toastr.success(response.message, "Exito !!!");
-                                    tareas = response.tareas;
-                                    cambiarPartidaTarea();
-                                } else {
-                                    toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                                }
-                            },
-                            failure: function (response) {
-                                Metronic.unblockUI('#table-tareas');
-                                toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                            }
-                        });
-                    } else {
-                        deleteTarea(nRow);
-                    }
-                } else {
-                    tareasImportadas = JSON.parse(localStorage.getItem("tareasImportadas"));
-                    tam = tareasImportadas.length;
-                    for (var i = 0; i < tam; i++) {
-                        elem = tareasImportadas[i];
-                        if (parseInt(elem.tarea_id) === parseInt(tarea_id)) {
-                            tdPartida = $("#" + posicion + " td:nth-child(7)")[0];
-                            elem.partida = !elem.partida;
-                            $(tdPartida).html(elem.partida ? "Si <i class='fa fa-check-circle ic-color-ok'></i>" : "No <i class='fa fa-minus-circle ic-color-error'></i>");
-                            tareasImportadas[i] = elem;
-                            tareas[posicion].partida = elem.partida;
-                            localStorage.setItem("tareasImportadas", JSON.stringify(tareasImportadas));
-                        }
+            } else {
+                tareasImportadas = JSON.parse(localStorage.getItem("tareasImportadas"));
+                tam = tareasImportadas.length;
+                for (var i = 0; i < tam; i++) {
+                    elem = tareasImportadas[i];
+                    if (parseInt(elem.tarea_id) === parseInt(tarea_id)) {
+                        tdPartida = $("#" + posicion + " td:nth-child(7)")[0];
+                        elem.partida = !elem.partida;
+                        $(tdPartida).html(elem.partida ? "Si <i class='fa fa-check-circle ic-color-ok'></i>" : "No <i class='fa fa-minus-circle ic-color-error'></i>");
+                        tareasImportadas[i] = elem;
+                        tareas[posicion].partida = elem.partida;
+                        localStorage.setItem("tareasImportadas", JSON.stringify(tareasImportadas));
                     }
                 }
             }
@@ -925,89 +854,108 @@ var TableEditablePlanes = function () {
             var posicion = $(nRow).attr('id');
             //Eliminar tarea
             tareas.splice(posicion, 1);
-
-            dibujarTablaTareas();
             resetFormTarea();
         }
 
         function cambiarPartidaTarea() {
-            dibujarTablaTareas();
             resetFormTarea();
         }
 
-        function editarTarea(tarea) {
-            servicioPlan.getTareasRelacionadas(tarea.tarea_id, currentPlanId).then(function (response) {
+        function editarTarea(tareaId) {
+            servicioPlan.getTareasRelacionadas(tareaId, currentPlanId).then(function (response) {
+                Metronic.unblockUI('#table-tareas');
+                $('#modal-configurar-tarea').modal({
+                    'show': true
+                });
                 scopePlan.tareasAntecesoras = response.data.antecesoras;
                 scopePlan.todasTareas = response.data.todasTareas;
                 scopePlan.tareasSeleccionadas = response.data.sucesoras;
+                scopePlan.tareasAgrupadas = response.data.agrupadas;
+                scopePlan.tareasPorAgrupar = response.data.noAgrupadas;
+                var tarea = scopePlan.tarea = response.data.tarea;
+                scopePlan.tituloModal = tarea.nombre;
+                formTitle = "Deseas actualizar la tarea \"" + tarea.nombre + "\" ? Sigue los siguientes pasos:";
+                $('#tarea-configurar-titulo').html(formTitle);
+                $('#tarea-configurar-id').val(tarea.tarea_id);
+                $('#codigo-tarea').val(tarea.codigo);
+                $('#tarea-configurar-nombre').val(tarea.nombre);
+                $('#producto').val(tarea.producto);
+                criticidad = tarea.criticidad_id;
+                criticidades = new Array();
+                for (i = 0; i < criticidad.length; i++)
+                    criticidades.push(criticidad[i].criticidad_id);
+                select = $('#criticidad-tarea-plan').select2();
+                select.val(criticidades).trigger("change");
+                CKEDITOR.instances.editor.setData(tarea.descripcion);
+                canal = tarea.canales_id;
+                canales = new Array();
+                for (i = 0; i < canal.length; i++)
+                    canales.push(canal[i].canal_id);
+                selectCanal = $('#canal-tarea').select2();
+                selectCanal.val(canales).trigger("change");
+                estadoTarea = $('#estado-tarea').select2();
+                estadoTarea.val(tarea.estado_id).trigger("change");
+                if (tarea.recurrente) {
+                    scopePlan.recurrente = "true";
+                    $('#tiempo-recurrencia').val(tarea.tiempoRecurrencia);
+                    $('#recurrente-activo').attr('checked', true);
+                    $('#recurrente-inactivo').removeAttr("checked");
+                    $('#recurrente-inactivo').prop('checked', false);
+                    jQuery.uniform.update('#recurrente-activo');
+                    jQuery.uniform.update('#recurrente-inactivo');
+                } else {
+                    scopePlan.recurrente = "false";
+                    $('#tiempo-recurrencia').val(tarea.tiempoRecurrencia);
+                    $('#recurrente-activo').attr('checked', false);
+                    $('#recurrente-inactivo').attr('checked', true);
+                    jQuery.uniform.update('#recurrente-activo');
+                    jQuery.uniform.update('#recurrente-inactivo');
+                }
+                if (tarea.partida) {
+                    $('#partidaactivo-tarea').prop('checked', true);
+                    $('#partidainactivo-tarea').prop('checked', false);
+                    jQuery.uniform.update('#partidaactivo-tarea');
+                    jQuery.uniform.update('#partidainactivo-tarea');
+                }
+                if (tarea.hito) {
+                    $('#hitoactivo').prop('checked', true);
+                    $('#hitoinactivo').prop('checked', false);
+                    jQuery.uniform.update('#hitoactivo');
+                    jQuery.uniform.update('#hitoinactivo');
+                }
+                if (tarea.tranversal) {
+                    $('#tarea-tranversal-activa').prop('checked', tarea.tranversal);
+                    $('#tarea-tranversal-inactiva').prop('checked', !tarea.tranversal);
+                    jQuery.uniform.update('#tarea-tranversal-activa');
+                    jQuery.uniform.update('#tarea-tranversal-inactiva');
+                }
+                //Archivos
+                dibujarTablaArchivos("#table-archivos", tarea);
+                //Gerencia
+                $("#gerencia-tarea").unbind('change', cargarAreas);
+                $('#gerencia-tarea').select2('val', tarea.gerencia_id);
+                //Areas
+                $("#area-tarea").unbind('change', cargarCargos);
+                var areas = tarea.areas;
+                for (var i = 0; i < areas.length; i++) {
+                    $('#area-tarea').append(new Option(areas[i].descripcion, areas[i].area_id, false, false));
+                }
+                $('#area-tarea').select2();
+                $('#area-tarea').select2('val', tarea.area_id);
+
+                //Cargos
+                var cargos = tarea.cargos;
+                for (var i = 0; i < cargos.length; i++) {
+                    $('#cargo-tarea').append(new Option(cargos[i].nombre, cargos[i].cargo_id, false, false));
+                }
+                $('#cargo-tarea').select2();
+                $('#cargo-tarea').select2('val', tarea.cargo_id);
+
+                $("#gerencia-tarea").bind('change', cargarAreas);
+                $("#area-tarea").bind('change', cargarCargos);
             }).catch(function (error) {
 
             });
-            formTitle = "Deseas actualizar la tarea \"" + tarea.nombre + "\" ? Sigue los siguientes pasos:";
-            $('#tarea-configurar-titulo').html(formTitle);
-            $('#tarea-configurar-id').val(tarea.tarea_id);
-            $('#codigo-tarea').val(tarea.codigo);
-            $('#tarea-configurar-nombre').val(tarea.nombre);
-            $('#producto').val(tarea.producto);
-            criticidad = tarea.criticidad_id;
-            criticicades = new Array();
-            for (i = 0; i < criticidad.length; i++)
-                criticicades.push(criticidad[i].criticidad_id);
-            select = $('#criticidad-tarea-plan').select2();
-            select.val(criticicades).trigger("change");
-            CKEDITOR.instances.editor.setData(tarea.descripcion);
-            selectCanal = $('#canal-tarea').select2();
-            selectCanal.val(tarea.canal.canal_id).trigger("change");
-            estadoTarea = $('#estado-tarea').select2();
-            estadoTarea.val(tarea.estado_id).trigger("change");
-
-            if (tarea.recurrente) {
-                $('#recurrenteactivo-tarea').prop('checked', true);
-                $('#recurrenteinactivo-tarea').prop('checked', false);
-
-                jQuery.uniform.update('#recurrenteactivo-tarea');
-                jQuery.uniform.update('#recurrenteinactivo-tarea');
-            }
-
-            if (tarea.partida) {
-                $('#partidaactivo-tarea').prop('checked', true);
-                $('#partidainactivo-tarea').prop('checked', false);
-                jQuery.uniform.update('#partidaactivo-tarea');
-                jQuery.uniform.update('#partidainactivo-tarea');
-            }
-            if (tarea.hito) {
-                $('#hitoactivo').prop('checked', true);
-                $('#hitoinactivo').prop('checked', false);
-                jQuery.uniform.update('#hitoactivo');
-                jQuery.uniform.update('#hitoinactivo');
-            }
-            //Archivos
-            dibujarTablaArchivos("#table-archivos");
-            dibujarTablaSucesoras("#table-archivos");
-
-            //Gerencia
-            $("#gerencia-tarea").unbind('change', cargarAreas);
-            $('#gerencia-tarea').select2('val', tarea.gerencia_id);
-
-            //Areas
-            $("#area-tarea").unbind('change', cargarCargos);
-            var areas = tarea.areas;
-            for (var i = 0; i < areas.length; i++) {
-                $('#area-tarea').append(new Option(areas[i].descripcion, areas[i].area_id, false, false));
-            }
-            $('#area-tarea').select2();
-            $('#area-tarea').select2('val', tarea.area_id);
-
-            //Cargos
-            var cargos = tarea.cargos;
-            for (var i = 0; i < cargos.length; i++) {
-                $('#cargo-tarea').append(new Option(cargos[i].descripcion, cargos[i].cargo_id, false, false));
-            }
-            $('#cargo-tarea').select2();
-            $('#cargo-tarea').select2('val', tarea.cargo_id);
-
-            $("#gerencia-tarea").bind('change', cargarAreas);
-            $("#area-tarea").bind('change', cargarCargos);
         }
 
         function dibujarTablaAncesoras(tabla, tareasAntecesoras) {
@@ -1032,10 +980,6 @@ var TableEditablePlanes = function () {
                     '</tr>';
                 $(tr).appendTo(tabla);
             }
-        }
-
-        function dibujarTablaSucesoras(tabla) {
-            $(tabla);
         }
     };
     var initFormTarea = function () {
@@ -1119,16 +1063,20 @@ var TableEditablePlanes = function () {
         $('#criticidad-tarea-plan').select2('val', '');
         $('#canal-tarea').select2('val', '');
         $('#estado-tarea').select2('val', '');
-
-        $('#recurrenteinactivo-tarea').prop('checked', true);
-        jQuery.uniform.update('#recurrenteactivo-tarea');
-        $('#recurrenteactivo-tarea').prop('checked', false);
-        jQuery.uniform.update('#recurrenteinactivo-tarea');
-
         $('#partidaactivo-tarea').prop('checked', false);
         jQuery.uniform.update('#partidaactivo-tarea');
         $('#partidainactivo-tarea').prop('checked', true);
         jQuery.uniform.update('#partidainactivo-tarea');
+
+        $('#hitoactivo').prop('checked', false);
+        jQuery.uniform.update('#hitoactivo');
+        $('#hitoinactivo').prop('checked', true);
+        jQuery.uniform.update('#hitoinactivo');
+
+        $('#tarea-tranversal-activa').prop('checked', false);
+        $('#tarea-tranversal-inactiva').prop('checked', true);
+        jQuery.uniform.update('#tarea-tranversal-activa');
+        jQuery.uniform.update('#tarea-tranversal-inactiva');
 
         $('#gerencia-tarea').select2('val', '');
 
@@ -1153,8 +1101,6 @@ var TableEditablePlanes = function () {
 
         //Reset archivos
         resetFormArchivo();
-        dibujarTablaArchivos("#table-archivos");
-
         $('#tab-general-tarea a').click();
     };
     var btnClickSalvarFormTarea = function () {
@@ -1162,86 +1108,83 @@ var TableEditablePlanes = function () {
 
         var criticidad_id = $('#criticidad-tarea-plan').val();
         var estado_id = $('#estado-tarea').val();
-
+        var tam = scopePlan.tareasAgrupadas.length;
         if (criticidad_id !== null && criticidad_id.length !== 0 && estado_id !== "") {
-            Metronic.blockUI({target: '#modal-configurar-tarea', animate: true});
-            var tarea_id = $('#tarea-configurar-id').val();
-            var codigo = $('#codigo-tarea').val();
-            var nombre = $('#tarea-configurar-nombre').val();
-            var producto = $('#producto').val();
-            var hito = ($('#hitoactivo').prop('checked')) ? true : false;
-            var descripcion = CKEDITOR.instances.editor.getData();
-            var canal = $('#canal-tarea').val();
-            var recurrente = ($('#recurrenteactivo').prop('checked')) ? true : false;
-            var cargo_id = $('#cargo-tarea').val();
-            var estado = $('#estado-tarea').val();
-            var partida = ($('#partidaactivo-tarea').prop('checked')) ? true : false;
-            var posicion_tarea = $(nEditingRowTarea).attr('id');
-            tareas[posicion_tarea].tarea_id = tarea_id;
-            tareas[posicion_tarea].codigo = codigo;
-            tareas[posicion_tarea].nombre = nombre;
-            var pos = 0;
-            criticalyString = '';
-            criticidad_id.forEach(function (item, index) {
-                if (item !== "") {
-                    for (var j = 0; j < criticidadesTareas.length; j++) {
-                        if (parseInt(item) === parseInt(criticidadesTareas[j].criticidad_id)) {
-                            criticalyString += (pos === 0 ? "" : ", ") + criticidadesTareas[j].nombre;
-                            pos++;
+            if (scopePlan.agrupada && tam === 0) {
+                toastr.error("Si la tarea es agrupada debe seleccionar al menos una tarea para agrupar", "Error !!!", {"positionClass": "toast-top-center"});
+            } else {
+                Metronic.blockUI({target: '#modal-configurar-tarea', animate: true});
+                var tarea_id = $('#tarea-configurar-id').val();
+                var codigo = $('#codigo-tarea').val();
+                var nombre = $('#tarea-configurar-nombre').val();
+                var producto = $('#producto').val();
+                var hito = ($('#hitoactivo').prop('checked')) ? true : false;
+                var descripcion = CKEDITOR.instances.editor.getData();
+                var canales_id = $('#canal-tarea').val();
+                if (canales_id === "" || canales_id === null)
+                    canales_id = new Array();
+                var recurrente = ($('#recurrente-activo').prop('checked')) ? true : false;
+                var cargo_id = $('#cargo-tarea').val();
+                if (recurrente)
+                    var tiempoRecurrencia = $('#tiempo-recurrencia').val();
+                var partida = ($('#partidaactivo-tarea').prop('checked')) ? true : false;
+                var tranversal = ($('#tarea-tranversal-activa').prop('checked')) ? true : false;
+                var pos = 0;
+                criticalyString = '';
+                criticidad_id.forEach(function (item, index) {
+                    if (item !== "") {
+                        for (var j = 0; j < criticidadesTareas.length; j++) {
+                            if (parseInt(item) === parseInt(criticidadesTareas[j].criticidad_id)) {
+                                criticalyString += (pos === 0 ? "" : ", ") + criticidadesTareas[j].nombre;
+                                pos++;
+                            }
                         }
-                    }
-                } else {
-                    criticidad_id.splice(index, 1);
-                }
-            });
-            tareas[posicion_tarea].criticidad = criticalyString;
-            tareas[posicion_tarea].descripcion = descripcion;
-            tareas[posicion_tarea].canal = {canal_id: canal, nombre: ''};
-            tareas[posicion_tarea].estado = estado;
-            tareas[posicion_tarea].recurrente = recurrente;
-            tareas[posicion_tarea].partida = partida;
-            tareas[posicion_tarea].cargo_id = cargo_id;
-            tareas[posicion_tarea].relacionadas = relacionados;
-
-            $.ajax({
-                type: "POST",
-                url: "tarea/salvarTarea?plan=true&planId=" + currentPlanId,
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                data: JSON.stringify({
-                    'tarea_id': tarea_id === "" ? null : tarea_id,
-                    'codigo': codigo,
-                    'producto': producto,
-                    'nombre': nombre,
-                    'descripcion': descripcion,
-                    'criticidad_id': criticidad_id,
-                    'estado': estado_id,
-                    'partida': partida,
-                    'hito': hito,
-                    'cargo_id': cargo_id,
-                    'canal': canal,
-                    'recurrente': recurrente,
-                    'relacionadas': scopePlan.tareasSeleccionadas
-                }),
-                success: function (response) {
-                    Metronic.unblockUI('#modal-configurar-tarea');
-                    if (response.success) {
-                        CKEDITOR.instances.editor.setData('');
-                        toastr.success(response.message, "Exito !!!");
-                        $('#modal-configurar-tarea').modal('toggle');
-                        dibujarTablaTareas();
                     } else {
+                        criticidad_id.splice(index, 1);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "tarea/salvarTarea?plan=true&planId=" + currentPlanId,
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify({
+                        'tarea_id': tarea_id === "" ? null : tarea_id,
+                        'codigo': codigo,
+                        'producto': producto,
+                        'nombre': nombre,
+                        'descripcion': descripcion,
+                        'criticidad_id': criticidad_id,
+                        'tranversal': tranversal,
+                        'estado': estado_id,
+                        'partida': partida,
+                        'hito': hito,
+                        'cargo_id': cargo_id,
+                        'canales_id': canales_id,
+                        'recurrente': recurrente,
+                        'tiempoRecurrencia': tiempoRecurrencia,
+                        'relacionadas': scopePlan.tareasSeleccionadas,
+                        'agrupadas': scopePlan.tareasAgrupadas
+                    }),
+                    success: function (response) {
+                        Metronic.unblockUI('#modal-configurar-tarea');
+                        if (response.success) {
+                            CKEDITOR.instances.editor.setData('');
+                            toastr.success(response.message, "Exito !!!");
+                            $('#modal-configurar-tarea').modal('toggle');
+                            tablaTareasPlan.getDataTable().draw();
+                        } else {
+                            toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
+                        }
+                    },
+                    failure: function (response) {
+                        Metronic.unblockUI('#modal-configurar-tarea');
+
                         toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
                     }
-                },
-                failure: function (response) {
-                    Metronic.unblockUI('#modal-configurar-tarea');
+                });
 
-                    toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
-                }
-            });
-
-
+            }
         } else {
             if (criticidad_id === "") {
                 var $element = $('#select-criticidad-tarea .selectpicker');
@@ -1343,18 +1286,16 @@ var TableEditablePlanes = function () {
 
     };
     var nEditingRowArchivo = null;
-    var dibujarTablaArchivos = function (tabla) {
+    var dibujarTablaArchivos = function (tabla, tarea) {
         //Limpiar tabla
         $(tabla + ' tbody tr').each(function (e) {
             $(this).remove();
         });
 
         var archivos = [];
-        if (nEditingRowTarea !== null) {
-            var posicion_tarea = $(nEditingRowTarea).attr('id');
-            archivos = tareas[posicion_tarea].modelos;
+        if (tarea.modelos) {
+            archivos = tarea.modelos;
         }
-
         //Agregar fila vacia
         if (archivos.length === 0) {
             var tr = '<tr>' +
@@ -1362,11 +1303,10 @@ var TableEditablePlanes = function () {
                 '</tr>';
             $(tr).appendTo(tabla + ' tbody');
         }
+
         //Agregar elementos
         for (var i = 0; i < archivos.length; i++) {
-            var acciones = '<a class="btn btn-icon-only green edit table-action" href="javascript:;">' +
-                '<i class="fa fa-edit fa-fw"></i></a>' +
-                ' <a class="btn btn-icon-only red delete table-action" href="javascript:;">' +
+            var acciones = '<a class="btn btn-icon-only red delete table-action" href="javascript:;">' +
                 '<i class="fa fa-trash-o fa-fw"></i></a>';
             if (archivos[i].archivo !== "") {
                 var download_url = urlPath + "uploads/" + archivos[i].ruta;
@@ -1374,10 +1314,10 @@ var TableEditablePlanes = function () {
                     '<i class="fa fa-download fa-fw"></i></a>';
             }
             var tr = '<tr id="' + i + '">' +
-                '<td>' + (i + 1) + '</td>' +
-                '<td>' + archivos[i].nombre + '</td>' +
-                '<td>' + archivos[i].descripcion + '</td>' +
-                '<td class="text-center">' + acciones + '</td>' +
+                '<td style="width: 3%;">' + (i + 1) + '</td>' +
+                '<td style="width: 20%;"><a href="uploads/' + archivos[i].ruta + '" target="_new">' + archivos[i].ruta + '</a></td>' +
+                '<td style="width: 50%;">' + (archivos[i].descripcion === null ? "" : archivos[i].descripcion) + '</td>' +
+                '<td style="width: 15%;" class="text-center">' + acciones + '</td>' +
                 '</tr>';
             $(tr).appendTo(tabla + ' tbody');
         }
@@ -1436,7 +1376,6 @@ var TableEditablePlanes = function () {
     };
 
     function salvarArchivo(posicion_tarea, posicion_archivo) {
-        console.log($('#file').prop('files'));
         var formData = new FormData($('#archivo-form'));
         formData.append($("#file").attr("name"), $('#file').prop('files')[0]);
         formData.append($("#archivo-nombre").attr("name"), $("#archivo-nombre").val());
@@ -1589,7 +1528,7 @@ var TableEditablePlanes = function () {
                     if (response.success) {
                         for (var i = 0; i < response.cargos.length; i++) {
                             var cargo_id = response.cargos[i].cargo_id;
-                            var descripcion = response.cargos[i].descripcion;
+                            var descripcion = response.cargos[i].nombre;
                             $('#cargo-tarea').append(new Option(descripcion, cargo_id, false, false));
                         }
                         $('#cargo-tarea').select2();
@@ -1682,8 +1621,9 @@ var TableEditablePlanes = function () {
 
     //Diagrama
     var myDiagram = null;
-    var color = "#ffebee";
     var start = 0;
+    var creada = false;
+    var celdas = new Array();
     var initAccionDiagrama = function () {
         $(document).on('click', "#plan-table-editable a.diagrama", function (e) {
             e.preventDefault();
@@ -1699,8 +1639,10 @@ var TableEditablePlanes = function () {
             Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
             servicioPlan.buscarPlan(plan_id).then(function (response) {
                 Metronic.unblockUI('#form-diagrama .portlet-body');
-                $("#form-diagrama-title").html("DIAGRAMA " + response.data.plan.descripcion);
-                mostrarDiagrama(response.data.plan);
+                plan = response.data.plan;
+                $("#form-diagrama-title").html("DIAGRAMA " + plan.descripcion);
+                scopePlan.planId = plan.plan_id;
+                mostrarDiagrama(plan);
             }).catch(function (error) {
                 loggerSistema.error('Error !!' + error.data);
                 Metronic.unblockUI('#form-diagrama .portlet-body');
@@ -1841,6 +1783,16 @@ var TableEditablePlanes = function () {
         myDiagram = $(go.Diagram, "myDiagramDiv", {
             "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
             initialContentAlignment: go.Spot.Center,
+            //Nuevas opciones
+            "InitialLayoutCompleted": function (e) {
+                // var div = e.diagram.div;
+                // var height = parseInt(e.diagram.documentBounds.height / 2) + 24;
+                //
+                // div.style.height = height + 'px';
+                // e.diagram.requestUpdate();
+            },
+            hasVerticalScrollbar: false,
+            scale: 0.5,
             layout: $(TableLayout, $(go.RowColumnDefinition, {
                 row: 1,
                 height: 22
@@ -1851,6 +1803,24 @@ var TableEditablePlanes = function () {
             "ExternalObjectsDropped": function (e) {
                 pintarBorde(plan);
             },
+            "SelectionDeleted": function (e) {
+                creada = false;
+                var contador = 0;
+                e.subject.each(function (n) {
+                    if (n.part.data.tarea_id) {
+                        if (contador === 0)
+                            eliminarTareaGrafico(n.part.data.tarea_id, plan.plan_id);
+                    } else {
+                        var from = n.part.data.from;
+                        var to = n.part.data.to;
+                        insertarEliminarLink(from, to, false, plan.plan_id);
+                    }
+                });
+            },
+            "LinkDrawn": function (e) {
+                if (!creada)
+                    insertarEliminarLink(e.subject.data.from, e.subject.data.to, true, plan.plan_id);
+            },
             "resizingTool": new LaneResizingTool(),
             "linkingTool.isEnabled": true,
             allowDrop: true,
@@ -1860,14 +1830,14 @@ var TableEditablePlanes = function () {
             },
             // when dropped in the background, not on a Node or a Group, cancel the drop
             mouseDrop: function (e) {
-                e.diagram.currentTool.doCancel();
+                // e.diagram.currentTool.doCancel();
             },
             "animationManager.isInitial": false,
             "undoManager.isEnabled": true,
             "linkReshapingTool": new OrthogonalLinkReshapingTool(),
             "LinkReshaped": function (e) {
                 e.subject.routing = go.Link.Orthogonal;
-            },
+            }
         });
 
         myDiagram.toolManager.mouseDownTools.add($(LinkShiftingTool));
@@ -1927,6 +1897,7 @@ var TableEditablePlanes = function () {
 
         myDiagram.nodeTemplateMap.add("Start", $(go.Node, "Spot", {
                 margin: new go.Margin(10, 10, 10, 10),
+                avoidableMargin: new go.Margin(10, 10, 10, 10),
                 locationSpot: go.Spot.Center,
                 click: function (e, node) {
                     showConnections(node);
@@ -1934,7 +1905,8 @@ var TableEditablePlanes = function () {
                 doubleClick: function (e, node) {
                     mostrarDetallesTarea(plan, node.data.tarea_id);
                 }
-            }, new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+            }, /*new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+            new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
             {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: true},
             {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
             new go.Binding("row"),
@@ -1945,8 +1917,8 @@ var TableEditablePlanes = function () {
                     height: 110,
                     stroke: "transparent",
                     portId: "",
-                    fromSpot: go.Spot.AllSides,
-                    toSpot: go.Spot.AllSides,
+                    fromSpot: go.Spot.Right,
+                    toSpot: go.Spot.Left,
                     fromLinkable: true,
                     toLinkable: true,
                     margin: new go.Margin(10, 0, 10, 0)
@@ -1992,6 +1964,7 @@ var TableEditablePlanes = function () {
 
         myDiagram.nodeTemplateMap.add("Hito", $(go.Node, "Spot", {
                 margin: new go.Margin(10, 10, 10, 10),
+                avoidableMargin: new go.Margin(10, 10, 10, 10),
                 locationSpot: go.Spot.Center,
                 click: function (e, node) {
                     showConnections(node);
@@ -1999,56 +1972,39 @@ var TableEditablePlanes = function () {
                 doubleClick: function (e, node) {
                     mostrarDetallesTarea(plan, node.data.tarea_id);
                 }
-            }, new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+            }, /*new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
             {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: true},
             {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
             new go.Binding("row"),
             new go.Binding("column", "col"),
+            new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
             $(go.Panel, "Auto", $(go.Shape, "Parallelogram2", {
-                    fill: "white",
-                    strokeWidth: 1,
-                    stroke: "transparent",
-                    portId: "",
-                    minSize: new go.Size(250, 70),
-                    fromSpot: go.Spot.AllSides,
-                    toSpot: go.Spot.AllSides,
-                    fromLinkable: true,
-                    toLinkable: true,
-                }, new go.Binding("fill", "color"), new go.Binding("stroke", "color_borde")),
-                $(go.Panel, "Table", {
-                        margin: new go.Margin(0, 0, 10, 0),
-                        defaultAlignment: go.Spot.Left
-                    },
-                    $(go.RowColumnDefinition, {column: 0, width: 200}),
-                    $(go.TextBlock, {font: "10pt bold Segoe UI,sans-serif", stroke: "#000"}, {
-                        row: 0,
-                        column: 0,
-                        columnSpan: 4,
-                        textAlign: "center",
-                        margin: new go.Margin(5, 5, 0, 15)
-                    }, new go.Binding("text").makeTwoWay())))));
-
-        myDiagram.nodeTemplateMap.add("Grupo", $(go.Node, "Spot", {
-                padding: 16,
-                selectionAdornmentTemplate: // adornment when a group is selected
-                    $(go.Adornment, "Auto", $(go.Shape, "RoundedRectangle",
-                        {fill: null, stroke: "dodgerblue", strokeWidth: 3}),
-                        $(go.Placeholder)
-                    ),
-                toSpot: go.Spot.AllSides, // links coming into groups at any side
-            }, $(go.Panel, "Auto"), $(go.TextBlock, {
-                name: "GROUPTEXT",
-                alignment: go.Spot.TopCenter,
-                alignmentFocus: new go.Spot(0, 0, 4, 4),
-                font: "Bold 10pt Sans-Serif"
-            },
-            new go.Binding("text", "nombre")), {
-                toolTip: $(go.Adornment, "Auto", $(go.Shape, {fill: "#EFEFCC"}), $(go.TextBlock, {margin: 4}, new go.Binding("text")))
-            }
-        ));
+                fill: "white",
+                strokeWidth: 1,
+                stroke: "transparent",
+                portId: "",
+                minSize: new go.Size(250, 70),
+                fromSpot: go.Spot.Right,
+                toSpot: go.Spot.Left,
+                fromLinkable: true,
+                toLinkable: true
+            }, new go.Binding("fill", "color"), new go.Binding("stroke", "color_borde")), $(go.Panel, "Table", {
+                margin: new go.Margin(0, 0, 10, 0),
+                defaultAlignment: go.Spot.Left
+            }, $(go.RowColumnDefinition, {
+                column: 0,
+                width: 200
+            }), $(go.TextBlock, {font: "10pt bold Segoe UI,sans-serif", stroke: "#000"}, {
+                row: 0,
+                column: 0,
+                columnSpan: 4,
+                textAlign: "center",
+                margin: new go.Margin(5, 5, 0, 15)
+            }, new go.Binding("text").makeTwoWay())))));
 
         myDiagram.nodeTemplate = $(go.Node, "Auto", {
                 margin: new go.Margin(10, 10, 10, 10),
+                avoidableMargin: new go.Margin(10, 10, 10, 10),
                 locationSpot: go.Spot.Center,
                 click: function (e, node) {
                     showConnections(node);
@@ -2056,7 +2012,8 @@ var TableEditablePlanes = function () {
                 doubleClick: function (e, node) {
                     mostrarDetallesTarea(plan, node.data.tarea_id);
                 }
-            }, new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+            }, /* new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+            new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
             {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: true},
             {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
             new go.Binding("row"), new go.Binding("column", "col"), $(go.Shape, "Rectangle", {
@@ -2064,10 +2021,10 @@ var TableEditablePlanes = function () {
                 strokeWidth: 1,
                 stroke: "transparent",
                 portId: "",
-                fromSpot: go.Spot.AllSides,
-                toSpot: go.Spot.AllSides,
+                fromSpot: go.Spot.Right,
+                toSpot: go.Spot.Left,
                 fromLinkable: true,
-                toLinkable: true,
+                toLinkable: true
             }, new go.Binding("fill", "color").makeTwoWay(), new go.Binding("stroke", "color_borde").makeTwoWay()),
             $(go.Panel, "Table", {
                     margin: new go.Margin(0, 0, 10, 0),
@@ -2113,7 +2070,7 @@ var TableEditablePlanes = function () {
                 selectable: false,
                 computesBoundsAfterDrag: true,
                 computesBoundsIncludingLocation: true,
-                handlesDragDropForMembers: true, // don't need to define handlers on member Nodes and Links
+                handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                 mouseDragEnter: function (e, group, prev) {
                     group.isHighlighted = true;
                 },
@@ -2121,40 +2078,23 @@ var TableEditablePlanes = function () {
                     group.isHighlighted = false;
                 },
                 mouseDrop: function (e, group) {
-                    // if any dropped part wasn't already a member of this group, we'll want to let the group's row
-                    // column allow themselves to be resized automatically, in case the row height or column width
-                    // had been set manually by the LaneResizingTool
-                    var anynew = e.diagram.selection.any(function (p) {
-                        return p.containingGroup !== group;
-                    });
-                    // Don't allow headers/siders to be dropped
-                    var anyHeadersSiders = e.diagram.selection.any(function (p) {
-                        return p.category === "Column Header" || p.category === "Row Sider";
-                    });
-                    if (!anyHeadersSiders && group.addMembers(e.diagram.selection, true)) {
-                        if (anynew) {
-                            e.diagram.layout.getRowDefinition(group.row).height = NaN;
-                            e.diagram.layout.getColumnDefinition(group.column).width = NaN;
-                        }
-                    } else {  // failure upon trying to add parts to this group
-                        e.diagram.currentTool.doCancel();
-                    }
+
                 }
-            }, new go.Binding("row"), new go.Binding("column", "col"), new go.Binding('location', 'loc', go.Point.parse),
+            }, new go.Binding("row"), new go.Binding("column", "col"), new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify), new go.Binding("columnSpan", "colSpan").makeTwoWay(),
             // the group is normally unseen -- it is completely transparent except when given a color or when highlighted
             $(go.Shape, {
                 fill: "transparent", stroke: "transparent",
-                strokeWidth: myDiagram.nodeTemplate.margin.left,
+                strokeWidth: 3,
                 stretch: go.GraphObject.Fill
             }, new go.Binding("fill", "color"), new go.Binding("stroke", "isHighlighted", function (h) {
-                return h ? "red" : "transparent";
+                return h ? "red" : "blue";
             }).ofObject()),
             $(go.Placeholder, {// leave a margin around the member nodes of the group which is the same as the member node margin
                 alignment: (function (m) {
                     return new go.Spot(0, 0, m.top, m.left);
                 })(myDiagram.nodeTemplate.margin),
                 padding: (function (m) {
-                    return new go.Margin(0, m.right, m.bottom, 0);
+                    return new go.Margin(50, m.right + 50, m.bottom + 50, 50);
                 })(myDiagram.nodeTemplate.margin)
             })
         );
@@ -2163,17 +2103,17 @@ var TableEditablePlanes = function () {
                 relinkableFrom: true,
                 relinkableTo: true,
                 reshapable: true,
-                resegmentable: true
+                resegmentable: true,
+                layerName: "Background"
             }, {
                 routing: go.Link.AvoidsNodes,
                 adjusting: go.Link.End,
                 curve: go.Link.JumpOver,
-                corner: 20,
                 toShortLength: 4
             },
             ///Nuevas opciones
             new go.Binding("points").makeTwoWay(),
-            new go.Binding("routing", "routing", go.Binding.parseEnum(go.Link, go.Link.AvoidsNodes)).makeTwoWay(go.Binding.toString),
+            // new go.Binding("routing", "routing", go.Binding.parseEnum(go.Link, go.Link.AvoidsNodes)).makeTwoWay(go.Binding.toString),
             //End Nuevas opciones
             $(go.Shape, {isPanelMain: true, stroke: "black", strokeWidth: 3},
                 // the Shape.stroke color depends on whether Link.isHighlighted is true
@@ -2192,10 +2132,12 @@ var TableEditablePlanes = function () {
 
         var links = plan.links;
 
-
         if (plan.diagrama !== "" && plan.diagrama !== null) {
             myDiagram.model = go.Model.fromJson(plan.diagrama);
-            myDiagram.delayInitialization(relayoutDiagram);
+            var pos = myDiagram.model.modelData.position;
+            if (pos)
+                myDiagram.initialPosition = go.Point.parse(pos);
+            // myDiagram.delayInitialization(relayoutDiagram);
         } else {
             //Datos del modelo
             var model = [];
@@ -2217,6 +2159,7 @@ var TableEditablePlanes = function () {
             }
             //Rows sider
             var row = 2;
+            var filas = new Array();
             for (var i = 0; i < siders.length; i++) {
                 model.push({
                     key: "sd" + siders[i].idSider,
@@ -2225,63 +2168,231 @@ var TableEditablePlanes = function () {
                     peso: siders[i].peso,
                     category: "Row Sider"
                 });
+                filas.push({idGerencia: siders[i].idSider, fila: row});
                 row++;
             }
             //Celdas
-            var celdas = new Array();
+            celdas = new Array();
+            var cont = new Array();
             for (var i = 0; i < siders.length; i++) {
                 for (var j = 0; j < columnas.length; j++) {
                     var celda = "Celda(" + siders[i].idSider + "," + columnas[j].identificador + ")";
+                    cont["Fila(" + siders[i].idSider + ")"] = 0;
                     model.push({
                         key: celda,
                         text: celda,
                         col: j + 2,
+                        color: columnas[j].color + "1e",
                         row: i + 2,
                         isGroup: true
                     });
-                    //Tareas Invisibles
+                    // Tareas Invisibles
                     model.push({
                         key: generateUUID(),
                         text: "",
                         color: "white",
                         size: "3 3",
-                        group: celda,
+                        group: celda
                     });
-                    celdas[celda] = 0;
+                    celdas[celda] = {pos: 0, x: 0, y: 0};
                 }
             }
             var tareasGrafico = plan.tareas;
             var tam = tareasGrafico.length;
+            var gruposDiagrama = new Array();
             for (var i = 0; i < tam; i++) {
                 var celda = "Celda(" + tareasGrafico[i].idGerencia + "," + tareasGrafico[i].idCriticidad + ")";
                 //Buscar la tarea para la celda
+                if (tareasGrafico[i].partida) {
+                    celdas[celda].x = 0;
+                    celdas[celda].y = 0;
+                }
                 var objetoPlan = {
-                    key: "" + tareasGrafico[i].tarea_id,
+                    key: "" + tareasGrafico[i].key,
                     text: tareasGrafico[i].nombre,
                     cargo: tareasGrafico[i].cargo,
                     producto: tareasGrafico[i].producto,
                     partida: tareasGrafico[i].partida,
-                    loc: celdas[celda] % 2 === 0 ? "" + (50 * celdas[celda] + 150) + " " + (150 * celdas[celda]) : "" + (1000 + i * 4) + " " + (100 * (celdas[celda] - 1) + 150),
+                    bounds: celdas[celda].x + " " + celdas[celda].y,
                     tarea_id: tareasGrafico[i].tarea_id,
                     color_borde: tareasGrafico[i].color,
                     color: tareasGrafico[i].hito ? tareasGrafico[i].color : tareasGrafico[i].partida ? tareasGrafico[i].color : "#ffebee",
                     group: celda,
                     category: tareasGrafico[i].hito ? "Hito" : tareasGrafico[i].partida ? "Start" : ""
                 }
-                celdas[celda]++;
                 model.push(objetoPlan);
+                celdas[celda].pos++;
+                celdas[celda].x += 500;
+                if (celdas[celda].pos % 3 === 0) {
+                    celdas[celda].x = 0;
+                    celdas[celda].y += 300;
+                }
             }
+            var yTranversal = 150;
+            var tareasTranversales = plan.tareasTranversales;
+            var tamTranversal = tareasTranversales.length;
+            for (var i = 0; i < tamTranversal; i++) {
+                var celda = "Celda(" + tareasTranversales[i].idGerencia + "," + tareasTranversales[i].idCriticidad + ")";
+                var texto = "Fila(" + tareasTranversales[i].idGerencia + ")";
+                //Buscar la tarea para la celda
+                var fila = buscarFila(filas, tareasTranversales[i].idGerencia);
+                var columna = tareasTranversales[i].col;
+                var nombreGrupo = "tv" + fila + tareasTranversales[i].grupo;
+                // var celdaMayorCantidad = buscarMaximoFila(columnas, tareasTranversales[i].idGerencia, tareasTranversales[i].idCriticidad, tareasTranversales[i].colSpan);
+                var grupo = {
+                    key: nombreGrupo,
+                    text: "",
+                    color: "transparent",
+                    // bounds: celdaMayorCantidad.x + " " + celdaMayorCantidad.y,
+                    col: columna,
+                    colSpan: tareasTranversales[i].colSpan,
+                    row: fila,
+                    isGroup: true
+                };
+                if (!existeGrupo(gruposDiagrama, grupo.key)) {
+                    gruposDiagrama.push(grupo);
+                    model.push(grupo);
+                }
+                model.push({
+                    key: generateUUID(),
+                    text: "",
+                    color: "transparent",
+                    bounds: 0 + " " + yTranversal,
+                    size: "0 " + 200,
+                    group: nombreGrupo
+                });
+                var objetoTranversal = {
+                    key: "" + tareasTranversales[i].key,
+                    text: tareasTranversales[i].nombre,
+                    size: tareasTranversales[i].colSpan * (tam + tamTranversal + 800) + " " + 100,
+                    bounds: 0 + " " + yTranversal,
+                    partida: tareasTranversales[i].partida,
+                    tarea_id: tareasTranversales[i].tarea_id,
+                    cargo: tareasTranversales[i].cargo,
+                    producto: tareasTranversales[i].producto,
+                    color_borde: tareasTranversales[i].color,
+                    color: tareasTranversales[i].hito ? tareasTranversales[i].color : tareasTranversales[i].partida ? tareasTranversales[i].color : "#ffebee",
+                    group: nombreGrupo,
+                    tranversal: tareasTranversales[i].tranversal,
+                    category: ""
+                };
+                yTranversal += 300;
+                model.push(objetoTranversal);
+            }
+            for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
+                if (myDiagram.model.nodeDataArray[i].key == key) {
+                    myDiagram.model.nodeDataArray[i].titulo = titulo;
+                    myDiagram.model.nodeDataArray[i].id = id;
+                    myDiagram.model.nodeDataArray[i].cargo = cargo;
+                    myDiagram.model.nodeDataArray[i].producto = producto;
+                    break;
+                }
+            }
+
             myDiagram.model = new go.GraphLinksModel(model, links);
         }
-
-        //Centrar el grafico
-        setTimeout(function () {
-            btnClickZoomToFit();
-            myDiagram.commandHandler.increaseZoom(5);
-            myDiagram.scrollToRect(new go.Rect(0, 0, 20, 20));
-        }, 100);
     };
 
+    function buscarFila(filas, idGerencia) {
+        var tam = filas.length;
+        for (i = 0; i < tam; i++) {
+            if (parseInt(filas[i].idGerencia) === parseInt(idGerencia)) {
+                return filas[i].fila;
+            }
+        }
+        return null;
+    }
+
+    function insertarEliminarLink(from, to, accion, planId) {
+        $("#modal-confirmar").modal({
+            show: true
+        });
+        $("#btn-confirmar-si").click(function (e) {
+            e.preventDefault();
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+
+            servicioPlan.insertarEliminarLink(from, to, accion, planId).then(function (resp) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                if (resp.data.success) {
+                    creada = true;
+                    toastr.success(resp.data.message, "Exito !!!");
+                } else {
+                    toastr.error(resp.data.error, "Error !!!");
+                }
+            }).catch(function (error) {
+
+            });
+        });
+        $("#btn-confirmar-no").click(function (e) {
+            e.preventDefault();
+            myDiagram.commandHandler.undo();
+        });
+    }
+
+    function eliminarTareaGrafico(tareaId, planId) {
+        $("#modal-confirmar-eliminar-tarea").modal({
+            show: true
+        });
+        $("#btn-confirmar-tarea-si").click(function (e) {
+            e.preventDefault();
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+            servicioPlan.eliminarTareaGrafico(tareaId, planId).then(function (resp) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                if (resp.data.success) {
+                    toastr.success(resp.data.message, "Exito !!!");
+                } else {
+                    toastr.error(resp.data.error, "Error !!!");
+                }
+            }).catch(function (error) {
+
+            });
+        });
+        $("#btn-confirmar-tarea-no").click(function (e) {
+            e.preventDefault();
+            myDiagram.commandHandler.undo();
+        });
+    }
+
+    function buscarMaximoFila(columnas, idGerencia, idCriticidad, colSpand) {
+        var pos = 0;
+        var posInicial = buscarPosicionNivelAlerta(columnas, idCriticidad);
+        var celda = "Celda(" + idGerencia + "," + idCriticidad + ")";
+        celdas[celda].y += 100;
+        celdas[celda].x = 0;
+        celdas[celda].pos += 2;
+        while (pos < colSpand && posInicial < columnas.length - 1) {
+            var celdaSiguiente = "Celda(" + idGerencia + "," + columnas[posInicial + 1].identificador + ")";
+            if (celdas[celda].y < celdas[celdaSiguiente].y)
+                celda = celdaSiguiente;
+            pos++;
+            posInicial++;
+            celdas[celdaSiguiente].y += 300;
+            celdas[celdaSiguiente].x = 0;
+            celdas[celdaSiguiente].pos += 2;
+        }
+        celdas[celda].y += 300;
+        celdas[celda].x = 0;
+        celdas[celda].pos += 2;
+        return celdas[celda];
+    }
+
+    function buscarPosicionNivelAlerta(columnas, idCriticidad) {
+        for (var i = 0; i < columnas.length; i++) {
+            if (parseInt(idCriticidad) === parseInt(columnas[i].identificador))
+                return i;
+        }
+        return -1;
+    }
+
+    function existeGrupo(grupos, clave) {
+        var tam = grupos.length;
+        for (i = 0; i < tam; i++) {
+            if (grupos[i].key === clave) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function showConnections(node) {
         var myDiagram = node.diagram;
@@ -2327,27 +2438,22 @@ var TableEditablePlanes = function () {
     };
 
     function mostrarDetallesTarea(plan, idTarea) {
-        var tareas = plan.tareas;
-        var cant = tareas.length;
-        var tieneTarea = false;
-        for (var i = 0; i < cant; i++) {
-            if (parseInt(tareas[i].tarea_id) === parseInt(idTarea)) {
-                tieneTarea = true;
-                break;
-            }
-        }
-        if (tieneTarea) {
-            servicioPlan.buscarTarea(idTarea, plan.plan_id).then(success).catch(failed);
-        }
+        Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+        servicioPlan.buscarTarea(idTarea, plan.plan_id).then(success).catch(failed);
 
         function success(response) {
+            Metronic.unblockUI('#form-diagrama .portlet-body');
             $('#modal-tarea-detalle').modal({
                 'show': true
             });
+            scopePlan.antecesoras = new Array();
+            scopePlan.sucesoras = new Array();
             scopePlan.tarea = response.data.tarea;
             scopePlan.antecesoras = response.data.antecesoras;
-            scopePlan.tituloModal = scopePlan.tarea.nombre;
+            scopePlan.sucesoras = response.data.sucesoras;
+            scopePlan.tituloModal = response.data.tarea.nombre;
             $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+            $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
         }
 
         function failed(error) {
@@ -2380,30 +2486,6 @@ var TableEditablePlanes = function () {
         }, 100);
     };
 
-    var mostrarModalTarea = function (tarea) {
-        //Editar si es una tarea del diagrama
-        if (tarea.group !== null) {
-            $('#tarea-titulo').html(tarea.nombre);
-            $('#tarea-producto').html(tarea.producto);
-            $('#tarea-codigo').html(tarea.codigo);
-            $('#tarea-nombre').html(tarea.nombre);
-            $('#tarea-cargo').html(tarea.cargo);
-            $('#tarea-recurrente').html(tarea.recurrente ? "Si" : "No");
-            $('#tarea-fecha').html(tarea.fecha);
-            $('#detalles-tarea').modal({
-                'show': true
-            });
-        } else {
-            //Nueva tarea
-            $('#cargo').html(tarea.cargo);
-            $('#producto').val(tarea.producto);
-            $('#id').val(tarea.id);
-            $('#titulo').val(tarea.titulo);
-            $('#detalles-tarea').modal({
-                'show': true
-            });
-        }
-    };
     var destroyDiagrama = function () {
         $('#div-diagrama').html('<div id="myDiagramDiv" style="height:500px;"></div>');
         $('#div-paleta').html('<div id="myPaletteDiv" style="height:500px;"></div>');
@@ -2414,13 +2496,19 @@ var TableEditablePlanes = function () {
         myDiagram.layoutDiagram();
     };
     var btnClickZoomToFit = function () {
+        var div = myDiagram.div;
+        var height = 700;
+        div.style.height = height + 'px';
+        myDiagram.requestUpdate();
         myDiagram.zoomToFit();
     };
     var btnClickCenterRoot = function () {
-        myDiagram.scale = 1;
-        var node = myDiagram.findNodeForKey(0);
-        if (node)
-            myDiagram.scrollToRect(node.actualBounds);
+        var div = myDiagram.div;
+        var height = parseInt(myDiagram.documentBounds.height / 2) + 24;
+        div.style.height = height + 'px';
+        myDiagram.requestUpdate();
+        myDiagram.scale = 0.5;
+        myDiagram.scrollToRect(new go.Rect(0, 0, 20, 20));
     };
     var btnClickIncreaseZoom = function () {
         myDiagram.commandHandler.increaseZoom();
@@ -2433,13 +2521,14 @@ var TableEditablePlanes = function () {
         var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
-            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
         return uuid;
-    }
+    };
     var btnClickSalvarDiagrama = function () {
         Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
         var plan_id = $('#plan_id').val();
+        myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
         var diagrama = myDiagram.model.toJson();
         $.ajax({
             type: "POST",
@@ -2491,6 +2580,21 @@ var TableEditablePlanes = function () {
             }
         });
     };
+
+    var exportar = function () {
+        var ancho = myDiagram.viewportBounds.width;
+        var alto = myDiagram.viewportBounds.height;
+        var imagen = myDiagram.makeImage({
+            scale: 0.2,
+            size: new go.Size(ancho, alto),
+            maxSize: new go.Size(ancho + 2, alto + 2)
+        });
+        $('#a-diagrama-imagen').attr('href', imagen.src);
+        $('#diagrama-imagen').attr('src', imagen.src);
+        $('#modal-imagen').modal({
+            'show': true
+        });
+    }
 
     return {
         //main function to initiate the module
@@ -2544,7 +2648,9 @@ var TableEditablePlanes = function () {
         btnClickIncreaseZoom: btnClickIncreaseZoom,
         btnClickDecreaseZoom: btnClickDecreaseZoom,
         btnClickSalvarDiagrama: btnClickSalvarDiagrama,
-        btnClickBorrarDiagrama: btnClickBorrarDiagrama
+        btnClickBorrarDiagrama: btnClickBorrarDiagrama,
+        filtrarTareasPlan: filtrarTareasPlan,
+        exportar: exportar
     };
 
 }
