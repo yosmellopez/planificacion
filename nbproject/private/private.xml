@@ -2,6 +2,33 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/exception/OracleException.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Plan.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/ManagementController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Document.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/security/jwt/JwtAuthenticationToken.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/config/AppConfig.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Position.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Channel.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/service/GrupoRepository.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/templates/login.html</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/security/AjaxLoginProcessingFilter.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/PlTask.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/service/ChannelService.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/config/SecurityConfig.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/config/CustomCorsFilter.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/WEB-INF/web.xml</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/ChannelController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/GeneralController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Task.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Area.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/security/jwt/JwtTokenAuthenticationProcessingFilter.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/TaskController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/util/ArregloCreator.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/config/ApplicationBoot.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/PlanController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/security/jwt/JwtAuthenticationProvider.java</file>
+        </group>
     </open-files>
 </project-private>

@@ -26,6 +26,7 @@
           <element id="library" level="application" name="JWT" />
           <element id="library" level="application" name="Hibernate Validator 6.0.7" />
           <element id="library" level="application" name="JPA Validation" />
+          <element id="library" level="application" name="FcmJava" />
         </element>
       </element>
     </root>

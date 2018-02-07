@@ -5,15 +5,11 @@
  */
 package com.planning.config;
 
-import com.planning.filter.MyPageableHandlerMethodArgumentResolver;
+import com.planning.fcm.FcmSettings;
 import com.planning.util.MapeadorObjetos;
 import com.wavemaker.runtime.file.manager.FileServiceManager;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import de.bytefish.fcmjava.client.FcmClient;
+import de.bytefish.fcmjava.http.client.IFcmClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -34,11 +29,7 @@ import org.springframework.security.web.method.annotation.AuthenticationPrincipa
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
@@ -50,28 +41,35 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.util.*;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.planning"})
 @EnableSpringDataWebSupport
 public class WebMvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
-
+    
     @Autowired
     Environment env;
-
+    
     @Bean
     public MapeadorObjetos wMObjectMapper() {
         return new MapeadorObjetos();
     }
-
+    
     @Bean
     public FileServiceManager fileServiceManager() {
         return new FileServiceManager();
     }
-
+    
+    @Bean
+    public IFcmClient fcmClient(FcmSettings settings) {
+        return new FcmClient(settings);
+    }
+    
     @Value("${planning.cachear}")
     String cachear;
-
+    
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -79,13 +77,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         converters.add(converter);
         super.configureMessageConverters(converters);
     }
-
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/bundles/**", "/img/**", "/icons/**", "/font/**", "/fonts/**", "/flaty/**", "/docs/**", "/app/**", "/theme-classic/**", "/recursos/**")
-                .addResourceLocations("/bundles/", "/img/", "/icons/", "/font/", "/fonts/", "/flaty/", "/docs/", "/app/", "/theme-classic/", "/recursos/");
+        registry.addResourceHandler("/fonts/**", "/flaty/**", "/docs/**", "/app/**", "/theme-classic/**", "/recursos/**")
+                .addResourceLocations("/fonts/", "/flaty/", "/docs/", "/app/", "/theme-classic/", "/recursos/");
     }
-
+    
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(false).
@@ -96,7 +94,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
                 mediaType("json", MediaType.APPLICATION_JSON);
         super.configureContentNegotiation(configurer);
     }
-
+    
     @Bean(name = "contentNegotiatingViewResolver")
     public ContentNegotiatingViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
         ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
@@ -106,23 +104,23 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         resolver.setViewResolvers(resolvers);
         return resolver;
     }
-
+    
     private static final String UTF8 = "UTF-8";
-
+    
     private ApplicationContext applicationContext;
-
+    
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
-
+    
     @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         return resolver;
     }
-
+    
     @Bean
     public TemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -133,7 +131,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         engine.setAdditionalDialects(additionalDialects);
         return engine;
     }
-
+    
     private ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
@@ -144,7 +142,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }
-
+    
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setOrder(2);
@@ -155,7 +153,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         templateResolver.setCacheable(false);
         return templateResolver;
     }
-
+    
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         AuthenticationPrincipalArgumentResolver resolver = new AuthenticationPrincipalArgumentResolver();
@@ -168,7 +166,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         argumentResolvers.add(phmar);
         super.addArgumentResolvers(argumentResolvers);
     }
-
+    
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();

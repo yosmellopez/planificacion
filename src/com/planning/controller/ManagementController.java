@@ -161,6 +161,10 @@ public class ManagementController {
             return "No se puede guardar esta dirección porque ya existe otra con ese orden.";
         } else if (e.getMessage().contains("SYS_C009985")) {
             return "No se puede insertar la dirección porque la la secuencia no está correctamente configurada.";
+        } else if (e.getMessage().contains("MANAGEMENT_ID_NULL")) {
+            return "El identificador de direcciones no debe ser vacío.";
+        } else if (e.getMessage().contains("MANAGEMENT_NOMBRE_NULL")) {
+            return "El nombre de direcciones no debe ser vacío.";
         } else if (e.getMessage().contains("FK_MANAGEMENT_MANAGEMENT")) {
             return "No se puede eliminar esta dirección porque esta referenciada en otra dirección.";
         } else if (e.getMessage().contains("fk_departamento_id_facultad")) {

@@ -1,9 +1,11 @@
+/* global TableEditableTareas, Metronic */
+
 (function () {
     'use strict';
 
     angular
-        .module('app.tareas')
-        .controller('Tareas', Tareas);
+            .module('app.tareas')
+            .controller('Tareas', Tareas);
 
     Tareas.$inject = ['$rootScope', '$scope', '$timeout', 'urlPath', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'estadoTareaService', 'canalService', 'usuarioService'];
 
@@ -136,10 +138,26 @@
 
         function filtarTareasCargo() {
             $scope.cargo = $("#cargo-filtro").val();
+            if (parseInt($scope.cargo))
+                $scope.cargo = parseInt($scope.cargo);
+            else
+                $scope.cargo = "";
             $scope.gerencia = $("#gerencia-filtro").val();
+            if (parseInt($scope.gerencia))
+                $scope.gerencia = parseInt($scope.gerencia);
+            else
+                $scope.gerencia = "";
             $scope.direccion = $("#direccion").val();
+            if (parseInt($scope.direccion))
+                $scope.direccion = parseInt($scope.direccion);
+            else
+                $scope.direccion = "";
             $scope.criticidad = $("#nivel-alerta").val();
-            TableEditableTareas.buscarTareas("tarea/buscarTareas?cargo=" + $scope.cargo + "&area=" + $scope.gerencia + "&direccion=" + $scope.direccion + "&criticidad=" + $scope.criticidad)
+            if (parseInt($scope.criticidad))
+                $scope.criticidad = parseInt($scope.criticidad);
+            else
+                $scope.criticidad = "";
+            TableEditableTareas.buscarTareas("tarea/buscarTareas?cargo=" + $scope.cargo + "&area=" + $scope.gerencia + "&direccion=" + $scope.direccion + "&criticidad=" + $scope.criticidad);
         }
 
         function activate() {

@@ -1,3 +1,5 @@
+/* global Metronic */
+
 var Login = function () {
 
     var handleLogin = function () {
@@ -32,7 +34,7 @@ var Login = function () {
             },
             highlight: function (element) { // hightlight error inputs
                 $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
             success: function (label) {
                 label.closest('.form-group').removeClass('has-error');
@@ -67,18 +69,27 @@ var Login = function () {
                 animate: true
             });
             $.ajax({
-                type: "POST",
-                url: "usuario/autenticar",
-                dataType: "json",
-                data: {
-                    'email': nick,
-                    'pass': hex_sha1(pass),
-                    'remember_me': remember_me,
-                    'target_path': target_path
-                },
+//                type: "POST",
+//                url: "api/auth/login",
+//                dataType: "json",
+//                contentType: "application/json;charset=utf-8",
+//                data: JSON.stringify({
+//                    'email': nick,
+//                    'pass': hex_sha1(pass),
+//                    'remember_me': remember_me,
+//                    'target_path': target_path
+//                }),
+                 type: "POST",
+                 url: "usuario/autenticar",
+                 dataType: "json",
+                 data: {
+                     'email': nick,
+                     'pass': hex_sha1(pass),
+                     'remember_me': remember_me,
+                     'target_path': target_path
+                 },
                 success: function (response) {
                     Metronic.unblockUI('#blockui-loading');
-
                     if (response.success) {
                         storeUser(response.usuario);
                         window.location.href = response.url;
@@ -118,7 +129,7 @@ var Login = function () {
             },
             highlight: function (element) { // hightlight error inputs
                 $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
             success: function (label) {
                 label.closest('.form-group').removeClass('has-error');

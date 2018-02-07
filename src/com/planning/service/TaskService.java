@@ -34,6 +34,10 @@ public interface TaskService extends JpaRepository<Task, Integer> {
 
     public List<Task> findByIdNotIn(List<Integer> ids);
 
+    public List<Task> findByStatusTask(StatusTask statusTask);
+
+    public Long countByStatusTask(StatusTask statusTask);
+
     public List<Task> findByPosition(Position position);
 
     public Page<Task> findByPosition(Position position, Pageable pageable);
@@ -48,7 +52,17 @@ public interface TaskService extends JpaRepository<Task, Integer> {
 
     public List<Task> findByCriticalyLevelsContains(CriticalyLevel criticalyLevel);
 
+    public List<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position);
+
+    public List<Task> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel criticalyLevel, Area area);
+
+    public List<Task> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel criticalyLevel, Management management);
+
     public Page<Task> findByCriticalyLevelsContains(CriticalyLevel criticalyLevel, Pageable pageable);
 
-    public List<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position);
+    public Page<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position, Pageable pageable);
+
+    public Page<Task> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel criticalyLevel, Area area, Pageable pageable);
+
+    public Page<Task> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel criticalyLevel, Management management, Pageable pageable);
 }

@@ -608,13 +608,11 @@ var TableEditableTareas = function () {
 
                     var archivo = response.name;
                     var ruta = response.ruta;
-                    var nombre = $('#modelo-nombre').val();
                     var descripcion = $('#modelo-descripcion').val();
                     var estado = ($('#estadoactivo').prop('checked')) ? 1 : 0;
 
                     modelos.push({
                         archivo: archivo,
-                        nombre: nombre,
                         descripcion: descripcion,
                         estado: estado,
                         ruta: ruta,
@@ -702,7 +700,6 @@ var TableEditableTareas = function () {
                 if (!ExisteModelo(modelos, nombre)) {
                     var formData = new FormData($('#modelo-form'));
                     formData.append($("#file").attr("name"), $('#file').prop('files')[0]);
-                    formData.append($("#modelo-nombre").attr("name"), $("#modelo-nombre").val());
                     formData.append($("#modelo-descripcion").attr("name"), $("#modelo-descripcion").val());
                     formData.append($("#estadoactivo").attr("name"), $("#estadoactivo").prop('checked') ? true : false);
                     formData.append("tareaId", idTareaEditar);
@@ -731,20 +728,24 @@ var TableEditableTareas = function () {
                         contentType: false,
                         processData: false,
                         complete: function (res) {
-                            var modelo = res.responseJSON.modelo;
-                            modelos.push({
-                                archivo: modelo.ruta,
-                                nombre: modelo.nombre,
-                                descripcion: modelo.descripcion,
-                                estado: modelo.estado,
-                                ruta: modelo.ruta,
-                                modelo_id: modelo.modelo_id
-                            });
-                            resetFormModelo();
-                            dibujarTablaModelos("#table-modelos");
-                            var progressbar = $('#progressbar');
-                            progressbar.val(0);
-                            $('.progress-value').html('0%');
+                            if (res.responseJSON.success) {
+                                toastr.success("Archivo subido con éxito", "Error !!!");
+                                var modelo = res.responseJSON.modelo;
+                                modelos.push({
+                                    archivo: modelo.ruta,
+                                    nombre: modelo.nombre,
+                                    descripcion: modelo.descripcion,
+                                    estado: modelo.estado,
+                                    ruta: modelo.ruta,
+                                    modelo_id: modelo.modelo_id
+                                });
+                                resetFormModelo();
+                                dibujarTablaModelos("#table-modelos");
+                                var progressbar = $('#progressbar');
+                                progressbar.val(0);
+                                $('.progress-value').html('0%');
+                            } else
+                                toastr.error(res.responseJSON.error, "Error !!!");
                         }
                     });
                 } else {

@@ -3,6 +3,7 @@ package com.planning.service;
 
 import com.planning.entity.ChildTask;
 import com.planning.entity.PlTask;
+import com.planning.entity.Plan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public interface ChildTaskService extends JpaRepository<ChildTask, Integer> {
     public List<ChildTask> findByToAndIsChild(PlTask childid, boolean isChild);
 
     public List<ChildTask> findByFromOrTo(PlTask from, PlTask to);
+
+    public List<ChildTask> findByFrom_PlanOrTo_Plan(Plan from, Plan to);
 
     public Long countByFromOrTo(PlTask from, PlTask to);
 }

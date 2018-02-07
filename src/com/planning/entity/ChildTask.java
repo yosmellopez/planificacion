@@ -37,12 +37,10 @@ import org.hibernate.annotations.ColumnDefault;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedEntityGraphs({
-    @NamedEntityGraph(name = "Child.listarTodas",
-                      attributeNodes = {
-                          @NamedAttributeNode(value = "from"),
-                          @NamedAttributeNode(value = "to")
-                      }
-    )})
+    @NamedEntityGraph(name = "Child.listarTodas", attributeNodes = {
+        @NamedAttributeNode(value = "from")
+        ,@NamedAttributeNode(value = "to")
+    })})
 public class ChildTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -126,6 +124,14 @@ public class ChildTask implements Serializable {
         return !from.getTask().getId().equals(to.getTask().getId());
     }
 
+    public ChildTask clonar() {
+        ChildTask childTask = new ChildTask();
+        childTask.setChild(isChild);
+        childTask.setFrom(from);
+        childTask.setTo(to);
+        return childTask;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -140,10 +146,7 @@ public class ChildTask implements Serializable {
             return false;
         }
         ChildTask other = (ChildTask) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

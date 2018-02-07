@@ -78,16 +78,9 @@
         }
 
         vm.seleccionarElemento = function (config) {
-            var cargoSelect = $("#cargo-filtro");
-            var gerenciaSelect = $("#gerencia-filtro");
-            var direccionSelect = $("#direccion");
+            var cargoSelect = $("#cargo");
+            var gerenciaSelect = $("#gerencia");
             if (config.criticidad) {
-                cargoSelect.select2("val", "");
-                gerenciaSelect.select2("val", "");
-                direccionSelect.select2("val", "");
-                $scope.gerencia = "";
-                $scope.direccion = "";
-                $scope.cargo = "";
                 $scope.mensaje = "este nivel de alerta";
             }
             if (config.cargo) {
@@ -103,6 +96,7 @@
                 }).catch(function () {
 
                 });
+                $scope.mensaje = "esta unidad";
             }
             if (config.direccion) {
                 $scope.direccion = $("#direccion").val();
@@ -112,11 +106,15 @@
                 $scope.gerencia = "";
                 areaService.getAreasGerencia($scope.direccion).then(function (resp) {
                     vm.areas = resp.data.areas;
+                    cargoSelect.select2("val", "");
+                    gerenciaSelect.select2("val", "");
                 }).catch(function () {
 
                 });
                 cargoService.getCargosGerencia($scope.direccion).then(function (resp) {
                     vm.cargos = resp.data.cargos;
+                    cargoSelect.select2("val", "");
+                    gerenciaSelect.select2("val", "");
                 }).catch(function () {
 
                 });
@@ -128,18 +126,27 @@
             Metronic.blockUI({target: '#lista-tarea .portlet-body', animate: true});
             var objeto = {};
             $scope.nivelAlerta = $("#nivel-alerta").val();
+            if (parseInt($scope.nivelAlerta))
+                $scope.nivelAlerta = parseInt($scope.nivelAlerta);
+            else $scope.nivelAlerta = "";
             $scope.cargo = $("#cargo").val();
+            if (parseInt($scope.cargo))
+                $scope.cargo = parseInt($scope.cargo);
+            else $scope.cargo = "";
             $scope.gerencia = $("#gerencia").val();
+            if (parseInt($scope.gerencia))
+                $scope.gerencia = parseInt($scope.gerencia);
+            else $scope.gerencia = "";
             $scope.direccion = $("#direccion").val();
-            if ($scope.cargo !== "") {
-                objeto = {cargo: $scope.cargo};
-            } else if ($scope.gerencia !== "") {
-                objeto = {area: $scope.gerencia};
-            } else if ($scope.direccion !== "") {
-                objeto = {direccion: $scope.direccion};
-            } else if ($scope.nivelAlerta !== "") {
-                objeto = {criticidad: $scope.nivelAlerta};
-            }
+            if (parseInt($scope.direccion))
+                $scope.direccion = parseInt($scope.direccion);
+            else $scope.direccion = "";
+            objeto = {
+                cargo: $scope.cargo,
+                area: $scope.gerencia,
+                direccion: $scope.direccion,
+                criticidad: $scope.nivelAlerta
+            };
             tableroService.buscarTablero(objeto).then(function (response) {
                 $timeout(function () {
                     Metronic.unblockUI('#lista-tarea .portlet-body');

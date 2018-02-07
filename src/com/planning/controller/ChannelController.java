@@ -148,6 +148,8 @@ public class ChannelController {
         String message = e.getMessage();
         if (e.getMessage().contains("unq_facultad_0")) {
             return "Ya existen estas siglas.";
+        } else if (e.getMessage().contains("CHANNEL_ID_NULL")) {
+            return "El canal no puede estar vacío.";
         } else if (e.getMessage().contains("FK_TASK_CHANNEL")) {
             return "No se puede eliminar este canal porque contiene tareas.";
         } else if (e.getMessage().contains("fk_task_channel")) {

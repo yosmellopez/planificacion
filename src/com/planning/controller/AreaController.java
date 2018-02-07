@@ -186,6 +186,14 @@ public class AreaController {
             return "Ya existe este nombre de facultad.";
         } else if (e.getMessage().contains("FK_POSITION_AREA")) {
             return "No se puede eliminar esta dirección porque contiene cargos.";
+        } else if (message.contains("AREA_ADMIN_NULL")) {
+            return "La dirección no puede estar vacía.";
+        } else if (message.contains("AREA_CODIGO_NULL")) {
+            return "El código no puede estar vacío.";
+        } else if (message.contains("AREA_ID_NULL")) {
+            return "El identificador no puede estar vacío.";
+        } else if (message.contains("AREA_NOMBRE_NULL")) {
+            return "El nombre no puede estar vacío.";
         } else if (e.getMessage().contains("fk_departamento_id_facultad")) {
             return "No se puede eliminar esta facultad porque contiene departamentos.";
         }

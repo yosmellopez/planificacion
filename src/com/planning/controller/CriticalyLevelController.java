@@ -160,6 +160,10 @@ public class CriticalyLevelController {
             return "No se puede eliminar porque este nivel de alerta porque contiene tareas.";
         } else if (e.getMessage().contains("FK_LEVEL_TASK")) {
             return "No se puede eliminar este nivel de alerta porque contiene tareas.";
+        } else if (e.getMessage().contains("LEVEL_ID_NULL")) {
+            return "El identificador del nivel de alerta no debe ser vacío.";
+        } else if (e.getMessage().contains("LEVEL_NAME_NULL")) {
+            return "El nombre del nivel de alerta no debe ser vacío.";
         } else if (e.getMessage().contains("fk_departamento_id_facultad")) {
             return "No se puede eliminar esta facultad porque contiene departamentos.";
         }

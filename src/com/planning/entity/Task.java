@@ -129,7 +129,7 @@ public class Task implements Serializable {
     @ManyToOne(optional = false)
     @JsonProperty(value = "cargo_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JoinColumn(name = "idposition", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "fk_pltask_position"))
+    @JoinColumn(name = "idposition", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "fk_task_position"))
     private Position position;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

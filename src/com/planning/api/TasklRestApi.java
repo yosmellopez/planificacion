@@ -5,21 +5,21 @@
  */
 package com.planning.api;
 
+import com.planning.entity.StatusTask;
 import com.planning.entity.Task;
 import com.planning.service.TaskService;
 import com.planning.util.HeaderUtil;
 import com.planning.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * REST controller for managing Task.
@@ -51,9 +51,7 @@ public class TasklRestApi {
             return createTask(tarea);
         }
         Task result = tareaService.save(tarea);
-        return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tarea.getId().toString()))
-                .body(result);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tarea.getId().toString())).body(result);
     }
 
     @GetMapping("/tarea")
@@ -63,10 +61,28 @@ public class TasklRestApi {
     }
 
     @GetMapping("/tarea/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable Integer id) {
-        log.debug("REST request to get Task : {}", id);
-        Task tarea = tareaService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(tarea));
+    public ResponseEntity<Task> getChannel(@PathVariable Integer id) {
+        log.debug("REST request to get Channel : {}", id);
+        Task task = tareaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(task));
+    }
+
+    @GetMapping("/tarea/estado/{estadoId}")
+    public List<Task> listarTareasEstado(@PathVariable("estadoId") StatusTask statusTask) {
+        log.debug("REST request to get all Tasks");
+        return tareaService.findByStatusTask(statusTask);
+    }
+
+    @GetMapping("/tarea/count")
+    public Long tareaCount() {
+        log.debug("REST request to get all Tasks");
+        return tareaService.count();
+    }
+
+    @GetMapping("/tarea/estado/{estadoId}/count")
+    public Long countTaskStatusTask(@PathVariable("estadoId") StatusTask statusTask) {
+        log.debug("REST request to get all Tasks");
+        return tareaService.countByStatusTask(statusTask);
     }
 
     @DeleteMapping("/tarea/{id}")

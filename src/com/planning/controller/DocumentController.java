@@ -72,6 +72,10 @@ public class DocumentController {
         String message = e.getMessage();
         if (e.getMessage().contains("unq_facultad_0")) {
             return "Ya existen estas siglas.";
+        } else if (e.getMessage().contains("DOCUMENT_ID_NULL")) {
+            return "El identificador del documento no debe ser vacío.";
+        } else if (e.getMessage().contains("DOCUMENT_NOMBRE_NULL")) {
+            return "El nombre del documento no debe ser vacío.";
         } else if (e.getMessage().contains("unq_facultad_1")) {
             return "Ya existe este nombre de facultad.";
         } else if (e.getMessage().contains("fk_departamento_id_facultad")) {
