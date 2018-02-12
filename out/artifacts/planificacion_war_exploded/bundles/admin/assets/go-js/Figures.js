@@ -2728,7 +2728,7 @@ go.Shape.defineFigureGenerator("Card", function(shape, w, h) {
   fig.add(new go.PathSegment(go.PathSegment.Line, 0, h));
   fig.add(new go.PathSegment(go.PathSegment.Line, 0, param1 * h)); // .2 * h
   fig.add(new go.PathSegment(go.PathSegment.Line, param1 * w, 0).close()); // creates the line segment
-  // then reconnects to the rest of the points
+  // then reconnects to the entity of the points
   geo.spot1 = new go.Spot(0, .2);
   geo.spot2 = go.Spot.BottomRight;
   return geo;

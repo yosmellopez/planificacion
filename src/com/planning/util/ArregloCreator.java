@@ -204,6 +204,7 @@ public class ArregloCreator {
         map.put("estado", task.getStatusTask().getName());
         map.put("cargo", task.getPosition().getName());
         map.put("cargo_id", task.getPosition().getId());
+        map.put("gerencia", task.getPosition().getArea().getManagement().getName());
         map.put("gerencia_id", task.getPosition().getArea().getManagement().getId());
         map.put("area_id", task.getPosition().getArea().getId());
         map.put("areas", areas);

@@ -40,10 +40,14 @@
         $scope.fullScreen = false;
         $scope.cargo = "";
         $scope.gerencia = "";
+        $scope.nombreGerencia = "";
         $scope.direccion = "";
         $scope.criticidad = "";
+        $scope.criticidades = vm.criticidades_tarea;
         $scope.recurrente = 'false';
         $scope.agrupada = false;
+        $scope.seleccionado = false;
+        $scope.tranversal = false;
 
         vm.nuevo = nuevo;
         vm.eliminar = eliminar;
@@ -81,11 +85,18 @@
 
         vm.cambiarRecurrente = function (valor) {
             $scope.recurrente = valor;
-        }
+        };
 
         vm.cambiarValor = function () {
             $scope.agrupada = !$scope.agrupada;
-        }
+            if ($scope.agrupada) {
+                var tam = $scope.tareasAgrupadas.length;
+                for (var i = 0; i < tam; i++) {
+                    $scope.tareasPorAgrupar.push($scope.tareasAgrupadas[i]);
+                }
+                $scope.tareasAgrupadas = new Array();
+            }
+        };
 
         function eliminar() {
             TableEditablePlanes.btnClickEliminar();
@@ -215,10 +226,22 @@
             $scope.gerencia = $("#gerencia").val();
             $scope.direccion = $("#direccion").val();
             $scope.criticidad = $("#nivel-alerta").val();
+            if (parseInt($scope.criticidad))
+                $scope.criticidad = parseInt($scope.criticidad);
+            else $scope.criticidad = "";
+            if (parseInt($scope.cargo))
+                $scope.cargo = parseInt($scope.cargo);
+            else $scope.cargo = "";
+            if (parseInt($scope.gerencia))
+                $scope.gerencia = parseInt($scope.gerencia);
+            else $scope.gerencia = "";
+            if (parseInt($scope.direccion))
+                $scope.direccion = parseInt($scope.direccion);
+            else $scope.direccion = "";
             $timeout(function () {
                 TableEditablePlanes.filtrarTareasPlan($scope.cargo, $scope.gerencia, $scope.direccion, $scope.criticidad);
             }, 0);
-        }
+        };
 
         vm.mostrarMasDetalles = function (idTarea) {
             Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
@@ -346,6 +369,7 @@
                         $scope.tareasAgrupadas.push(elem.item);
                         $(checkboxes[i]).parent().parent().parent().remove();
                         $scope.tareasPorAgrupar.splice(elem.posicion, 1);
+                        $scope.seleccionado = $scope.tareasAgrupadas.length !== 0;
                     }
                 }
             }
@@ -382,6 +406,7 @@
                         $scope.todasTareas.push(elem.item);
                         $scope.tareasAgrupadas.splice(elem.posicion, 1);
                         $(checkboxes[i]).parent().parent().parent().remove();
+                        $scope.seleccionado = $scope.tareasAgrupadas.length !== 0;
                     }
                 }
             }
@@ -444,7 +469,7 @@
                 });
                 $scope.mensaje = "esta dirección";
             }
-        }
+        };
 
     }
 
@@ -1290,7 +1315,7 @@
                     selectable: false,
                     computesBoundsAfterDrag: true,
                     computesBoundsIncludingLocation: true,
-                    handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
+                    handlesDragDropForMembers: true, // don't need to define handlers on member Nodes and Links
                     mouseDragEnter: function (e, group, prev) {
                         group.isHighlighted = true;
                     },
@@ -1501,7 +1526,8 @@
                 }
                 myDiagram.model = new go.GraphLinksModel(model, links);
             }
-        };
+        }
+        ;
 
         var buscarMaximoFila = function (columnas, idGerencia, idCriticidad, colSpand) {
             var pos = 0;
@@ -1711,6 +1737,7 @@
                 Metronic.unblockUI('#form-diagrama .portlet-body');
                 toastr.error(response.data.error, "Error !!!", {"positionClass": "toast-top-center"});
             });
-        };
+        }
+        ;
     }
 })();

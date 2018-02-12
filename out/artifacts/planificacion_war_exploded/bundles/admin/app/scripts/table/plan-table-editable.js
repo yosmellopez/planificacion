@@ -764,6 +764,45 @@ var TableEditablePlanes = function () {
             resetFormTarea();
             Metronic.blockUI({target: '#table-tareas', animate: true});
             editarTarea(idTarea);
+            var select = $('#criticidad-tarea-plan').select2();
+            select.on('change', function (e) {
+                var criticidades = $('#criticidad-tarea-plan').val();
+                var tam = criticidades.length;
+                var criticidadesNew = new Array();
+                for (var i = 0; i < tam; i++) {
+                    var criticidad = scopePlan.criticidades.filter(function (elem) {
+                        return parseInt(elem.criticidad_id) === parseInt(criticidades[i]);
+                    });
+                    if (criticidad.length !== 0)
+                        criticidadesNew.push(criticidad[0]);
+                }
+                criticidadesNew = criticidadesNew.sort(function (a, b) {
+                    return a.peso - b.peso;
+                });
+                tam = criticidadesNew.length;
+                var pos = 0;
+                if (tam === 1) {
+                    scopePlan.tranversal = false;
+                } else {
+                    scopePlan.tranversal = true;
+                    for (var i = 1; i < tam; i++) {
+                        if (criticidadesNew[i].peso - 1 !== criticidadesNew[pos].peso) {
+                            scopePlan.tranversal = false;
+                        } else pos++;
+                    }
+                }
+                if (scopePlan.tranversal) {
+                    $('#tarea-tranversal-activa').prop('checked', true);
+                    $('#tarea-tranversal-inactiva').prop('checked', false);
+                    jQuery.uniform.update('#tarea-tranversal-activa');
+                    jQuery.uniform.update('#tarea-tranversal-inactiva');
+                } else {
+                    $('#tarea-tranversal-activa').prop('checked', false);
+                    $('#tarea-tranversal-inactiva').prop('checked', true);
+                    jQuery.uniform.update('#tarea-tranversal-activa');
+                    jQuery.uniform.update('#tarea-tranversal-inactiva');
+                }
+            });
         });
 
         $(document).on('click', "#table-tareas a.delete", function (e) {
@@ -872,8 +911,10 @@ var TableEditablePlanes = function () {
                 scopePlan.tareasSeleccionadas = response.data.sucesoras;
                 scopePlan.tareasAgrupadas = response.data.agrupadas;
                 scopePlan.tareasPorAgrupar = response.data.noAgrupadas;
+                scopePlan.seleccionado = scopePlan.tareasAgrupadas.length !== 0;
                 var tarea = scopePlan.tarea = response.data.tarea;
                 scopePlan.tituloModal = tarea.nombre;
+                scopePlan.nombreGerencia = tarea.gerencia;
                 formTitle = "Deseas actualizar la tarea \"" + tarea.nombre + "\" ? Sigue los siguientes pasos:";
                 $('#tarea-configurar-titulo').html(formTitle);
                 $('#tarea-configurar-id').val(tarea.tarea_id);
@@ -1113,7 +1154,7 @@ var TableEditablePlanes = function () {
             if (scopePlan.agrupada && tam === 0) {
                 toastr.error("Si la tarea es agrupada debe seleccionar al menos una tarea para agrupar", "Error !!!", {"positionClass": "toast-top-center"});
             } else {
-                Metronic.blockUI({target: '#modal-configurar-tarea', animate: true});
+                Metronic.blockUI({target: '#modal-configurar-tarea-dialog', animate: true});
                 var tarea_id = $('#tarea-configurar-id').val();
                 var codigo = $('#codigo-tarea').val();
                 var nombre = $('#tarea-configurar-nombre').val();
@@ -1129,6 +1170,8 @@ var TableEditablePlanes = function () {
                     var tiempoRecurrencia = $('#tiempo-recurrencia').val();
                 var partida = ($('#partidaactivo-tarea').prop('checked')) ? true : false;
                 var tranversal = ($('#tarea-tranversal-activa').prop('checked')) ? true : false;
+                if (scopePlan.tranversal)
+                    tranversal = true;
                 var pos = 0;
                 criticalyString = '';
                 criticidad_id.forEach(function (item, index) {
@@ -1167,18 +1210,18 @@ var TableEditablePlanes = function () {
                         'agrupadas': scopePlan.tareasAgrupadas
                     }),
                     success: function (response) {
-                        Metronic.unblockUI('#modal-configurar-tarea');
+                        Metronic.unblockUI('#modal-configurar-tarea-dialog');
                         if (response.success) {
                             CKEDITOR.instances.editor.setData('');
                             toastr.success(response.message, "Exito !!!");
                             $('#modal-configurar-tarea').modal('toggle');
-                            tablaTareasPlan.getDataTable().draw();
+                            tablaTareasPlan.getDataTable().ajax.reload();
                         } else {
                             toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
                         }
                     },
                     failure: function (response) {
-                        Metronic.unblockUI('#modal-configurar-tarea');
+                        Metronic.unblockUI('#modal-configurar-tarea-dialog');
 
                         toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
                     }
@@ -2070,7 +2113,7 @@ var TableEditablePlanes = function () {
                 selectable: false,
                 computesBoundsAfterDrag: true,
                 computesBoundsIncludingLocation: true,
-                handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
+                handlesDragDropForMembers: true, // don't need to define handlers on member Nodes and Links
                 mouseDragEnter: function (e, group, prev) {
                     group.isHighlighted = true;
                 },
@@ -2237,7 +2280,7 @@ var TableEditablePlanes = function () {
                 //Buscar la tarea para la celda
                 var fila = buscarFila(filas, tareasTranversales[i].idGerencia);
                 var columna = tareasTranversales[i].col;
-                var nombreGrupo = "tv" + fila + tareasTranversales[i].grupo;
+                var nombreGrupo = "tv" + fila + "-" + tareasTranversales[i].grupo;
                 // var celdaMayorCantidad = buscarMaximoFila(columnas, tareasTranversales[i].idGerencia, tareasTranversales[i].idCriticidad, tareasTranversales[i].colSpan);
                 var grupo = {
                     key: nombreGrupo,
@@ -2253,14 +2296,6 @@ var TableEditablePlanes = function () {
                     gruposDiagrama.push(grupo);
                     model.push(grupo);
                 }
-                model.push({
-                    key: generateUUID(),
-                    text: "",
-                    color: "transparent",
-                    bounds: 0 + " " + yTranversal,
-                    size: "0 " + 200,
-                    group: nombreGrupo
-                });
                 var objetoTranversal = {
                     key: "" + tareasTranversales[i].key,
                     text: tareasTranversales[i].nombre,
@@ -2279,16 +2314,6 @@ var TableEditablePlanes = function () {
                 yTranversal += 300;
                 model.push(objetoTranversal);
             }
-            for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
-                if (myDiagram.model.nodeDataArray[i].key == key) {
-                    myDiagram.model.nodeDataArray[i].titulo = titulo;
-                    myDiagram.model.nodeDataArray[i].id = id;
-                    myDiagram.model.nodeDataArray[i].cargo = cargo;
-                    myDiagram.model.nodeDataArray[i].producto = producto;
-                    break;
-                }
-            }
-
             myDiagram.model = new go.GraphLinksModel(model, links);
         }
     };

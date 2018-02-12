@@ -96,10 +96,19 @@ public class Modelo {
         return siders;
     }
     
-    public Node buscarSider(String nombre) {
+    public Node buscarSider(String key) {
         int size = nodeDataArray.size();
         for (int i = 0; i < size; i++) {
-            if (nodeDataArray.get(i).getKey().compareToIgnoreCase(nombre) == 0)
+            if (nodeDataArray.get(i).getKey().compareToIgnoreCase(key) == 0)
+                return nodeDataArray.get(i);
+        }
+        return null;
+    }
+    
+    public Node buscarNodo(String key) {
+        int size = nodeDataArray.size();
+        for (int i = 0; i < size; i++) {
+            if (nodeDataArray.get(i).getKey().compareToIgnoreCase(key) == 0)
                 return nodeDataArray.get(i);
         }
         return null;
@@ -128,7 +137,7 @@ public class Modelo {
     public ArrayList<Node> buscarNodo(int idTarea) {
         ArrayList<Node> nodes = new ArrayList<>();
         for (Node node : nodeDataArray) {
-            if (node.getTareaId() == idTarea)
+            if (node.getTareaId() != null && node.getTareaId() == idTarea)
                 nodes.add(node);
         }
         return nodes;

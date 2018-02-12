@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="planificacion:war exploded">
+  <artifact type="exploded-war" build-on-make="true" name="planificacion:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/planificacion_war_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="planificacion/web/Web" />
@@ -27,6 +27,7 @@
           <element id="library" level="application" name="Hibernate Validator 6.0.7" />
           <element id="library" level="application" name="JPA Validation" />
           <element id="library" level="application" name="FcmJava" />
+          <element id="library" level="application" name="JavaMail" />
         </element>
       </element>
     </root>

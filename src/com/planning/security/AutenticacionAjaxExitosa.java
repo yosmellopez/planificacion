@@ -11,7 +11,6 @@ import com.planning.util.MapeadorObjetos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 
@@ -77,15 +75,8 @@ public class AutenticacionAjaxExitosa implements AuthenticationSuccessHandler {
     /**
      * Removes temporary authentication-related data which may have been stored
      * in the session during the authentication process..
+     * @return 
      */
-    protected final void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    }
-    
     public UsersService getUsersService() {
         return usersService;
     }

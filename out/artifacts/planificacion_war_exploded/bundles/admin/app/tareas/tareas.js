@@ -4,8 +4,8 @@
     'use strict';
 
     angular
-            .module('app.tareas')
-            .controller('Tareas', Tareas);
+        .module('app.tareas')
+        .controller('Tareas', Tareas);
 
     Tareas.$inject = ['$rootScope', '$scope', '$timeout', 'urlPath', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'estadoTareaService', 'canalService', 'usuarioService'];
 
@@ -21,10 +21,12 @@
         $scope.direccion = "";
         $scope.nivelAlerta = "";
         $scope.recurrente = 'false';
+        $scope.tranversal = false;
         vm.selecciono = false;
         vm.usuario = usuarioService.usuario;
         vm.estadosTareas = estadoTareaService.estados;
         vm.criticidades = criticidadTareaService.criticidades;
+        $scope.criticidades = vm.criticidades;
         vm.gerencias = gerenciaService.gerencias;
         vm.areas = areaService.areas;
         vm.cargos = cargoService.cargos;
@@ -50,12 +52,39 @@
 
         function nuevo() {
             $timeout(function () {
-                TableEditableTareas.btnClickNuevo();
+                TableEditableTareas.btnClickNuevo($scope);
             }, 0);
         }
 
         function eliminar() {
             TableEditableTareas.btnClickEliminar();
+        }
+
+        vm.cambiarTranversal = function () {
+            var criticidades = $('#criticidad').val();
+            var tam = criticidades.length;
+            var criticidades = new Array();
+            for (var i = 0; i < tam; i++) {
+                var criticidad = vm.criticidades.filter(function (elem) {
+                    return elem.criticidad_id === criticidades[i];
+                });
+                criticidades.push(criticidad);
+            }
+            criticidades = criticidades.sort(function (a, b) {
+                return a.peso - b.peso;
+            });
+            tam = criticidades.length;
+            var pos = 0;
+            if (tam === 1) {
+                $scope.tranversal = false;
+            } else {
+                $scope.tranversal = true;
+                for (var i = 1; i < tam; i++) {
+                    if (criticidades[i] - 1 !== criticidades[pos]) {
+                        $scope.tranversal = false;
+                    }
+                }
+            }
         }
 
         function modalEliminar() {

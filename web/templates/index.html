@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html ng-app="app" xmlns:th="http://www.thymeleaf.org">
+<html ng-app="app" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8"/>
         <title data-ng-bind="'Sistema de Planificación' + $state.current.data.pageTitle"></title>
@@ -44,8 +44,35 @@ and open the template in the editor.
         <link th:href="@{/bundles/admin/assets/jqwidgets/styles/jqx.base.css}" rel="stylesheet" type="text/css"/>
         <link th:href="@{/bundles/admin/assets/jqwidgets/hiraku.css}" rel="stylesheet" type="text/css"/>
         <link th:href="@{/bundles/admin/assets/ckeditor/contents.css}" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" th:inline="javascript" th:with="usuario=${#authentication.principal}">
+            var idUsuario = [[${usuario.id}]];
+        </script>
         <script type="text/javascript" th:inline="javascript">
-            var urlSitio = [[@{/}]];
+            var urlSitio = [[@{
+                /}]];
+        </script>
+        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+        <script>
+            var OneSignal = window.OneSignal || [];
+            OneSignal.push(function () {
+                OneSignal.init({
+                    appId: "a3ca4ae3-ba22-4004-a14f-7bfe95af0f3e"
+                });
+                /* These examples are all valid */
+                OneSignal.getUserId(function (userId) {
+                    if (userId != null) {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log("OK");
+                            }
+                        };
+                        xhttp.open("POST", urlSitio + "usuario/player/" + idUsuario, true);
+                        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhttp.send("playerId=" + userId);
+                    }
+                });
+            });
         </script>
 
     </head>
@@ -267,11 +294,11 @@ and open the template in the editor.
         <!-- END APP LEVEL JQUERY SCRIPTS -->
 
         <script type="text/javascript">
-                    $(document).ready(function () {
-                    Metronic.init(); // Run metronic theme
-                    Metronic.setAssetsPath('bundles/admin/assets/'); // Set the assets folder path
-                    MyApp.init(); // Run my app
-                    });
+            $(document).ready(function () {
+                Metronic.init(); // Run metronic theme
+                Metronic.setAssetsPath('bundles/admin/assets/'); // Set the assets folder path
+                MyApp.init(); // Run my app
+            });
         </script>
     </body>
 </html>

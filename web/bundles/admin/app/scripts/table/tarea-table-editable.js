@@ -210,12 +210,51 @@ var TableEditableTareas = function () {
 
     //Funciones para angular
     //Boton nuevo
-    var btnClickNuevo = function () {
+    var btnClickNuevo = function (scopeTarea) {
         resetForms();
         idTareaEditar = 0;
         $('#form-tarea-title').html(formTitle);
         $('#form-tarea').removeClass('ng-hide');
         $('#lista-tarea').addClass('ng-hide');
+        var select = $('#criticidad').select2();
+        select.on('change', function (e) {
+            var criticidades = $('#criticidad').val();
+            var tam = criticidades.length;
+            var criticidadesNew = new Array();
+            for (var i = 0; i < tam; i++) {
+                var criticidad = scopeTarea.criticidades.filter(function (elem) {
+                    return parseInt(elem.criticidad_id) === parseInt(criticidades[i]);
+                });
+                if (criticidad.length !== 0)
+                    criticidadesNew.push(criticidad[0]);
+            }
+            criticidadesNew = criticidadesNew.sort(function (a, b) {
+                return a.peso - b.peso;
+            });
+            tam = criticidadesNew.length;
+            var pos = 0;
+            if (tam === 1) {
+                scopeTarea.tranversal = false;
+            } else {
+                scopeTarea.tranversal = true;
+                for (var i = 1; i < tam; i++) {
+                    if (criticidadesNew[i].peso - 1 !== criticidadesNew[pos].peso) {
+                        scopeTarea.tranversal = false;
+                    }
+                }
+            }
+            if (scopeTarea.tranversal) {
+                $('#tarea-tranversal-activa').prop('checked', true);
+                $('#tarea-tranversal-inactiva').prop('checked', false);
+                jQuery.uniform.update('#tarea-tranversal-activa');
+                jQuery.uniform.update('#tarea-tranversal-inactiva');
+            } else {
+                $('#tarea-tranversal-activa').prop('checked', false);
+                $('#tarea-tranversal-inactiva').prop('checked', true);
+                jQuery.uniform.update('#tarea-tranversal-activa');
+                jQuery.uniform.update('#tarea-tranversal-inactiva');
+            }
+        });
     };
     //Boton eliminar
     var btnClickEliminar = function () {
@@ -404,6 +443,45 @@ var TableEditableTareas = function () {
             $('#form-tarea').removeClass('ng-hide');
             $('#lista-tarea').addClass('ng-hide');
             editRow(tarea_id);
+            var select = $('#criticidad-tarea-plan').select2();
+            select.on('change', function (e) {
+                var criticidades = $('#criticidad-tarea-plan').val();
+                var tam = criticidades.length;
+                var criticidadesNew = new Array();
+                for (var i = 0; i < tam; i++) {
+                    var criticidad = scopeTarea.criticidades.filter(function (elem) {
+                        return parseInt(elem.criticidad_id) === parseInt(criticidades[i]);
+                    });
+                    if (criticidad.length !== 0)
+                        criticidadesNew.push(criticidad[0]);
+                }
+                criticidadesNew = criticidadesNew.sort(function (a, b) {
+                    return a.peso - b.peso;
+                });
+                tam = criticidadesNew.length;
+                var pos = 0;
+                if (tam === 1) {
+                    scopeTarea.tranversal = false;
+                } else {
+                    scopeTarea.tranversal = true;
+                    for (var i = 1; i < tam; i++) {
+                        if (criticidadesNew[i].peso - 1 !== criticidadesNew[pos].peso) {
+                            scopeTarea.tranversal = false;
+                        }
+                    }
+                }
+                if (scopeTarea.tranversal) {
+                    $('#tarea-tranversal-activa').prop('checked', true);
+                    $('#tarea-tranversal-inactiva').prop('checked', false);
+                    jQuery.uniform.update('#tarea-tranversal-activa');
+                    jQuery.uniform.update('#tarea-tranversal-inactiva');
+                } else {
+                    $('#tarea-tranversal-activa').prop('checked', false);
+                    $('#tarea-tranversal-inactiva').prop('checked', true);
+                    jQuery.uniform.update('#tarea-tranversal-activa');
+                    jQuery.uniform.update('#tarea-tranversal-inactiva');
+                }
+            });
         });
 
         function editRow(tarea_id) {
@@ -733,7 +811,6 @@ var TableEditableTareas = function () {
                                 var modelo = res.responseJSON.modelo;
                                 modelos.push({
                                     archivo: modelo.ruta,
-                                    nombre: modelo.nombre,
                                     descripcion: modelo.descripcion,
                                     estado: modelo.estado,
                                     ruta: modelo.ruta,
@@ -779,10 +856,10 @@ var TableEditableTareas = function () {
                     if ($('#file').prop('files')[0]) {
                         var formData = new FormData($('#modelo-form'));
                         formData.append($("#file").attr("name"), $('#file').prop('files')[0]);
-                        formData.append($("#archivo").attr("name"), nombre);
                         formData.append($("#modelo-descripcion").attr("name"), descripcion);
                         formData.append($("#estadoactivo").attr("name"), estado);
                         formData.append("tareaId", idTareaEditar);
+                        formData.append("documentId", modelos[posicion].modelo_id);
                         $.ajax({
                             url: "tarea/salvarModeloTarea",
                             type: 'POST',
@@ -808,20 +885,22 @@ var TableEditableTareas = function () {
                             contentType: false,
                             processData: false,
                             complete: function (res) {
-                                var modelo = res.responseJSON.modelo;
-                                modelos.push({
-                                    archivo: modelo.ruta,
-                                    nombre: modelo.nombre,
-                                    descripcion: modelo.descripcion,
-                                    estado: modelo.estado,
-                                    ruta: modelo.ruta,
-                                    modelo_id: modelo.modelo_id
-                                });
-                                resetFormModelo();
-                                dibujarTablaModelos("#table-modelos");
-                                var progressbar = $('#progressbar');
-                                progressbar.val(0);
-                                $('.progress-value').html('0%');
+                                if (res.responseJSON.success) {
+                                    var modelo = res.responseJSON.modelo;
+                                    modelos[posicion] = {
+                                        archivo: modelo.ruta,
+                                        descripcion: modelo.descripcion,
+                                        estado: modelo.estado,
+                                        ruta: modelo.ruta,
+                                        modelo_id: modelo.modelo_id
+                                    };
+                                    resetFormModelo();
+                                    dibujarTablaModelos("#table-modelos");
+                                    var progressbar = $('#progressbar');
+                                    progressbar.val(0);
+                                    $('.progress-value').html('0%');
+                                } else
+                                    toastr.error(res.responseJSON.error, "Error !!!");
                             }
                         });
                     } else if (nombre !== "") {
@@ -843,7 +922,8 @@ var TableEditableTareas = function () {
                                 if (response.success) {
                                     CKEDITOR.instances.editor.setData('');
                                     toastr.success(response.message, "Exito !!!");
-                                    dibujarTablaModelos("#table-modelos")
+                                    resetFormModelo();
+                                    dibujarTablaModelos("#table-modelos");
                                 } else {
                                     toastr.error(response.error, "Error !!!", {"positionClass": "toast-top-center"});
                                 }
@@ -855,8 +935,6 @@ var TableEditableTareas = function () {
                         });
                     }
                 }
-                resetFormModelo();
-                dibujarTablaModelos("#table-modelos");
             }
         }
     };

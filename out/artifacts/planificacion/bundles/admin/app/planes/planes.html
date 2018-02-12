@@ -589,7 +589,7 @@
 
 <div class="modal fade" id="modal-configurar-tarea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80%">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-configurar-tarea-dialog">
             <div class="modal-header blue-hoki">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
                 <h4 class="modal-title" id="tarea-configurar-titulo">Añadir Tarea al Plan </h4>
@@ -627,10 +627,8 @@
                                         <p class="help-block"></p>
                                         <div class="row">
                                             <div class="col-md-12" id="select-criticidad">
-                                                <select data-ds-select2 class="form-control selectpicker" multiple data-live-search="true" id="criticidad-tarea-plan" name="criticidad">
-                                                    <option value="">Seleccione</option>
-                                                    <option data-ng-repeat="item in vm.criticidades track by $index"
-                                                            value="{{item.criticidad_id}}">{{item.nombre}}
+                                                <select data-ds-select2 class="form-control selectpicker" multiple data-live-search="true" id="criticidad-tarea-plan" name="criticidad" data-placeholder="Seleccione">
+                                                    <option data-ng-repeat="item in vm.criticidades track by $index" value="{{item.criticidad_id}}">{{item.nombre}}
                                                     </option>
                                                 </select>
                                             </div>
@@ -762,14 +760,14 @@
                                                     </key>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6" ng-disabled="recurrente=='false'">
+                                            <div class="col-md-6" ng-disabled="recurrente == 'false'">
                                                 <key ng-disabled="recurrente">
-                                                    <span class="ic-step-number" ng-disabled="recurrente=='false'">10</span>
+                                                    <span class="ic-step-number" ng-disabled="recurrente == 'false'">10</span>
                                                     Inserte cada que tiempo se ejecutará la tarea en caso de ser recurrente<span class="ic-small italic">(obligatorio)</span>
                                                 </key>
-                                                <p class="help-block" ng-disabled="recurrente=='false'">Inserte el tiempo de recurrencia. Debe seleccionar el tiempo en minutos.</p>
-                                                <div id="tiempo-recurrencia-div" ng-disabled="recurrente=='false'">
-                                                    <input type="number" class="form-control" id="tiempo-recurrencia" name="tiempoRecurrencia" ng-disabled="recurrente=='false'"/>
+                                                <p class="help-block" ng-disabled="recurrente == 'false'">Inserte el tiempo de recurrencia. Debe seleccionar el tiempo en minutos.</p>
+                                                <div id="tiempo-recurrencia-div" ng-disabled="recurrente == 'false'">
+                                                    <input type="number" class="form-control" id="tiempo-recurrencia" name="tiempoRecurrencia" ng-disabled="recurrente == 'false'"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -793,11 +791,11 @@
                                                 <div class="row">
                                                     <div class="form-group" style="padding-left: 17px;">
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="tranversal" id="tarea-tranversal-activa" style="left: 11px;position: relative;">
+                                                            <input type="radio" name="tranversal" ng-model="tranversal" value="true" checked="false" id="tarea-tranversal-activa" style="left: 11px;position: relative;">
                                                             <span class="ic-small">Si</span>
                                                         </key>
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="tranversal" id="tarea-tranversal-inactiva" style="left: 11px;position: relative;" checked>
+                                                            <input type="radio" name="tranversal" ng-model="tranversal" value="false" checked="true" id="tarea-tranversal-inactiva" style="left: 11px;position: relative;" checked>
                                                             <span class="ic-small">No</span>
                                                         </key>
                                                     </div>
@@ -951,13 +949,14 @@
                                 </uib-tab>
                                 <uib-tab heading="Agrupación" id="tab-agrupada" ng-show="agrupada">
                                     <div class="row">
+                                        <p style="position: relative;left: 35px;"><i>Las tareas agrupadas solo pueden corresponder a una Dirección, por consiguiente estas se filtrarán de forma automática luego de la primera asignación.</i></p>
                                         <div class="col-md-5" id="div-table-agrupados">
                                             <div class="portlet light">
                                                 <div class="portlet-title">
                                                     <div class="caption caption-md">
                                                         <i class="icon-bar-chart font-apolo-haze hide"></i>
-                                                        <span class="caption-subject font-apolo-haze bold uppercase">Tareas Agrupadas</span>
-                                                        <span class="caption-helper"></span>
+                                                        <span class="caption-subject font-apolo-haze bold uppercase">Tareas Agrupadas</span><br>
+                                                        <span ng-if="seleccionado" class="caption-helper" style="position: relative;top: 10px;color: black">{{nombreGerencia}}</span>
                                                     </div>
                                                     <div class="actions">
                                                     </div>

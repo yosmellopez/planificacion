@@ -561,7 +561,7 @@ function format(str, ctx) {
 			ret.push(segment);
 			
 		}
-		str = str.slice(index + 1); // the rest
+		str = str.slice(index + 1); // the entity
 		isInside = !isInside; // toggle
 		splitter = isInside ? '}' : '{'; // now look for next matching bracket
 	}
@@ -4519,7 +4519,7 @@ SVGRenderer.prototype = {
 				if (box) {
 					box = box.destroy();
 				}
-				// Call base implementation to destroy the rest
+				// Call base implementation to destroy the entity
 				SVGElement.prototype.destroy.call(wrapper);
 
 				// Release local pointers (#1298)
@@ -5726,7 +5726,7 @@ var CanVGRenderer,
 if (useCanVG) {
 	/**
 	 * The CanVGRenderer is empty from start to keep the source footprint small.
-	 * When requested, the CanVGController downloads the rest of the source packaged
+	 * When requested, the CanVGController downloads the entity of the source packaged
 	 * together with the canvg library.
 	 */
 	Highcharts.CanVGRenderer = CanVGRenderer = function () {
@@ -13214,7 +13214,7 @@ Series.prototype = {
 			hasToYData = !!series.toYData;
 
 		// In turbo mode, only one- or twodimensional arrays of numbers are allowed. The
-		// first value is tested, and we assume that all the rest are defined the same
+		// first value is tested, and we assume that all the entity are defined the same
 		// way. Although the 'for' loops are similar, they are repeated inside each
 		// if-else conditional for max performance.
 		if (turboThreshold && dataLength > turboThreshold) { 

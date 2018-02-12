@@ -24,7 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.Optional;
 
 /**
  * AjaxLoginProcessingFilter
@@ -63,12 +63,6 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
             throw new AuthMethodNotSupportedException("Authentication method not supported");
         }
         loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
-        UUID uuid = UUID.randomUUID();
-        if (loginRequest.getToken() == null || loginRequest.getToken().isEmpty()) {
-            loginRequest.setToken(uuid.toString());
-        }
-        uuid = UUID.randomUUID();
-        loginRequest.setPlayerId(uuid.toString());
         if (StringUtils.isBlank(loginRequest.getUsername()) || StringUtils.isBlank(loginRequest.getPassword())) {
             throw new AuthenticationServiceException("Username or Password not provided");
         }
@@ -81,7 +75,10 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
         Users user = (Users) authResult.getPrincipal();
         UserToken token = new UserToken(loginRequest.getToken(), loginRequest.getPlataform(), loginRequest.getPlayerId());
         token.setUser(user);
-        tokenService.saveAndFlush(token);
+        Optional<UserToken> optional = tokenService.findByPlataformAndPlayerIdAndUser(token.getPlataform(), token.getPlayerId(), user);
+        if (!optional.isPresent()) {
+            tokenService.saveAndFlush(token);
+        }
         successHandler.onAuthenticationSuccess(request, response, authResult);
     }
     

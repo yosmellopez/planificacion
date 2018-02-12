@@ -23,13 +23,13 @@ public class UserToken implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer idToken;
     
-    @Column(name = "token", nullable = false, length = 1024)
+    @Column(name = "token", length = 512)
     private String token = "123";
     
-    @Column(name = "plataform", nullable = false, length = 1024)
+    @Column(name = "plataform", nullable = false, length = 512)
     private String plataform = "Android";
     
-    @Column(name = "player_id", nullable = false, length = 1024)
+    @Column(name = "player_id", length = 512)
     private String playerId = "";
     
     @ManyToOne
@@ -43,6 +43,12 @@ public class UserToken implements Serializable {
     }
     
     public UserToken() {
+    }
+    
+    public UserToken(String plataform, String playerId, Users user) {
+        this.plataform = plataform;
+        this.playerId = playerId;
+        this.user = user;
     }
     
     public Integer getIdToken() {

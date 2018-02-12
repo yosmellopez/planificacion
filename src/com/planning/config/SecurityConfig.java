@@ -41,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     public static final String AUTHENTICATION_URL = "/api/auth/login";
     
+    public static final String AUTHENTICATION_RESTORE_PASSWORD = "/apirest/auth/restore";
+    
     public static final String REFRESH_TOKEN_URL = "/api/auth/token";
     
     public static final String API_ROOT_URL = "/api/**";
@@ -93,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        List<String> permitAllEndpointList = Arrays.asList(AUTHENTICATION_URL, REFRESH_TOKEN_URL, "/console");
+        List<String> permitAllEndpointList = Arrays.asList(AUTHENTICATION_URL, REFRESH_TOKEN_URL, AUTHENTICATION_RESTORE_PASSWORD, "/console");
         http.csrf().disable().headers().frameOptions().disable().and()
                 .authorizeRequests()
                 .antMatchers("/", "/area/**", "/canal/**", "/criticidad-tarea/**", "/criticidad-plan/**", "/documento/**", "/gerencia/**", "/planTarea/**", "/plan/**",

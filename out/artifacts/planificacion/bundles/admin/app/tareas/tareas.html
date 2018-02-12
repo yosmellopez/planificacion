@@ -53,7 +53,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-3" id="select-direccion" ng-if="vm.usuario.rol === 1">
-                            <select data-ds-select2 class="form-control selectpicker" id="direccion" name="direccion" ng-model="direccion" ng-change="vm.seleccionarElemento({criticidad:false,cargo:false,area:false,direccion:true});">
+                            <select data-ds-select2 class="form-control selectpicker" id="direccion" name="direccion" ng-model="direccion">
                                 <option value="">Seleccione la dirección</option>
                                 <option data-ng-repeat="item in vm.gerencias" value="{{item.gerencia_id}}">{{item.descripcion}}</option>
                             </select>
@@ -173,11 +173,9 @@
                                             <p class="help-block"></p>
                                             <div class="row">
                                                 <div class="col-md-6" id="select-criticidad">
-                                                    <select data-ds-select2 class="form-control selectpicker" multiple
+                                                    <select data-ds-select2 class="form-control selectpicker" multiple data-placeholder="Seleccione"
                                                             data-live-search="true" id="criticidad">
-                                                        <option value="">Seleccione</option>
-                                                        <option data-ng-repeat="item in vm.criticidades track by $index"
-                                                                value="{{item.criticidad_id}}">{{item.nombre}}
+                                                        <option data-ng-repeat="item in vm.criticidades track by $index" value="{{item.criticidad_id}}">{{item.nombre}}
                                                         </option>
                                                     </select>
                                                 </div>
@@ -336,11 +334,11 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="tranversal" id="tarea-tranversal-activa" style="left: 11px;position: relative;">
+                                                            <input type="radio" name="tranversal" id="tarea-tranversal-activa" ng-model="tranversal" value="true" checked="false" style="left: 11px;position: relative;">
                                                             <span class="ic-small">Si</span>
                                                         </key>
                                                         <key class="radio-inline">
-                                                            <input type="radio" name="tranversal" id="tarea-tranversal-inactiva" checked style="left: 11px;position: relative;">
+                                                            <input type="radio" name="tranversal" id="tarea-tranversal-inactiva" ng-model="tranversal" value="false" checked="true" style="left: 11px;position: relative;">
                                                             <span class="ic-small">No</span>
                                                         </key>
                                                     </div>

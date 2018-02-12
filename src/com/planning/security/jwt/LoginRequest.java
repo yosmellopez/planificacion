@@ -29,7 +29,7 @@ public class LoginRequest {
     private String plataform = "Android";
 
     @JsonProperty(value = "token")
-    private String token = "1234";
+    private String token = "";
 
     @JsonProperty(value = "playerId")
     private String playerId = "1234";

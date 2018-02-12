@@ -8,17 +8,17 @@ import java.util.Arrays;
 
 /**
  * CustomCorsFilter
- * 
- * @author vladimir.stankovic
  *
+ * @author vladimir.stankovic
+ * <p>
  * Aug 3, 2016
  */
 public class CustomCorsFilter extends CorsFilter {
-
+    
     public CustomCorsFilter() {
         super(configurationSource());
     }
-
+    
     private static UrlBasedCorsConfigurationSource configurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
@@ -28,6 +28,7 @@ public class CustomCorsFilter extends CorsFilter {
         config.setAllowedMethods(Arrays.asList("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/apirest/**", config);
         return source;
     }
 }

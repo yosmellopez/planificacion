@@ -52,246 +52,265 @@
     </schema>
     <schema id="18" parent="1" name="PLANNING">
       <ObjectId>48</ObjectId>
-      <IntrospectionTimestamp>2018-02-05.21:07:44</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2018-02-11.16:16:00</IntrospectionTimestamp>
       <CreatedTimestamp>2018-02-04.11:56:03</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-05.20:27:21</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-11.16:13:11</ModifiedTimestamp>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
     <schema id="19" parent="1" name="XS$NULL">
       <ObjectId>2147483638</ObjectId>
     </schema>
-    <sequence id="20" parent="18" name="AREA_ID_SEQ">
+    <schema id="20" parent="1" name="TEST">
+      <ObjectId>50</ObjectId>
+    </schema>
+    <sequence id="21" parent="18" name="AREA_ID_SEQ">
       <ObjectId>20268</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="21" parent="18" name="CHANNEL_ID_SEQ">
+    <sequence id="22" parent="18" name="CHANNEL_ID_SEQ">
       <ObjectId>20269</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="22" parent="18" name="CHILD_TASK_ID_SEQ">
+    <sequence id="23" parent="18" name="CHILD_TASK_ID_SEQ">
       <ObjectId>20270</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="23" parent="18" name="CRITICALY_LEVEL_ID_SEQ">
+    <sequence id="24" parent="18" name="CRITICALY_LEVEL_ID_SEQ">
       <ObjectId>20271</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="24" parent="18" name="DOCUMENT_ID_SEQ">
+    <sequence id="25" parent="18" name="DOCUMENT_ID_SEQ">
       <ObjectId>20277</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
       <CacheSize>300</CacheSize>
     </sequence>
-    <sequence id="25" parent="18" name="MANAGEMENT_ID_SEQ">
+    <sequence id="26" parent="18" name="MANAGEMENT_ID_SEQ">
       <ObjectId>20278</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="26" parent="18" name="PLAN_ID_SEQ">
+    <sequence id="27" parent="18" name="NOTIFICATION_ID_SEQ">
+      <ObjectId>20819</ObjectId>
+      <CreatedTimestamp>2018-02-08.20:01:19</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-08.20:01:19</ModifiedTimestamp>
+      <SequenceIdentity>1</SequenceIdentity>
+    </sequence>
+    <sequence id="28" parent="18" name="PLAN_ID_SEQ">
       <ObjectId>20280</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="27" parent="18" name="PL_TASK_ID_SEQ">
+    <sequence id="29" parent="18" name="PL_TASK_ID_SEQ">
       <ObjectId>20279</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="28" parent="18" name="POSITION_ID_SEQ">
+    <sequence id="30" parent="18" name="POSITION_ID_SEQ">
       <ObjectId>20281</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="29" parent="18" name="ROL_ID_SEQ">
+    <sequence id="31" parent="18" name="ROL_ID_SEQ">
       <ObjectId>20282</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="30" parent="18" name="STATUS_PLAN_ID_SEQ">
+    <sequence id="32" parent="18" name="STATUS_PLAN_ID_SEQ">
       <ObjectId>20283</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="31" parent="18" name="STATUS_TASK_ID_SEQ">
+    <sequence id="33" parent="18" name="STATUS_TASK_ID_SEQ">
       <ObjectId>20284</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="32" parent="18" name="TASK_ID_SEQ">
+    <sequence id="34" parent="18" name="TASK_ID_SEQ">
       <ObjectId>20285</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
       <CacheSize>300</CacheSize>
     </sequence>
-    <sequence id="33" parent="18" name="TOKEN_ID_SEQ">
+    <sequence id="35" parent="18" name="TOKEN_ID_SEQ">
       <ObjectId>20310</ObjectId>
       <CreatedTimestamp>2018-02-04.20:42:00</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.20:42:00</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <sequence id="34" parent="18" name="USERS_ID_SEQ">
+    <sequence id="36" parent="18" name="USERS_ID_SEQ">
       <ObjectId>20286</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <table id="35" parent="18" name="AREA">
+    <table id="37" parent="18" name="AREA">
       <ObjectId>20244</ObjectId>
       <CreatedTimestamp>2018-02-04.17:31:31</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:01:47</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="36" parent="18" name="CHANNEL">
+    <table id="38" parent="18" name="CHANNEL">
       <ObjectId>20245</ObjectId>
       <CreatedTimestamp>2018-02-04.17:31:45</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:04:51</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="37" parent="18" name="CHILD_TASK">
+    <table id="39" parent="18" name="CHILD_TASK">
       <ObjectId>20248</ObjectId>
       <CreatedTimestamp>2018-02-04.17:32:01</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:11:31</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="38" parent="18" name="CRITICALY_LEVEL">
+    <table id="40" parent="18" name="CRITICALY_LEVEL">
       <ObjectId>20249</ObjectId>
       <CreatedTimestamp>2018-02-04.17:32:23</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:14:50</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="39" parent="18" name="DOCUMENT">
+    <table id="41" parent="18" name="DOCUMENT">
       <ObjectId>20250</ObjectId>
       <CreatedTimestamp>2018-02-04.17:32:36</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:16:42</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="40" parent="18" name="GRUPO">
+    <table id="42" parent="18" name="GRUPO">
       <ObjectId>20251</ObjectId>
       <CreatedTimestamp>2018-02-04.17:32:56</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:19:30</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="41" parent="18" name="MANAGEMENT">
+    <table id="43" parent="18" name="MANAGEMENT">
       <ObjectId>20252</ObjectId>
       <CreatedTimestamp>2018-02-04.17:33:11</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:47:07</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-06.20:23:04</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="42" parent="18" name="PLAN">
+    <table id="44" parent="18" name="NOTIFICATION">
+      <ObjectId>20817</ObjectId>
+      <CreatedTimestamp>2018-02-08.20:01:18</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-11.15:28:45</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="45" parent="18" name="NOTIFICATION_DOCUMENT">
+      <ObjectId>21093</ObjectId>
+      <CreatedTimestamp>2018-02-11.15:49:24</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-11.15:51:38</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="46" parent="18" name="PLAN">
       <ObjectId>20254</ObjectId>
       <CreatedTimestamp>2018-02-04.17:33:50</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.13:44:23</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="43" parent="18" name="PLTASK_CRITICALY_LEVEL">
+    <table id="47" parent="18" name="PLTASK_CRITICALY_LEVEL">
       <ObjectId>20257</ObjectId>
       <CreatedTimestamp>2018-02-04.17:34:13</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:13:43</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="44" parent="18" name="PL_TASK">
+    <table id="48" parent="18" name="PL_TASK">
       <ObjectId>20253</ObjectId>
       <CreatedTimestamp>2018-02-04.17:33:17</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-05.20:27:21</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-11.16:13:11</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="45" parent="18" name="POSITION">
+    <table id="49" parent="18" name="POSITION">
       <ObjectId>20258</ObjectId>
       <CreatedTimestamp>2018-02-04.17:34:23</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:15:38</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="46" parent="18" name="ROL">
+    <table id="50" parent="18" name="ROL">
       <ObjectId>20259</ObjectId>
       <CreatedTimestamp>2018-02-04.17:34:34</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:17:12</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="47" parent="18" name="STATUS_PLAN">
+    <table id="51" parent="18" name="STATUS_PLAN">
       <ObjectId>20260</ObjectId>
       <CreatedTimestamp>2018-02-04.17:34:42</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:18:27</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="48" parent="18" name="STATUS_TASK">
+    <table id="52" parent="18" name="STATUS_TASK">
       <ObjectId>20261</ObjectId>
       <CreatedTimestamp>2018-02-04.17:34:50</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:19:54</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="49" parent="18" name="TASK">
+    <table id="53" parent="18" name="TASK">
       <ObjectId>20262</ObjectId>
       <CreatedTimestamp>2018-02-04.17:34:57</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="50" parent="18" name="TASK_CHANNEL">
+    <table id="54" parent="18" name="TASK_CHANNEL">
       <ObjectId>20265</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:08</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:23:51</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="51" parent="18" name="TASK_CRITICALY_LEVEL">
+    <table id="55" parent="18" name="TASK_CRITICALY_LEVEL">
       <ObjectId>20266</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:13</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.20:50:21</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:24:57</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="52" parent="18" name="USERS">
+    <table id="56" parent="18" name="USERS">
       <ObjectId>20267</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:45</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <table id="53" parent="18" name="USER_TOKEN">
+    <table id="57" parent="18" name="USER_TOKEN">
       <ObjectId>20308</ObjectId>
       <CreatedTimestamp>2018-02-04.20:42:00</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-05.20:26:53</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-02-08.23:10:03</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <column id="54" parent="35" name="ID">
+    <column id="58" parent="37" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="55" parent="35" name="CODE">
+    <column id="59" parent="37" name="CODE">
       <Position>2</Position>
       <DataType>NVARCHAR2(150)|0</DataType>
-      <DefaultExpression>&apos;&apos; </DefaultExpression>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
     </column>
-    <column id="56" parent="35" name="DESCRIPTION">
+    <column id="60" parent="37" name="DESCRIPTION">
       <Position>3</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
     </column>
-    <column id="57" parent="35" name="NAME">
+    <column id="61" parent="37" name="NAME">
       <Position>4</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="58" parent="35" name="IDMANAGEMENT">
+    <column id="62" parent="37" name="IDMANAGEMENT">
       <Position>5</Position>
       <DataType>NUMBER(11)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="59" parent="35" name="ACTIVE">
+    <column id="63" parent="37" name="ACTIVE">
       <Position>6</Position>
       <DataType>NUMBER(*)|0</DataType>
       <DefaultExpression>1   
@@ -299,7 +318,7 @@
  &#xd;
 </DefaultExpression>
     </column>
-    <index id="60" parent="35" name="SYS_C009655">
+    <index id="64" parent="37" name="SYS_C009655">
       <ObjectId>20287</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:57</CreatedTimestamp>
@@ -308,14 +327,14 @@
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="61" parent="35" name="SYS_C009655">
+    <key id="65" parent="37" name="SYS_C009655">
       <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009655</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="62" parent="35" name="FK_AREA_MANAGEMENT">
+    <foreign-key id="66" parent="37" name="FK_AREA_MANAGEMENT">
       <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
       <ColNames>IDMANAGEMENT</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -323,130 +342,40 @@
       <RefKeyName>SYS_C009687</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="63" parent="35" name="SYS_C0012554">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
+    <check id="67" parent="37" name="AREA_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:00:49</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="64" parent="35" name="SYS_C006238">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="65" parent="35" name="SYS_C006312">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="66" parent="35" name="SYS_C007143">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="67" parent="35" name="SYS_C009533">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="68" parent="35" name="SYS_C009651">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="69" parent="35" name="SYS_C006239">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
+    <check id="68" parent="37" name="AREA_CODIGO_NULL">
+      <ModifiedTimestamp>2018-02-06.20:01:47</ModifiedTimestamp>
       <ColNames>CODE</ColNames>
       <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="70" parent="35" name="SYS_C006313">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="71" parent="35" name="SYS_C009534">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="72" parent="35" name="SYS_C009652">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="73" parent="35" name="SYS_C0012555">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
+    <check id="69" parent="37" name="AREA_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-06.20:01:05</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="74" parent="35" name="SYS_C006240">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="75" parent="35" name="SYS_C006314">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="76" parent="35" name="SYS_C007145">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="77" parent="35" name="SYS_C009535">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="78" parent="35" name="SYS_C009653">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="79" parent="35" name="SYS_C0012556">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
+    <check id="70" parent="37" name="AREA_ADMIN_NULL">
+      <ModifiedTimestamp>2018-02-06.20:01:18</ModifiedTimestamp>
       <ColNames>IDMANAGEMENT</ColNames>
       <Predicate>&quot;IDMANAGEMENT&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="80" parent="35" name="SYS_C006241">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>IDMANAGEMENT</ColNames>
-      <Predicate>&quot;IDMANAGEMENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="81" parent="35" name="SYS_C006315">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>IDMANAGEMENT</ColNames>
-      <Predicate>&quot;IDMANAGEMENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="82" parent="35" name="SYS_C007146">
-      <ModifiedTimestamp>2018-02-04.17:38:57</ModifiedTimestamp>
-      <ColNames>IDMANAGEMENT</ColNames>
-      <Predicate>&quot;IDMANAGEMENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="83" parent="35" name="SYS_C009536">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>IDMANAGEMENT</ColNames>
-      <Predicate>&quot;IDMANAGEMENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="84" parent="35" name="SYS_C009654">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>IDMANAGEMENT</ColNames>
-      <Predicate>&quot;IDMANAGEMENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="85" parent="36" name="ID">
+    <column id="71" parent="38" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="86" parent="36" name="CHANNEL">
+    <column id="72" parent="38" name="CHANNEL">
       <Position>2</Position>
       <DataType>NVARCHAR2(200)|0</DataType>
     </column>
-    <column id="87" parent="36" name="DESCRIPCION">
+    <column id="73" parent="38" name="DESCRIPCION">
       <Position>3</Position>
       <DataType>NCLOB|0</DataType>
     </column>
-    <index id="88" parent="36" name="SYS_C009657">
+    <index id="74" parent="38" name="SYS_C009657">
       <ObjectId>20288</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -455,65 +384,37 @@
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="89" parent="36" name="SYS_C009657">
+    <key id="75" parent="38" name="SYS_C009657">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009657</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="90" parent="36" name="SYS_C0012557">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="76" parent="38" name="CHANNEL_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:04:51</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="91" parent="36" name="SYS_C006242">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="92" parent="36" name="SYS_C006317">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="93" parent="36" name="SYS_C007147">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="94" parent="36" name="SYS_C009537">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="95" parent="36" name="SYS_C009656">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="96" parent="37" name="ID">
+    <column id="77" parent="39" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="97" parent="37" name="ISPREDECESSOR">
+    <column id="78" parent="39" name="ISPREDECESSOR">
       <Position>2</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>0    </DefaultExpression>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="98" parent="37" name="CHILDID">
+    <column id="79" parent="39" name="CHILDID">
       <Position>3</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="99" parent="37" name="NEXT_CHILD">
+    <column id="80" parent="39" name="NEXT_CHILD">
       <Position>4</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <index id="100" parent="37" name="SYS_C009972">
+    <index id="81" parent="39" name="SYS_C009972">
       <ObjectId>20289</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -522,7 +423,7 @@
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="101" parent="37" name="UNIQUE_FROM_TO">
+    <index id="82" parent="39" name="UNIQUE_FROM_TO">
       <ObjectId>20290</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
@@ -531,21 +432,21 @@
 NEXT_CHILD</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="102" parent="37" name="SYS_C009972">
+    <key id="83" parent="39" name="SYS_C009972">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009972</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <key id="103" parent="37" name="UNIQUE_FROM_TO">
+    <key id="84" parent="39" name="UNIQUE_FROM_TO">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>CHILDID
 NEXT_CHILD</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>UNIQUE_FROM_TO</UnderlyingIndexName>
     </key>
-    <foreign-key id="104" parent="37" name="FK_CHILDTASK_PLATASK_CHILD">
+    <foreign-key id="85" parent="39" name="FK_CHILDTASK_PLATASK_CHILD">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>CHILDID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -553,7 +454,7 @@ NEXT_CHILD</ColNames>
       <RefKeyName>SYS_C009985</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="105" parent="37" name="FK_CHILDTASK_NEXT">
+    <foreign-key id="86" parent="39" name="FK_CHILDTASK_NEXT">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>NEXT_CHILD</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -561,89 +462,48 @@ NEXT_CHILD</ColNames>
       <RefKeyName>SYS_C009985</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="106" parent="37" name="SYS_C0012558">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="87" parent="39" name="CHILDTASK_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:11:31</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="107" parent="37" name="SYS_C007148">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="108" parent="37" name="SYS_C009970">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="109" parent="37" name="SYS_C0012559">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="88" parent="39" name="CHILDTASK_PREDECESSOR_NULL">
+      <ModifiedTimestamp>2018-02-06.20:11:31</ModifiedTimestamp>
       <ColNames>ISPREDECESSOR</ColNames>
       <Predicate>&quot;ISPREDECESSOR&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="110" parent="37" name="SYS_C007149">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ISPREDECESSOR</ColNames>
-      <Predicate>&quot;ISPREDECESSOR&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="111" parent="37" name="SYS_C009971">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ISPREDECESSOR</ColNames>
-      <Predicate>&quot;ISPREDECESSOR&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="112" parent="37" name="SYS_C0012560">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="89" parent="39" name="CHILDTASK_CHILDID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:11:31</ModifiedTimestamp>
       <ColNames>CHILDID</ColNames>
       <Predicate>&quot;CHILDID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="113" parent="37" name="SYS_C007150">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>CHILDID</ColNames>
-      <Predicate>&quot;CHILDID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="114" parent="37" name="SYS_C009973">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>CHILDID</ColNames>
-      <Predicate>&quot;CHILDID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="115" parent="37" name="SYS_C0012561">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="90" parent="39" name="CHILDTASK_NEXT_CHILD_NULL">
+      <ModifiedTimestamp>2018-02-06.20:11:31</ModifiedTimestamp>
       <ColNames>NEXT_CHILD</ColNames>
       <Predicate>&quot;NEXT_CHILD&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="116" parent="37" name="SYS_C007151">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NEXT_CHILD</ColNames>
-      <Predicate>&quot;NEXT_CHILD&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="117" parent="37" name="SYS_C009974">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NEXT_CHILD</ColNames>
-      <Predicate>&quot;NEXT_CHILD&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="118" parent="38" name="ID">
+    <column id="91" parent="40" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="119" parent="38" name="COLOR">
+    <column id="92" parent="40" name="COLOR">
       <Position>2</Position>
       <DataType>NVARCHAR2(150)|0</DataType>
     </column>
-    <column id="120" parent="38" name="DESCRIPTION">
+    <column id="93" parent="40" name="DESCRIPTION">
       <Position>3</Position>
       <DataType>NVARCHAR2(150)|0</DataType>
     </column>
-    <column id="121" parent="38" name="NAME">
+    <column id="94" parent="40" name="NAME">
       <Position>4</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="122" parent="38" name="ORDEN">
+    <column id="95" parent="40" name="ORDEN">
       <Position>5</Position>
       <DataType>NUMBER(11)|0</DataType>
     </column>
-    <column id="123" parent="38" name="ACTIVE">
+    <column id="96" parent="40" name="ACTIVE">
       <Position>6</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>1   
@@ -651,7 +511,7 @@ NEXT_CHILD</ColNames>
  &#xd;
 </DefaultExpression>
     </column>
-    <index id="124" parent="38" name="SYS_C009665">
+    <index id="97" parent="40" name="SYS_C009665">
       <ObjectId>20291</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -660,108 +520,52 @@ NEXT_CHILD</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="125" parent="38" name="SYS_C009665">
+    <key id="98" parent="40" name="SYS_C009665">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009665</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="126" parent="38" name="SYS_C0012562">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="99" parent="40" name="LEVEL_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:14:50</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="127" parent="38" name="SYS_C006247">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="128" parent="38" name="SYS_C006324">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="129" parent="38" name="SYS_C007152">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="130" parent="38" name="SYS_C009542">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="131" parent="38" name="SYS_C009663">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="132" parent="38" name="SYS_C0012563">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="100" parent="40" name="LEVEL_NAME_NULL">
+      <ModifiedTimestamp>2018-02-06.20:14:50</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="133" parent="38" name="SYS_C006248">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="134" parent="38" name="SYS_C006325">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="135" parent="38" name="SYS_C007153">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="136" parent="38" name="SYS_C009543">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="137" parent="38" name="SYS_C009664">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="138" parent="39" name="ID">
+    <column id="101" parent="41" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="139" parent="39" name="DESCRIPTION">
+    <column id="102" parent="41" name="DESCRIPTION">
       <Position>2</Position>
       <DataType>NVARCHAR2(1000)|0</DataType>
     </column>
-    <column id="140" parent="39" name="DOCPATH">
+    <column id="103" parent="41" name="DOCPATH">
       <Position>3</Position>
       <DataType>NVARCHAR2(450)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="141" parent="39" name="NAME">
+    <column id="104" parent="41" name="TASKID">
       <Position>4</Position>
-      <DataType>NVARCHAR2(350)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="142" parent="39" name="TASKID">
-      <Position>5</Position>
       <DataType>NUMBER(11)|0</DataType>
     </column>
-    <column id="143" parent="39" name="ULTIMO">
+    <column id="105" parent="41" name="ULTIMO">
+      <Position>5</Position>
+      <DataType>NUMBER(1)|0</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="106" parent="41" name="MODEL">
       <Position>6</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <DefaultExpression>0      </DefaultExpression>
+      <DefaultExpression>1</DefaultExpression>
     </column>
-    <column id="144" parent="39" name="MODEL">
+    <column id="107" parent="41" name="ACTIVE">
       <Position>7</Position>
-      <DataType>NUMBER(1)|0</DataType>
-      <DefaultExpression>1      </DefaultExpression>
-    </column>
-    <column id="145" parent="39" name="ACTIVE">
-      <Position>8</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>1   
  
@@ -769,7 +573,7 @@ NEXT_CHILD</ColNames>
  &#xd;
 </DefaultExpression>
     </column>
-    <index id="146" parent="39" name="SYS_C006343">
+    <index id="108" parent="41" name="SYS_C006343">
       <ObjectId>20292</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -778,14 +582,14 @@ NEXT_CHILD</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="147" parent="39" name="SYS_C006343">
+    <key id="109" parent="41" name="SYS_C006343">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C006343</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="148" parent="39" name="FK_DOCUMENT_TASK">
+    <foreign-key id="110" parent="41" name="FK_DOCUMENT_TASK">
       <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
       <ColNames>TASKID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -793,97 +597,32 @@ NEXT_CHILD</ColNames>
       <RefKeyName>SYS_C009726</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="149" parent="39" name="SYS_C0012577">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="111" parent="41" name="DOCUMENT_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:16:42</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="150" parent="39" name="SYS_C006262">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="151" parent="39" name="SYS_C006340">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="152" parent="39" name="SYS_C007167">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="153" parent="39" name="SYS_C009774">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="154" parent="39" name="SYS_C0012578">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="112" parent="41" name="DOCUMENT_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-06.20:16:42</ModifiedTimestamp>
       <ColNames>DOCPATH</ColNames>
       <Predicate>&quot;DOCPATH&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="155" parent="39" name="SYS_C006263">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>DOCPATH</ColNames>
-      <Predicate>&quot;DOCPATH&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="156" parent="39" name="SYS_C006341">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>DOCPATH</ColNames>
-      <Predicate>&quot;DOCPATH&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="157" parent="39" name="SYS_C007168">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>DOCPATH</ColNames>
-      <Predicate>&quot;DOCPATH&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="158" parent="39" name="SYS_C009775">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>DOCPATH</ColNames>
-      <Predicate>&quot;DOCPATH&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="159" parent="39" name="SYS_C0012579">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="160" parent="39" name="SYS_C006264">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="161" parent="39" name="SYS_C006342">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="162" parent="39" name="SYS_C007169">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="163" parent="39" name="SYS_C009776">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="164" parent="40" name="GRUPO_ID">
+    <column id="113" parent="42" name="GRUPO_ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="165" parent="40" name="PLAN_ID">
+    <column id="114" parent="42" name="PLAN_ID">
       <Position>2</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="166" parent="40" name="TASK_ID">
+    <column id="115" parent="42" name="TASK_ID">
       <Position>3</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="167" parent="40" name="SYS_C0012962">
+    <index id="116" parent="42" name="SYS_C0012962">
       <ObjectId>20293</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -894,7 +633,7 @@ PLAN_ID
 TASK_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="168" parent="40" name="SYS_C0012962">
+    <key id="117" parent="42" name="SYS_C0012962">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>GRUPO_ID
 PLAN_ID
@@ -903,7 +642,7 @@ TASK_ID</ColNames>
       <UnderlyingIndexName>SYS_C0012962</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="169" parent="40" name="FK_GRUPO_TAREA">
+    <foreign-key id="118" parent="42" name="FK_GRUPO_TAREA">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>GRUPO_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -911,7 +650,7 @@ TASK_ID</ColNames>
       <RefKeyName>SYS_C009726</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="170" parent="40" name="FK_PLAN_TAREA_AGRUPADA">
+    <foreign-key id="119" parent="42" name="FK_PLAN_TAREA_AGRUPADA">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>PLAN_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -919,7 +658,7 @@ TASK_ID</ColNames>
       <RefKeyName>SYS_C009701</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="171" parent="40" name="FK_AGRUPADA_TAREA">
+    <foreign-key id="120" parent="42" name="FK_AGRUPADA_TAREA">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>TASK_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -927,49 +666,44 @@ TASK_ID</ColNames>
       <RefKeyName>SYS_C009726</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="172" parent="40" name="SYS_C0012959">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="121" parent="42" name="GRUPO_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:19:30</ModifiedTimestamp>
       <ColNames>GRUPO_ID</ColNames>
       <Predicate>&quot;GRUPO_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="173" parent="40" name="SYS_C0012960">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="122" parent="42" name="GRUPO_PLAN_NULL">
+      <ModifiedTimestamp>2018-02-06.20:19:30</ModifiedTimestamp>
       <ColNames>PLAN_ID</ColNames>
       <Predicate>&quot;PLAN_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="174" parent="40" name="SYS_C0012961">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="123" parent="42" name="GRUPO_TRASK_NULL">
+      <ModifiedTimestamp>2018-02-06.20:19:30</ModifiedTimestamp>
       <ColNames>TASK_ID</ColNames>
       <Predicate>&quot;TASK_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <column id="175" parent="41" name="ID">
+    <column id="124" parent="43" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="176" parent="41" name="NAME">
+    <column id="125" parent="43" name="NAME">
       <Position>2</Position>
       <DataType>NVARCHAR2(128)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="177" parent="41" name="MANAGEMENTID">
+    <column id="126" parent="43" name="ACTIVE">
       <Position>3</Position>
-      <DataType>NUMBER(11)|0</DataType>
-    </column>
-    <column id="178" parent="41" name="ACTIVE">
-      <Position>4</Position>
       <DataType>NUMBER(*)|0</DataType>
-      <DefaultExpression>1     </DefaultExpression>
+      <DefaultExpression>1</DefaultExpression>
     </column>
-    <column id="179" parent="41" name="ORDEN">
-      <Position>5</Position>
+    <column id="127" parent="43" name="ORDEN">
+      <Position>4</Position>
       <DataType>NUMBER(10)|0</DataType>
       <DefaultExpression>1 
  &#xd;
  &#xd;
 </DefaultExpression>
     </column>
-    <index id="180" parent="41" name="SYS_C009687">
+    <index id="128" parent="43" name="SYS_C009687">
       <ObjectId>20294</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -978,7 +712,7 @@ TASK_ID</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="181" parent="41" name="CODIGO_UNICO">
+    <index id="129" parent="43" name="CODIGO_UNICO">
       <ObjectId>20295</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
@@ -986,127 +720,170 @@ TASK_ID</ColNames>
       <ColNames>ORDEN</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="182" parent="41" name="SYS_C009687">
+    <key id="130" parent="43" name="SYS_C009687">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009687</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <key id="183" parent="41" name="CODIGO_UNICO">
+    <key id="131" parent="43" name="CODIGO_UNICO">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ORDEN</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>CODIGO_UNICO</UnderlyingIndexName>
     </key>
-    <check id="184" parent="41" name="SYS_C0012581">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="132" parent="43" name="MANAGEMENT_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:23:04</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="185" parent="41" name="SYS_C006266">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="186" parent="41" name="SYS_C006345">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="187" parent="41" name="SYS_C007171">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="188" parent="41" name="SYS_C009561">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="189" parent="41" name="SYS_C009684">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="190" parent="41" name="SYS_C0012583">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="133" parent="43" name="MANAGEMENT_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-06.20:23:04</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="191" parent="41" name="SYS_C006268">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="192" parent="41" name="SYS_C006347">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="193" parent="41" name="SYS_C007173">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="194" parent="41" name="SYS_C009563">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="195" parent="41" name="SYS_C009686">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="196" parent="42" name="ID">
+    <column id="134" parent="44" name="ID">
       <Position>1</Position>
-      <DataType>NUMBER(11)|0</DataType>
+      <DataType>NUMBER(19)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="197" parent="42" name="DESCRIPTION">
+    <column id="135" parent="44" name="LEIDO">
       <Position>2</Position>
-      <DataType>NVARCHAR2(150)|0</DataType>
+      <DataType>NUMBER(1)|0</DataType>
     </column>
-    <column id="198" parent="42" name="DIAGRAMA">
+    <column id="136" parent="44" name="USER_ID">
       <Position>3</Position>
-      <DataType>NCLOB|0</DataType>
+      <DataType>NUMBER(10)|0</DataType>
     </column>
-    <column id="199" parent="42" name="FECHA_CREACION">
+    <column id="137" parent="44" name="TITLE">
       <Position>4</Position>
-      <DataType>DATE|0</DataType>
+      <DataType>VARCHAR2(255 char)|0</DataType>
     </column>
-    <column id="200" parent="42" name="NAME">
+    <column id="138" parent="44" name="FECHA">
       <Position>5</Position>
-      <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>TIMESTAMP(6)|0</DataType>
     </column>
-    <column id="201" parent="42" name="STATUSPLANID">
+    <column id="139" parent="44" name="DESCRIPTION">
       <Position>6</Position>
-      <DataType>NUMBER(11)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>VARCHAR2(255 char)|0</DataType>
     </column>
-    <column id="202" parent="42" name="MODELO_AGRUPADO">
-      <Position>7</Position>
-      <DataType>LONG|0</DataType>
-    </column>
-    <index id="203" parent="42" name="SYS_C009701">
-      <ObjectId>20298</ObjectId>
+    <index id="140" parent="44" name="SYS_C008661">
+      <ObjectId>20818</ObjectId>
       <NameSurrogate>1</NameSurrogate>
-      <CreatedTimestamp>2018-02-04.17:38:59</CreatedTimestamp>
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+      <CreatedTimestamp>2018-02-08.20:01:18</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-08.20:01:18</ModifiedTimestamp>
       <TablespaceName>USERS</TablespaceName>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="204" parent="42" name="SYS_C009701">
+    <key id="141" parent="44" name="SYS_C008661">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-02-08.20:01:18</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C008661</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="142" parent="44" name="FKNK4FTB5AM9UBMKV1661H15DS9">
+      <ModifiedTimestamp>2018-02-11.00:05:36</ModifiedTimestamp>
+      <ColNames>USER_ID</ColNames>
+      <RefSchemaName>PLANNING</RefSchemaName>
+      <RefTableName>USERS</RefTableName>
+      <RefKeyName>SYS_C006401</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="143" parent="45" name="NOTIFICACIONES_ID">
+      <Position>1</Position>
+      <DataType>NUMBER(19)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="144" parent="45" name="DOCUMENTOS_ID">
+      <Position>2</Position>
+      <DataType>NUMBER(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="145" parent="45" name="SYS_C008765">
+      <ObjectId>21094</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-02-11.15:49:24</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-11.15:49:24</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>NOTIFICACIONES_ID
+DOCUMENTOS_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="146" parent="45" name="SYS_C008765">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2018-02-11.15:49:24</ModifiedTimestamp>
+      <ColNames>NOTIFICACIONES_ID
+DOCUMENTOS_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C008765</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="147" parent="45" name="FK_NOT_DOC_NOT">
+      <ModifiedTimestamp>2018-02-11.15:51:38</ModifiedTimestamp>
+      <ColNames>NOTIFICACIONES_ID</ColNames>
+      <RefSchemaName>PLANNING</RefSchemaName>
+      <RefTableName>NOTIFICATION</RefTableName>
+      <RefKeyName>SYS_C008661</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="148" parent="45" name="FK_NOT_DOC_DOC">
+      <ModifiedTimestamp>2018-02-11.15:51:38</ModifiedTimestamp>
+      <ColNames>DOCUMENTOS_ID</ColNames>
+      <RefSchemaName>PLANNING</RefSchemaName>
+      <RefTableName>DOCUMENT</RefTableName>
+      <RefKeyName>SYS_C006343</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="149" parent="46" name="ID">
+      <Position>1</Position>
+      <DataType>NUMBER(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="150" parent="46" name="DESCRIPTION">
+      <Position>2</Position>
+      <DataType>NVARCHAR2(150)|0</DataType>
+    </column>
+    <column id="151" parent="46" name="DIAGRAMA">
+      <Position>3</Position>
+      <DataType>NCLOB|0</DataType>
+    </column>
+    <column id="152" parent="46" name="FECHA_CREACION">
+      <Position>4</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="153" parent="46" name="NAME">
+      <Position>5</Position>
+      <DataType>NVARCHAR2(100)|0</DataType>
+    </column>
+    <column id="154" parent="46" name="STATUSPLANID">
+      <Position>6</Position>
+      <DataType>NUMBER(11)|0</DataType>
+    </column>
+    <column id="155" parent="46" name="MODELO_AGRUPADO">
+      <Position>7</Position>
+      <DataType>NCLOB|0</DataType>
+    </column>
+    <index id="156" parent="46" name="SYS_C009701">
+      <ObjectId>20298</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2018-02-04.17:38:59</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-07.13:44:23</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="157" parent="46" name="SYS_C009701">
       <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009701</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="205" parent="42" name="FK_PLAN_STATUSTASK">
+    <foreign-key id="158" parent="46" name="FK_PLAN_STATUSTASK">
       <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
       <ColNames>STATUSPLANID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -1114,107 +891,32 @@ TASK_ID</ColNames>
       <RefKeyName>SYS_C009715</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="206" parent="42" name="SYS_C0012584">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="159" parent="46" name="PLAN_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:12:29</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="207" parent="42" name="SYS_C006278">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="208" parent="42" name="SYS_C006359">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="209" parent="42" name="SYS_C007174">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="210" parent="42" name="SYS_C009573">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="211" parent="42" name="SYS_C009698">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="212" parent="42" name="SYS_C0012585">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="160" parent="46" name="PLAN_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:12:29</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="213" parent="42" name="SYS_C006279">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="214" parent="42" name="SYS_C006360">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="215" parent="42" name="SYS_C007175">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="216" parent="42" name="SYS_C009574">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="217" parent="42" name="SYS_C009699">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="218" parent="42" name="SYS_C0012586">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="161" parent="46" name="PLAN_ESTADO_NULL">
+      <ModifiedTimestamp>2018-02-07.02:12:29</ModifiedTimestamp>
       <ColNames>STATUSPLANID</ColNames>
       <Predicate>&quot;STATUSPLANID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="219" parent="42" name="SYS_C006280">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>STATUSPLANID</ColNames>
-      <Predicate>&quot;STATUSPLANID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="220" parent="42" name="SYS_C006361">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>STATUSPLANID</ColNames>
-      <Predicate>&quot;STATUSPLANID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="221" parent="42" name="SYS_C007176">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>STATUSPLANID</ColNames>
-      <Predicate>&quot;STATUSPLANID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="222" parent="42" name="SYS_C009575">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>STATUSPLANID</ColNames>
-      <Predicate>&quot;STATUSPLANID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="223" parent="42" name="SYS_C009700">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>STATUSPLANID</ColNames>
-      <Predicate>&quot;STATUSPLANID&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="224" parent="43" name="TASKS_ID">
+    <column id="162" parent="47" name="TASKS_ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="225" parent="43" name="CRITICALYLEVELS_ID">
+    <column id="163" parent="47" name="CRITICALYLEVELS_ID">
       <Position>2</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="226" parent="43" name="SYS_C006365">
+    <index id="164" parent="47" name="SYS_C006365">
       <ObjectId>20299</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:59</CreatedTimestamp>
@@ -1224,7 +926,7 @@ TASK_ID</ColNames>
 CRITICALYLEVELS_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="227" parent="43" name="SYS_C006365">
+    <key id="165" parent="47" name="SYS_C006365">
       <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
       <ColNames>TASKS_ID
 CRITICALYLEVELS_ID</ColNames>
@@ -1232,99 +934,66 @@ CRITICALYLEVELS_ID</ColNames>
       <UnderlyingIndexName>SYS_C006365</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="228" parent="43" name="SYS_C0012587">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="166" parent="47" name="PLANTKCL_TASKID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:13:43</ModifiedTimestamp>
       <ColNames>TASKS_ID</ColNames>
       <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="229" parent="43" name="SYS_C006281">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>TASKS_ID</ColNames>
-      <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="230" parent="43" name="SYS_C006363">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>TASKS_ID</ColNames>
-      <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="231" parent="43" name="SYS_C0012588">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="167" parent="47" name="PLANTKCL_LEVELID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:13:43</ModifiedTimestamp>
       <ColNames>CRITICALYLEVELS_ID</ColNames>
       <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="232" parent="43" name="SYS_C006282">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>CRITICALYLEVELS_ID</ColNames>
-      <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="233" parent="43" name="SYS_C006364">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>CRITICALYLEVELS_ID</ColNames>
-      <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="234" parent="44" name="ID">
+    <column id="168" parent="48" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="235" parent="44" name="HEIGHT">
+    <column id="169" parent="48" name="HEIGHT">
       <Position>2</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
       <DefaultExpression>0    </DefaultExpression>
     </column>
-    <column id="236" parent="44" name="ISRECURRENT">
+    <column id="170" parent="48" name="ULTIMA">
       <Position>3</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="237" parent="44" name="ULTIMA">
-      <Position>4</Position>
-      <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>0   </DefaultExpression>
     </column>
-    <column id="238" parent="44" name="NAME">
-      <Position>5</Position>
+    <column id="171" parent="48" name="NAME">
+      <Position>4</Position>
       <DataType>VARCHAR2(1000 char)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="239" parent="44" name="POSITION">
-      <Position>6</Position>
+    <column id="172" parent="48" name="POSITION">
+      <Position>5</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
       <DefaultExpression>0    </DefaultExpression>
     </column>
-    <column id="240" parent="44" name="POSX">
+    <column id="173" parent="48" name="POSX">
+      <Position>6</Position>
+      <DataType>NUMBER(10)|0</DataType>
+    </column>
+    <column id="174" parent="48" name="POSY">
       <Position>7</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="241" parent="44" name="POSY">
+    <column id="175" parent="48" name="PARTIDA">
       <Position>8</Position>
-      <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="242" parent="44" name="PARTIDA">
-      <Position>9</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>0   </DefaultExpression>
     </column>
-    <column id="243" parent="44" name="WIDTH">
+    <column id="176" parent="48" name="WIDTH">
+      <Position>9</Position>
+      <DataType>NUMBER(10)|0</DataType>
+    </column>
+    <column id="177" parent="48" name="IDPLAN">
       <Position>10</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="244" parent="44" name="IDPLAN">
+    <column id="178" parent="48" name="IDTASK">
       <Position>11</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="245" parent="44" name="IDTASK">
-      <Position>12</Position>
-      <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="246" parent="44" name="SYS_C009985">
+    <index id="179" parent="48" name="SYS_C009985">
       <ObjectId>20296</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
@@ -1333,7 +1002,7 @@ CRITICALYLEVELS_ID</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="247" parent="44" name="UNIQUE_PLAN_TASK">
+    <index id="180" parent="48" name="UNIQUE_PLAN_TASK">
       <ObjectId>20297</ObjectId>
       <CreatedTimestamp>2018-02-04.17:38:58</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
@@ -1342,28 +1011,28 @@ CRITICALYLEVELS_ID</ColNames>
 IDTASK</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="248" parent="44" name="SYS_C009985">
+    <key id="181" parent="48" name="SYS_C009985">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009985</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <key id="249" parent="44" name="UNIQUE_PLAN_TASK">
+    <key id="182" parent="48" name="UNIQUE_PLAN_TASK">
       <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
       <ColNames>IDPLAN
 IDTASK</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>UNIQUE_PLAN_TASK</UnderlyingIndexName>
     </key>
-    <key id="250" parent="44" name="PLAN_TAREA_UNICA">
-      <ModifiedTimestamp>2018-02-05.20:27:21</ModifiedTimestamp>
+    <key id="183" parent="48" name="PLAN_TAREA_UNICA">
+      <ModifiedTimestamp>2018-02-11.16:13:11</ModifiedTimestamp>
       <ColNames>IDTASK
 IDPLAN</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>UNIQUE_PLAN_TASK</UnderlyingIndexName>
     </key>
-    <foreign-key id="251" parent="44" name="FK_PLTASK_PLAN">
+    <foreign-key id="184" parent="48" name="FK_PLTASK_PLAN">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>IDPLAN</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -1371,7 +1040,7 @@ IDPLAN</ColNames>
       <RefKeyName>SYS_C009701</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="252" parent="44" name="FK_PLTASK_TASK">
+    <foreign-key id="185" parent="48" name="FK_PLTASK_TASK">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>IDTASK</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -1379,183 +1048,76 @@ IDPLAN</ColNames>
       <RefKeyName>SYS_C009726</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="253" parent="44" name="SYS_C0012589">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="186" parent="48" name="PL_TASK_ID_NULL">
+      <ModifiedTimestamp>2018-02-06.20:26:16</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="254" parent="44" name="SYS_C007177">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="255" parent="44" name="SYS_C009975">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="256" parent="44" name="SYS_C0012590">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="187" parent="48" name="PL_TASK_HEIGHT_NULL">
+      <ModifiedTimestamp>2018-02-06.20:26:16</ModifiedTimestamp>
       <ColNames>HEIGHT</ColNames>
       <Predicate>&quot;HEIGHT&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="257" parent="44" name="SYS_C007178">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>HEIGHT</ColNames>
-      <Predicate>&quot;HEIGHT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="258" parent="44" name="SYS_C009976">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>HEIGHT</ColNames>
-      <Predicate>&quot;HEIGHT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="259" parent="44" name="SYS_C0012591">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="260" parent="44" name="SYS_C007179">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="261" parent="44" name="SYS_C009977">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="262" parent="44" name="SYS_C0012592">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="188" parent="48" name="PL_TASK_NAME_NULL">
+      <ModifiedTimestamp>2018-02-06.20:26:36</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="263" parent="44" name="SYS_C007180">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="264" parent="44" name="SYS_C009978">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="265" parent="44" name="SYS_C0012593">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="189" parent="48" name="PL_TASK_POSITION_NULL">
+      <ModifiedTimestamp>2018-02-06.20:26:36</ModifiedTimestamp>
       <ColNames>POSITION</ColNames>
       <Predicate>&quot;POSITION&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="266" parent="44" name="SYS_C007181">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>POSITION</ColNames>
-      <Predicate>&quot;POSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="267" parent="44" name="SYS_C009979">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>POSITION</ColNames>
-      <Predicate>&quot;POSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="268" parent="44" name="SYS_C0012594">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="190" parent="48" name="PL_TASK_POSX_NULL">
+      <ModifiedTimestamp>2018-02-06.20:27:09</ModifiedTimestamp>
       <ColNames>POSX</ColNames>
       <Predicate>&quot;POSX&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="269" parent="44" name="SYS_C007182">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>POSX</ColNames>
-      <Predicate>&quot;POSX&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="270" parent="44" name="SYS_C009980">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>POSX</ColNames>
-      <Predicate>&quot;POSX&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="271" parent="44" name="SYS_C0012595">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="191" parent="48" name="PL_TASK_POSY_NULL">
+      <ModifiedTimestamp>2018-02-06.20:27:09</ModifiedTimestamp>
       <ColNames>POSY</ColNames>
       <Predicate>&quot;POSY&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="272" parent="44" name="SYS_C007183">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>POSY</ColNames>
-      <Predicate>&quot;POSY&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="273" parent="44" name="SYS_C009981">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>POSY</ColNames>
-      <Predicate>&quot;POSY&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="274" parent="44" name="SYS_C0012596">
-      <ModifiedTimestamp>2018-02-04.17:38:58</ModifiedTimestamp>
+    <check id="192" parent="48" name="PL_TASK_WIDTH_NULL">
+      <ModifiedTimestamp>2018-02-06.20:27:09</ModifiedTimestamp>
       <ColNames>WIDTH</ColNames>
       <Predicate>&quot;WIDTH&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="275" parent="44" name="SYS_C007184">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>WIDTH</ColNames>
-      <Predicate>&quot;WIDTH&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="276" parent="44" name="SYS_C009982">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>WIDTH</ColNames>
-      <Predicate>&quot;WIDTH&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="277" parent="44" name="SYS_C0012597">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="193" parent="48" name="PL_TASK_IDPLAN_NULL">
+      <ModifiedTimestamp>2018-02-06.20:27:09</ModifiedTimestamp>
       <ColNames>IDPLAN</ColNames>
       <Predicate>&quot;IDPLAN&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="278" parent="44" name="SYS_C007185">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDPLAN</ColNames>
-      <Predicate>&quot;IDPLAN&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="279" parent="44" name="SYS_C009983">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDPLAN</ColNames>
-      <Predicate>&quot;IDPLAN&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="280" parent="44" name="SYS_C0012598">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="194" parent="48" name="PL_TASK_IDTASK_NULL">
+      <ModifiedTimestamp>2018-02-06.20:27:09</ModifiedTimestamp>
       <ColNames>IDTASK</ColNames>
       <Predicate>&quot;IDTASK&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="281" parent="44" name="SYS_C007186">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDTASK</ColNames>
-      <Predicate>&quot;IDTASK&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="282" parent="44" name="SYS_C009984">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDTASK</ColNames>
-      <Predicate>&quot;IDTASK&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="283" parent="45" name="ID">
+    <column id="195" parent="49" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="284" parent="45" name="DESCRIPTION">
+    <column id="196" parent="49" name="DESCRIPTION">
       <Position>2</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
     </column>
-    <column id="285" parent="45" name="NAME">
+    <column id="197" parent="49" name="NAME">
       <Position>3</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="286" parent="45" name="IDAREA">
+    <column id="198" parent="49" name="IDAREA">
       <Position>4</Position>
       <DataType>NUMBER(11)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="287" parent="45" name="ACTIVE">
+    <column id="199" parent="49" name="ACTIVE">
       <Position>5</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>1   
   &#xd;
 </DefaultExpression>
     </column>
-    <index id="288" parent="45" name="SYS_C009709">
+    <index id="200" parent="49" name="SYS_C009709">
       <ObjectId>20300</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:59</CreatedTimestamp>
@@ -1564,14 +1126,14 @@ IDPLAN</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="289" parent="45" name="SYS_C009709">
+    <key id="201" parent="49" name="SYS_C009709">
       <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009709</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="290" parent="45" name="FK_POSITION_AREA">
+    <foreign-key id="202" parent="49" name="FK_POSITION_AREA">
       <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
       <ColNames>IDAREA</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -1579,111 +1141,35 @@ IDPLAN</ColNames>
       <RefKeyName>SYS_C009655</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="291" parent="45" name="SYS_C0012599">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="203" parent="49" name="POSITION_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:15:38</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="292" parent="45" name="SYS_C006283">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="293" parent="45" name="SYS_C006366">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="294" parent="45" name="SYS_C007187">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="295" parent="45" name="SYS_C009578">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="296" parent="45" name="SYS_C009705">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="297" parent="45" name="SYS_C0012601">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="204" parent="49" name="POSITION_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:15:38</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="298" parent="45" name="SYS_C006285">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="299" parent="45" name="SYS_C006368">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="300" parent="45" name="SYS_C007189">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="301" parent="45" name="SYS_C009580">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="302" parent="45" name="SYS_C009707">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="303" parent="45" name="SYS_C0012602">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="205" parent="49" name="POSITION_AREA_NULL">
+      <ModifiedTimestamp>2018-02-07.02:15:38</ModifiedTimestamp>
       <ColNames>IDAREA</ColNames>
       <Predicate>&quot;IDAREA&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="304" parent="45" name="SYS_C006286">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDAREA</ColNames>
-      <Predicate>&quot;IDAREA&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="305" parent="45" name="SYS_C006369">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDAREA</ColNames>
-      <Predicate>&quot;IDAREA&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="306" parent="45" name="SYS_C007190">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDAREA</ColNames>
-      <Predicate>&quot;IDAREA&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="307" parent="45" name="SYS_C009581">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDAREA</ColNames>
-      <Predicate>&quot;IDAREA&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="308" parent="45" name="SYS_C009708">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>IDAREA</ColNames>
-      <Predicate>&quot;IDAREA&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="309" parent="46" name="ID">
+    <column id="206" parent="50" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="310" parent="46" name="DESCRIPTION">
+    <column id="207" parent="50" name="DESCRIPTION">
       <Position>2</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
     </column>
-    <column id="311" parent="46" name="NAME">
+    <column id="208" parent="50" name="NAME">
       <Position>3</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <index id="312" parent="46" name="SYS_C009712">
+    <index id="209" parent="50" name="SYS_C009712">
       <ObjectId>20301</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:38:59</CreatedTimestamp>
@@ -1692,84 +1178,33 @@ IDPLAN</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="313" parent="46" name="SYS_C009712">
+    <key id="210" parent="50" name="SYS_C009712">
       <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009712</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="314" parent="46" name="SYS_C0012603">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="211" parent="50" name="ROL_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:17:12</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="315" parent="46" name="SYS_C006287">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="316" parent="46" name="SYS_C006371">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="317" parent="46" name="SYS_C007191">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="318" parent="46" name="SYS_C009582">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="319" parent="46" name="SYS_C009710">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="320" parent="46" name="SYS_C0012604">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
+    <check id="212" parent="50" name="ROL_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:17:12</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="321" parent="46" name="SYS_C006288">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="322" parent="46" name="SYS_C006372">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="323" parent="46" name="SYS_C007192">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="324" parent="46" name="SYS_C009583">
-      <ModifiedTimestamp>2018-02-04.17:38:59</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="325" parent="46" name="SYS_C009711">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="326" parent="47" name="ID">
+    <column id="213" parent="51" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="327" parent="47" name="NAME">
+    <column id="214" parent="51" name="NAME">
       <Position>2</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="328" parent="47" name="ACTIVE">
+    <column id="215" parent="51" name="ACTIVE">
       <Position>3</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>1   
@@ -1777,7 +1212,7 @@ IDPLAN</ColNames>
  &#xd;
 </DefaultExpression>
     </column>
-    <index id="329" parent="47" name="SYS_C009715">
+    <index id="216" parent="51" name="SYS_C009715">
       <ObjectId>20302</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:39:00</CreatedTimestamp>
@@ -1786,96 +1221,45 @@ IDPLAN</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="330" parent="47" name="SYS_C009715">
+    <key id="217" parent="51" name="SYS_C009715">
       <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009715</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="331" parent="47" name="SYS_C0012605">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="218" parent="51" name="STATUS_PLAN_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:18:27</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="332" parent="47" name="SYS_C006289">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="333" parent="47" name="SYS_C006374">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="334" parent="47" name="SYS_C007193">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="335" parent="47" name="SYS_C009584">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="336" parent="47" name="SYS_C009713">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="337" parent="47" name="SYS_C0012606">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="219" parent="51" name="STATUS_PLAN_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:18:27</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="338" parent="47" name="SYS_C006290">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="339" parent="47" name="SYS_C006375">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="340" parent="47" name="SYS_C007194">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="341" parent="47" name="SYS_C009585">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="342" parent="47" name="SYS_C009714">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="343" parent="48" name="ID">
+    <column id="220" parent="52" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="344" parent="48" name="COLOR">
+    <column id="221" parent="52" name="COLOR">
       <Position>2</Position>
       <DataType>NVARCHAR2(150)|0</DataType>
     </column>
-    <column id="345" parent="48" name="DESCRIPTION">
+    <column id="222" parent="52" name="DESCRIPTION">
       <Position>3</Position>
       <DataType>NVARCHAR2(150)|0</DataType>
     </column>
-    <column id="346" parent="48" name="NAME">
+    <column id="223" parent="52" name="NAME">
       <Position>4</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="347" parent="48" name="ORDEN">
+    <column id="224" parent="52" name="ORDEN">
       <Position>5</Position>
       <DataType>NUMBER(11)|0</DataType>
     </column>
-    <column id="348" parent="48" name="ACTIVE">
+    <column id="225" parent="52" name="ACTIVE">
       <Position>6</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>1   
@@ -1883,7 +1267,7 @@ IDPLAN</ColNames>
  &#xd;
 </DefaultExpression>
     </column>
-    <index id="349" parent="48" name="SYS_C009718">
+    <index id="226" parent="52" name="SYS_C009718">
       <ObjectId>20303</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:39:00</CreatedTimestamp>
@@ -1892,139 +1276,82 @@ IDPLAN</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="350" parent="48" name="SYS_C009718">
+    <key id="227" parent="52" name="SYS_C009718">
       <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009718</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="351" parent="48" name="SYS_C0012607">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="228" parent="52" name="STATUS_TASK_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:19:24</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="352" parent="48" name="SYS_C006291">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="353" parent="48" name="SYS_C006377">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="354" parent="48" name="SYS_C007195">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="355" parent="48" name="SYS_C009586">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="356" parent="48" name="SYS_C009716">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="357" parent="48" name="SYS_C0012608">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="229" parent="52" name="STATUS_TASK_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:19:35</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="358" parent="48" name="SYS_C006292">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="359" parent="48" name="SYS_C006378">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="360" parent="48" name="SYS_C007196">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="361" parent="48" name="SYS_C009587">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="362" parent="48" name="SYS_C009717">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="363" parent="49" name="ID">
+    <column id="230" parent="53" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="364" parent="49" name="CODE">
+    <column id="231" parent="53" name="CODE">
       <Position>2</Position>
       <DataType>NVARCHAR2(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="365" parent="49" name="DESCRIPTION">
+    <column id="232" parent="53" name="DESCRIPTION">
       <Position>3</Position>
       <DataType>NCLOB|0</DataType>
     </column>
-    <column id="366" parent="49" name="FECHA_CREACION">
+    <column id="233" parent="53" name="FECHA_CREACION">
       <Position>4</Position>
       <DataType>DATE|0</DataType>
     </column>
-    <column id="367" parent="49" name="NAME">
+    <column id="234" parent="53" name="NAME">
       <Position>5</Position>
       <DataType>NVARCHAR2(255)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="368" parent="49" name="PRODUCT">
+    <column id="235" parent="53" name="PRODUCT">
       <Position>6</Position>
       <DataType>NVARCHAR2(500)|0</DataType>
     </column>
-    <column id="369" parent="49" name="HITO">
+    <column id="236" parent="53" name="HITO">
       <Position>7</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <DefaultExpression>0     </DefaultExpression>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="370" parent="49" name="PARTIDA">
+    <column id="237" parent="53" name="PARTIDA">
       <Position>8</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <DefaultExpression>0     </DefaultExpression>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="371" parent="49" name="STATUSTASK_ID">
+    <column id="238" parent="53" name="STATUSTASK_ID">
       <Position>9</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="372" parent="49" name="ISRECURRENT">
+    <column id="239" parent="53" name="ISRECURRENT">
       <Position>10</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>0     </DefaultExpression>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="373" parent="49" name="IDPOSITION">
+    <column id="240" parent="53" name="IDPOSITION">
       <Position>11</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="374" parent="49" name="TRANVERSAL">
+    <column id="241" parent="53" name="TRANVERSAL">
       <Position>12</Position>
       <DataType>NUMBER(1)|0</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>0  </DefaultExpression>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="375" parent="49" name="TIEMPO_RECURRENCIA">
+    <column id="242" parent="53" name="TIEMPO_RECURRENCIA">
       <Position>13</Position>
       <DataType>NUMBER(10)|0</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>0  </DefaultExpression>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <index id="376" parent="49" name="SYS_C009726">
+    <index id="243" parent="53" name="SYS_C009726">
       <ObjectId>20304</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:39:00</CreatedTimestamp>
@@ -2033,14 +1360,14 @@ IDPLAN</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="377" parent="49" name="SYS_C009726">
+    <key id="244" parent="53" name="SYS_C009726">
       <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C009726</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="378" parent="49" name="FK_TASK_STATUSTASK">
+    <foreign-key id="245" parent="53" name="FK_TASK_STATUSTASK">
       <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
       <ColNames>STATUSTASK_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2048,7 +1375,7 @@ IDPLAN</ColNames>
       <RefKeyName>SYS_C009718</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="379" parent="49" name="FK_PLTASK_POSITION">
+    <foreign-key id="246" parent="53" name="FK_PLTASK_POSITION">
       <ModifiedTimestamp>2018-02-04.20:47:50</ModifiedTimestamp>
       <ColNames>IDPOSITION</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2056,207 +1383,57 @@ IDPLAN</ColNames>
       <RefKeyName>SYS_C009709</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="380" parent="49" name="SYS_C0012609">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="247" parent="53" name="TASK_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="381" parent="49" name="SYS_C006293">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="382" parent="49" name="SYS_C006380">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="383" parent="49" name="SYS_C007197">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="384" parent="49" name="SYS_C009588">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="385" parent="49" name="SYS_C009719">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="386" parent="49" name="SYS_C0012610">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="248" parent="53" name="TASK_CODIGO_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>CODE</ColNames>
       <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="387" parent="49" name="SYS_C006294">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="388" parent="49" name="SYS_C006381">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="389" parent="49" name="SYS_C007198">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="390" parent="49" name="SYS_C009589">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="391" parent="49" name="SYS_C009720">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CODE</ColNames>
-      <Predicate>&quot;CODE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="392" parent="49" name="SYS_C0012611">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="249" parent="53" name="TASK_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="393" parent="49" name="SYS_C006295">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="394" parent="49" name="SYS_C006382">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="395" parent="49" name="SYS_C007199">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="396" parent="49" name="SYS_C009590">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="397" parent="49" name="SYS_C009721">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="398" parent="49" name="SYS_C0012613">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="250" parent="53" name="TASK_ESTADO_TAREA_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>STATUSTASK_ID</ColNames>
       <Predicate>&quot;STATUSTASK_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="399" parent="49" name="SYS_C006297">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>STATUSTASK_ID</ColNames>
-      <Predicate>&quot;STATUSTASK_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="400" parent="49" name="SYS_C006384">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>STATUSTASK_ID</ColNames>
-      <Predicate>&quot;STATUSTASK_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="401" parent="49" name="SYS_C007201">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>STATUSTASK_ID</ColNames>
-      <Predicate>&quot;STATUSTASK_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="402" parent="49" name="SYS_C009592">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>STATUSTASK_ID</ColNames>
-      <Predicate>&quot;STATUSTASK_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="403" parent="49" name="SYS_C009723">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>STATUSTASK_ID</ColNames>
-      <Predicate>&quot;STATUSTASK_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="404" parent="49" name="SYS_C0012614">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="251" parent="53" name="TASK_RECURRENTE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>ISRECURRENT</ColNames>
       <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="405" parent="49" name="SYS_C006298">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="406" parent="49" name="SYS_C006385">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="407" parent="49" name="SYS_C007202">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="408" parent="49" name="SYS_C009593">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="409" parent="49" name="SYS_C009724">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>ISRECURRENT</ColNames>
-      <Predicate>&quot;ISRECURRENT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="410" parent="49" name="SYS_C0012615">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="252" parent="53" name="TASK_CARGO_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>IDPOSITION</ColNames>
       <Predicate>&quot;IDPOSITION&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="411" parent="49" name="SYS_C006299">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>IDPOSITION</ColNames>
-      <Predicate>&quot;IDPOSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="412" parent="49" name="SYS_C006386">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>IDPOSITION</ColNames>
-      <Predicate>&quot;IDPOSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="413" parent="49" name="SYS_C007203">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>IDPOSITION</ColNames>
-      <Predicate>&quot;IDPOSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="414" parent="49" name="SYS_C009594">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>IDPOSITION</ColNames>
-      <Predicate>&quot;IDPOSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="415" parent="49" name="SYS_C009725">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>IDPOSITION</ColNames>
-      <Predicate>&quot;IDPOSITION&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="416" parent="49" name="SYS_C0012963">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="253" parent="53" name="TASK_TRANVERSAL_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>TRANVERSAL</ColNames>
       <Predicate>&quot;TRANVERSAL&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="417" parent="49" name="SYS_C0013036">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="254" parent="53" name="TASK_TIEMPO_RECURRENCIA_NULL">
+      <ModifiedTimestamp>2018-02-07.02:21:39</ModifiedTimestamp>
       <ColNames>TIEMPO_RECURRENCIA</ColNames>
       <Predicate>&quot;TIEMPO_RECURRENCIA&quot; IS NOT NULL</Predicate>
     </check>
-    <column id="418" parent="50" name="TASK_ID">
+    <column id="255" parent="54" name="TASK_ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="419" parent="50" name="CHANNEL_ID">
+    <column id="256" parent="54" name="CHANNEL_ID">
       <Position>2</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="420" parent="50" name="SYS_C0012966">
+    <index id="257" parent="54" name="SYS_C0012966">
       <ObjectId>20305</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:39:00</CreatedTimestamp>
@@ -2266,7 +1443,7 @@ IDPLAN</ColNames>
 CHANNEL_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="421" parent="50" name="SYS_C0012966">
+    <key id="258" parent="54" name="SYS_C0012966">
       <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
       <ColNames>TASK_ID
 CHANNEL_ID</ColNames>
@@ -2274,7 +1451,7 @@ CHANNEL_ID</ColNames>
       <UnderlyingIndexName>SYS_C0012966</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="422" parent="50" name="FK_TASK_CHANNEL">
+    <foreign-key id="259" parent="54" name="FK_TASK_CHANNEL">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>TASK_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2282,7 +1459,7 @@ CHANNEL_ID</ColNames>
       <RefKeyName>SYS_C009726</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="423" parent="50" name="FK_CHANNEL_TASK">
+    <foreign-key id="260" parent="54" name="FK_CHANNEL_TASK">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>CHANNEL_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2290,27 +1467,27 @@ CHANNEL_ID</ColNames>
       <RefKeyName>SYS_C009657</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="424" parent="50" name="SYS_C0012964">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="261" parent="54" name="TASK_CHANNEL_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:23:51</ModifiedTimestamp>
       <ColNames>TASK_ID</ColNames>
       <Predicate>&quot;TASK_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="425" parent="50" name="SYS_C0012965">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="262" parent="54" name="CHANNEL_TASK_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:23:51</ModifiedTimestamp>
       <ColNames>CHANNEL_ID</ColNames>
       <Predicate>&quot;CHANNEL_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <column id="426" parent="51" name="TASKS_ID">
+    <column id="263" parent="55" name="TASKS_ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="427" parent="51" name="CRITICALYLEVELS_ID">
+    <column id="264" parent="55" name="CRITICALYLEVELS_ID">
       <Position>2</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="428" parent="51" name="SYS_C006390">
+    <index id="265" parent="55" name="SYS_C006390">
       <ObjectId>20306</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:39:00</CreatedTimestamp>
@@ -2320,7 +1497,7 @@ CHANNEL_ID</ColNames>
 CRITICALYLEVELS_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="429" parent="51" name="SYS_C006390">
+    <key id="266" parent="55" name="SYS_C006390">
       <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
       <ColNames>TASKS_ID
 CRITICALYLEVELS_ID</ColNames>
@@ -2328,7 +1505,7 @@ CRITICALYLEVELS_ID</ColNames>
       <UnderlyingIndexName>SYS_C006390</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="430" parent="51" name="FK_TASK_LEVEL">
+    <foreign-key id="267" parent="55" name="FK_TASK_LEVEL">
       <ModifiedTimestamp>2018-02-04.20:50:21</ModifiedTimestamp>
       <ColNames>TASKS_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2336,7 +1513,7 @@ CRITICALYLEVELS_ID</ColNames>
       <RefKeyName>SYS_C009726</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="431" parent="51" name="FK_LEVEL_TASK">
+    <foreign-key id="268" parent="55" name="FK_LEVEL_TASK">
       <ModifiedTimestamp>2018-02-04.20:50:20</ModifiedTimestamp>
       <ColNames>CRITICALYLEVELS_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2344,125 +1521,76 @@ CRITICALYLEVELS_ID</ColNames>
       <RefKeyName>SYS_C009665</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="432" parent="51" name="SYS_C0012616">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="269" parent="55" name="LEVEL_TASK_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:24:57</ModifiedTimestamp>
       <ColNames>TASKS_ID</ColNames>
       <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="433" parent="51" name="SYS_C006300">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>TASKS_ID</ColNames>
-      <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="434" parent="51" name="SYS_C006388">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>TASKS_ID</ColNames>
-      <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="435" parent="51" name="SYS_C007204">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>TASKS_ID</ColNames>
-      <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="436" parent="51" name="SYS_C009789">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>TASKS_ID</ColNames>
-      <Predicate>&quot;TASKS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="437" parent="51" name="SYS_C0012617">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
+    <check id="270" parent="55" name="TASK_LEVEL_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:24:57</ModifiedTimestamp>
       <ColNames>CRITICALYLEVELS_ID</ColNames>
       <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="438" parent="51" name="SYS_C006301">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CRITICALYLEVELS_ID</ColNames>
-      <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="439" parent="51" name="SYS_C006389">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CRITICALYLEVELS_ID</ColNames>
-      <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="440" parent="51" name="SYS_C007205">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CRITICALYLEVELS_ID</ColNames>
-      <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="441" parent="51" name="SYS_C009790">
-      <ModifiedTimestamp>2018-02-04.17:39:00</ModifiedTimestamp>
-      <ColNames>CRITICALYLEVELS_ID</ColNames>
-      <Predicate>&quot;CRITICALYLEVELS_ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="442" parent="52" name="ID">
+    <column id="271" parent="56" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="443" parent="52" name="CELLPHONE">
+    <column id="272" parent="56" name="CELLPHONE">
       <Position>2</Position>
       <DataType>NVARCHAR2(128)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="444" parent="52" name="EMAIL">
+    <column id="273" parent="56" name="EMAIL">
       <Position>3</Position>
       <DataType>NVARCHAR2(128)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="445" parent="52" name="KEYPASS">
+    <column id="274" parent="56" name="KEYPASS">
       <Position>4</Position>
       <DataType>NVARCHAR2(128)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="446" parent="52" name="LASTNAME">
+    <column id="275" parent="56" name="LASTNAME">
       <Position>5</Position>
       <DataType>NVARCHAR2(50)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="447" parent="52" name="NAME">
+    <column id="276" parent="56" name="NAME">
       <Position>6</Position>
       <DataType>NVARCHAR2(128)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="448" parent="52" name="PHONE">
+    <column id="277" parent="56" name="PHONE">
       <Position>7</Position>
       <DataType>NVARCHAR2(128)|0</DataType>
     </column>
-    <column id="449" parent="52" name="RUT">
+    <column id="278" parent="56" name="RUT">
       <Position>8</Position>
       <DataType>NVARCHAR2(10)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="450" parent="52" name="USERNAME">
+    <column id="279" parent="56" name="USERNAME">
       <Position>9</Position>
       <DataType>NVARCHAR2(50)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="451" parent="52" name="POSITIONID">
+    <column id="280" parent="56" name="POSITIONID">
       <Position>10</Position>
       <DataType>NUMBER(11)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="452" parent="52" name="IDROL">
+    <column id="281" parent="56" name="IDROL">
       <Position>11</Position>
       <DataType>NUMBER(11)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="453" parent="52" name="ACTIVE">
+    <column id="282" parent="56" name="ACTIVE">
       <Position>12</Position>
       <DataType>NUMBER(*)|0</DataType>
       <DefaultExpression>0   
  
  &#xd;
- </DefaultExpression>
+</DefaultExpression>
     </column>
-    <column id="454" parent="52" name="TITULAR">
+    <column id="283" parent="56" name="TITULAR">
       <Position>13</Position>
       <DataType>NUMBER(1)|0</DataType>
       <DefaultExpression>0 &#xd;
 </DefaultExpression>
     </column>
-    <index id="455" parent="52" name="SYS_C006401">
+    <index id="284" parent="56" name="SYS_C006401">
       <ObjectId>20307</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.17:39:01</CreatedTimestamp>
@@ -2471,14 +1599,14 @@ CRITICALYLEVELS_ID</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="456" parent="52" name="SYS_C006401">
+    <key id="285" parent="56" name="SYS_C006401">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>SYS_C006401</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="457" parent="52" name="FK_USER_POSITION">
+    <foreign-key id="286" parent="56" name="FK_USER_POSITION">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>POSITIONID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2486,7 +1614,7 @@ CRITICALYLEVELS_ID</ColNames>
       <RefKeyName>SYS_C009709</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="458" parent="52" name="FK_USER_ROL">
+    <foreign-key id="287" parent="56" name="FK_USER_ROL">
       <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
       <ColNames>IDROL</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>
@@ -2494,285 +1622,80 @@ CRITICALYLEVELS_ID</ColNames>
       <RefKeyName>SYS_C009712</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <check id="459" parent="52" name="SYS_C0012618">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="288" parent="56" name="USERS_ID_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="460" parent="52" name="SYS_C006302">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="461" parent="52" name="SYS_C006391">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="462" parent="52" name="SYS_C007206">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="463" parent="52" name="SYS_C009791">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>ID</ColNames>
-      <Predicate>&quot;ID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="464" parent="52" name="SYS_C0012619">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="289" parent="56" name="USERS_CELLPHONE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>CELLPHONE</ColNames>
       <Predicate>&quot;CELLPHONE&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="465" parent="52" name="SYS_C006303">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>CELLPHONE</ColNames>
-      <Predicate>&quot;CELLPHONE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="466" parent="52" name="SYS_C006392">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>CELLPHONE</ColNames>
-      <Predicate>&quot;CELLPHONE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="467" parent="52" name="SYS_C007207">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>CELLPHONE</ColNames>
-      <Predicate>&quot;CELLPHONE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="468" parent="52" name="SYS_C009792">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>CELLPHONE</ColNames>
-      <Predicate>&quot;CELLPHONE&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="469" parent="52" name="SYS_C0012620">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="290" parent="56" name="USERS_EMAIL_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>EMAIL</ColNames>
       <Predicate>&quot;EMAIL&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="470" parent="52" name="SYS_C006304">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>EMAIL</ColNames>
-      <Predicate>&quot;EMAIL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="471" parent="52" name="SYS_C006393">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>EMAIL</ColNames>
-      <Predicate>&quot;EMAIL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="472" parent="52" name="SYS_C007208">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>EMAIL</ColNames>
-      <Predicate>&quot;EMAIL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="473" parent="52" name="SYS_C009793">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>EMAIL</ColNames>
-      <Predicate>&quot;EMAIL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="474" parent="52" name="SYS_C0012621">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="291" parent="56" name="USERS_PASSWORD_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>KEYPASS</ColNames>
       <Predicate>&quot;KEYPASS&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="475" parent="52" name="SYS_C006305">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>KEYPASS</ColNames>
-      <Predicate>&quot;KEYPASS&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="476" parent="52" name="SYS_C006394">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>KEYPASS</ColNames>
-      <Predicate>&quot;KEYPASS&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="477" parent="52" name="SYS_C007209">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>KEYPASS</ColNames>
-      <Predicate>&quot;KEYPASS&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="478" parent="52" name="SYS_C009794">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>KEYPASS</ColNames>
-      <Predicate>&quot;KEYPASS&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="479" parent="52" name="SYS_C0012622">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="292" parent="56" name="USERS_APELLIDOS_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>LASTNAME</ColNames>
       <Predicate>&quot;LASTNAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="480" parent="52" name="SYS_C006306">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>LASTNAME</ColNames>
-      <Predicate>&quot;LASTNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="481" parent="52" name="SYS_C006395">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>LASTNAME</ColNames>
-      <Predicate>&quot;LASTNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="482" parent="52" name="SYS_C007210">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>LASTNAME</ColNames>
-      <Predicate>&quot;LASTNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="483" parent="52" name="SYS_C009795">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>LASTNAME</ColNames>
-      <Predicate>&quot;LASTNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="484" parent="52" name="SYS_C0012623">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="293" parent="56" name="USERS_NOMBRE_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>NAME</ColNames>
       <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="485" parent="52" name="SYS_C006307">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="486" parent="52" name="SYS_C006396">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="487" parent="52" name="SYS_C007211">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="488" parent="52" name="SYS_C009796">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>NAME</ColNames>
-      <Predicate>&quot;NAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="489" parent="52" name="SYS_C0012624">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="294" parent="56" name="USERS_RUT_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>RUT</ColNames>
       <Predicate>&quot;RUT&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="490" parent="52" name="SYS_C006308">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>RUT</ColNames>
-      <Predicate>&quot;RUT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="491" parent="52" name="SYS_C006397">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>RUT</ColNames>
-      <Predicate>&quot;RUT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="492" parent="52" name="SYS_C007212">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>RUT</ColNames>
-      <Predicate>&quot;RUT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="493" parent="52" name="SYS_C009797">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>RUT</ColNames>
-      <Predicate>&quot;RUT&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="494" parent="52" name="SYS_C0012625">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="295" parent="56" name="USERS_USUARIO_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>USERNAME</ColNames>
       <Predicate>&quot;USERNAME&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="495" parent="52" name="SYS_C006309">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>USERNAME</ColNames>
-      <Predicate>&quot;USERNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="496" parent="52" name="SYS_C006398">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>USERNAME</ColNames>
-      <Predicate>&quot;USERNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="497" parent="52" name="SYS_C007213">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>USERNAME</ColNames>
-      <Predicate>&quot;USERNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="498" parent="52" name="SYS_C009798">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>USERNAME</ColNames>
-      <Predicate>&quot;USERNAME&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="499" parent="52" name="SYS_C0012626">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="296" parent="56" name="USERS_CARGO_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>POSITIONID</ColNames>
       <Predicate>&quot;POSITIONID&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="500" parent="52" name="SYS_C006310">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>POSITIONID</ColNames>
-      <Predicate>&quot;POSITIONID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="501" parent="52" name="SYS_C006399">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>POSITIONID</ColNames>
-      <Predicate>&quot;POSITIONID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="502" parent="52" name="SYS_C007214">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>POSITIONID</ColNames>
-      <Predicate>&quot;POSITIONID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="503" parent="52" name="SYS_C009799">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>POSITIONID</ColNames>
-      <Predicate>&quot;POSITIONID&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="504" parent="52" name="SYS_C0012627">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
+    <check id="297" parent="56" name="USERS_ROL_NULL">
+      <ModifiedTimestamp>2018-02-07.02:28:40</ModifiedTimestamp>
       <ColNames>IDROL</ColNames>
       <Predicate>&quot;IDROL&quot; IS NOT NULL</Predicate>
     </check>
-    <check id="505" parent="52" name="SYS_C006311">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>IDROL</ColNames>
-      <Predicate>&quot;IDROL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="506" parent="52" name="SYS_C006400">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>IDROL</ColNames>
-      <Predicate>&quot;IDROL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="507" parent="52" name="SYS_C007215">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>IDROL</ColNames>
-      <Predicate>&quot;IDROL&quot; IS NOT NULL</Predicate>
-    </check>
-    <check id="508" parent="52" name="SYS_C009800">
-      <ModifiedTimestamp>2018-02-04.17:39:01</ModifiedTimestamp>
-      <ColNames>IDROL</ColNames>
-      <Predicate>&quot;IDROL&quot; IS NOT NULL</Predicate>
-    </check>
-    <column id="509" parent="53" name="ID">
+    <column id="298" parent="57" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="510" parent="53" name="PLATAFORM">
+    <column id="299" parent="57" name="PLATAFORM">
       <Position>2</Position>
-      <DataType>VARCHAR2(1024 char)|0</DataType>
+      <DataType>VARCHAR2(512 char)|0</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
     </column>
-    <column id="511" parent="53" name="TOKEN">
+    <column id="300" parent="57" name="TOKEN">
       <Position>3</Position>
-      <DataType>VARCHAR2(1024 char)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>VARCHAR2(512 char)|0</DataType>
     </column>
-    <column id="512" parent="53" name="USERS">
+    <column id="301" parent="57" name="USER_ID">
       <Position>4</Position>
-      <DataType>RAW(255)|0</DataType>
-    </column>
-    <column id="513" parent="53" name="USER_ID">
-      <Position>5</Position>
       <DataType>NUMBER(10)|0</DataType>
     </column>
-    <column id="514" parent="53" name="PLAYER_ID">
-      <Position>6</Position>
-      <DataType>VARCHAR2(1024 char)|0</DataType>
-      <NotNull>1</NotNull>
+    <column id="302" parent="57" name="PLAYER_ID">
+      <Position>5</Position>
+      <DataType>VARCHAR2(512 char)|0</DataType>
     </column>
-    <index id="515" parent="53" name="SYS_C007662">
+    <index id="303" parent="57" name="SYS_C007662">
       <ObjectId>20309</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-02-04.20:42:00</CreatedTimestamp>
@@ -2781,7 +1704,16 @@ CRITICALYLEVELS_ID</ColNames>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="516" parent="53" name="SYS_C007662">
+    <index id="304" parent="57" name="UNIQUE_TOKEN">
+      <ObjectId>20567</ObjectId>
+      <CreatedTimestamp>2018-02-07.22:19:13</CreatedTimestamp>
+      <ModifiedTimestamp>2018-02-07.22:19:13</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>PLAYER_ID
+USER_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="305" parent="57" name="SYS_C007662">
       <NameSurrogate>1</NameSurrogate>
       <ModifiedTimestamp>2018-02-04.20:42:00</ModifiedTimestamp>
       <ColNames>ID</ColNames>
@@ -2789,7 +1721,14 @@ CRITICALYLEVELS_ID</ColNames>
       <UnderlyingIndexName>SYS_C007662</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="517" parent="53" name="FK_TOKEN_USER">
+    <key id="306" parent="57" name="UNIQUE_TOKEN">
+      <ModifiedTimestamp>2018-02-07.22:19:13</ModifiedTimestamp>
+      <ColNames>PLAYER_ID
+USER_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>UNIQUE_TOKEN</UnderlyingIndexName>
+    </key>
+    <foreign-key id="307" parent="57" name="FK_TOKEN_USER">
       <ModifiedTimestamp>2018-02-04.20:43:22</ModifiedTimestamp>
       <ColNames>USER_ID</ColNames>
       <RefSchemaName>PLANNING</RefSchemaName>

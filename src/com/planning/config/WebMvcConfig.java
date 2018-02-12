@@ -5,11 +5,10 @@
  */
 package com.planning.config;
 
-import com.planning.fcm.FcmSettings;
+import com.planning.util.MailMail;
 import com.planning.util.MapeadorObjetos;
+import com.planning.util.MiCorreo;
 import com.wavemaker.runtime.file.manager.FileServiceManager;
-import de.bytefish.fcmjava.client.FcmClient;
-import de.bytefish.fcmjava.http.client.IFcmClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -25,6 +24,8 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -51,6 +52,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
     
     @Autowired
     Environment env;
+//
+//    @Autowired
+//    Session session;
     
     @Bean
     public MapeadorObjetos wMObjectMapper() {
@@ -60,11 +64,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
     @Bean
     public FileServiceManager fileServiceManager() {
         return new FileServiceManager();
-    }
-    
-    @Bean
-    public IFcmClient fcmClient(FcmSettings settings) {
-        return new FcmClient(settings);
     }
     
     @Value("${planning.cachear}")
@@ -170,6 +169,45 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
+    }
+    
+    @Bean
+    public JavaMailSenderImpl javaMailSender() {
+        JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setHost("smtp.gmail.com");
+        sender.setPort(587);
+        sender.setPassword("elpasswordmiodegmail");
+        sender.setUsername("yosmellopez@gmail.com");
+        Properties properties = new Properties();
+        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.auth", true);
+        properties.put("mail.smtp.starttls.enable", true);
+        properties.put("mail.smtp.connectiontimeout", 10000);
+        properties.put("mail.debug", true);
+        sender.setJavaMailProperties(properties);
+        return sender;
+    }
+    
+    @Bean
+    public SimpleMailMessage simpleMailMessage() {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom("yosmellopez@gmail.com");
+        return mailMessage;
+    }
+    
+    @Bean
+    public MailMail mailMail() {
+        MailMail mail = new MailMail();
+        mail.setMailSender(javaMailSender());
+        mail.setSimpleMailMessage(simpleMailMessage());
+        return mail;
+    }
+    
+    @Bean
+    public MiCorreo miCorreo() {
+        MiCorreo correo = new MiCorreo();
+        correo.setSender(javaMailSender());
+        return correo;
     }
 
 //    @Bean(name = "simpleMappingExceptionResolver")

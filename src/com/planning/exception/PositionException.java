@@ -1,6 +1,6 @@
 package com.planning.exception;
 
-public class PositionException extends OracleException {
+public final class PositionException extends OracleException {
     
     public PositionException(String message) {
         super(message);
@@ -12,6 +12,7 @@ public class PositionException extends OracleException {
         tratarMensaje();
     }
     
+    @Override
     public void tratarMensaje() {
         mensaje = super.getLocalizedMessage().isEmpty() ? super.getMessage() : super.getLocalizedMessage();
         if (mensaje.contains("SYS_C0012415")) {

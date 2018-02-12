@@ -4808,9 +4808,9 @@
 	$.vakata.array_remove = function(array, from) {
 		array.splice(from, 1);
 		return array;
-		//var rest = array.slice((to || from) + 1 || array.length);
+		//var entity = array.slice((to || from) + 1 || array.length);
 		//array.length = from < 0 ? array.length + from : from;
-		//array.push.apply(array, rest);
+		//array.push.apply(array, entity);
 		//return array;
 	};
 	// remove item from array

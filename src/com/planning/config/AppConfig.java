@@ -10,7 +10,10 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -48,6 +51,14 @@ public class AppConfig {
         DataSource dataSource = dsLookup.getDataSource("java:comp/env/jdbc/planificacionDB");
         return dataSource;
     }
+//
+//    @Bean(destroyMethod = "")
+//    public Session mailSession() throws NamingException {
+//        JndiObjectFactoryBean factoryBean = new JndiObjectFactoryBean();
+//        factoryBean.setResourceRef(true);
+//        Session session = factoryBean.getJndiTemplate().lookup("java:comp/env/mail/planificacionMail", Session.class);
+//        return session;
+//    }
 
     @Bean
     public PlatformTransactionManager transactionManager() {
@@ -59,7 +70,7 @@ public class AppConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(false);
+        vendorAdapter.setGenerateDdl(true);
         vendorAdapter.setShowSql(false);
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
@@ -95,13 +106,6 @@ public class AppConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    //    @Bean
-//    public SpringLiquibase liquibase() {
-//        SpringLiquibase liquibase = new SpringLiquibase();
-//        liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-//        liquibase.setDataSource(dataSource);
-//        return liquibase;
-//    }
     @Bean(name = "messageSource")
     public MessageSource configureMessageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

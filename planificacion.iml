@@ -58,5 +58,7 @@
     <orderEntry type="library" name="Hibernate Validator 6.0.7" level="application" />
     <orderEntry type="library" name="JPA Validation" level="application" />
     <orderEntry type="library" name="FcmJava" level="application" />
+    <orderEntry type="library" name="JavaMail" level="application" />
+    <orderEntry type="library" scope="TEST" name="Oracle Driver" level="application" />
   </component>
 </module>

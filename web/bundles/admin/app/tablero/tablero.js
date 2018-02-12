@@ -5,9 +5,9 @@
 
     angular.module('app.tablero').controller('Tablero', Tablero);
 
-    Tablero.$inject = ['$rootScope', '$scope', '$timeout', 'urlPath', 'tableroService', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'usuarioService', 'planService'];
+    Tablero.$inject = ['$rootScope', '$scope', '$timeout', '$location', 'urlPath', 'tableroService', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'usuarioService', 'planService'];
 
-    function Tablero($rootScope, $scope, $timeout, urlPath, tableroService, cargoService, areaService, gerenciaService, criticidadTareaService, usuarioService, planService) {
+    function Tablero($rootScope, $scope, $timeout, $location, urlPath, tableroService, cargoService, areaService, gerenciaService, criticidadTareaService, usuarioService, planService) {
         var vm = this;
         vm.urlPath = urlPath;
 
@@ -209,6 +209,7 @@
                     seleccionado = true;
                     var elemento = $(".oculto a.hidden");
                     elemento.attr('class', 'visible');
+                    $location.path('/view-plan');
                 }
             }
             if (!seleccionado) {

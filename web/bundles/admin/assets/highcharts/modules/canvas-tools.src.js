@@ -2134,7 +2134,7 @@ if(!Array.prototype.indexOf){
 					
 					var childLength = child.measureText(ctx);
 					if (textAnchor != 'start' && (i==0 || child.attribute('x').hasValue())) { // new group?
-						// loop through rest of children
+						// loop through entity of children
 						var groupLength = childLength;
 						for (var j=i+1; j<this.children.length; j++) {
 							var childInGroup = this.children[j];

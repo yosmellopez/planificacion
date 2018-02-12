@@ -1,17 +1,18 @@
 package com.planning.exception;
 
-public class TaskException extends OracleException {
-    
+public final class TaskException extends OracleException {
+
     public TaskException(String message) {
         super(message);
         tratarMensaje();
     }
-    
+
     public TaskException(Throwable cause) {
         super(cause);
         tratarMensaje();
     }
-    
+
+    @Override
     public void tratarMensaje() {
         mensaje = super.getLocalizedMessage().isEmpty() ? super.getMessage() : super.getLocalizedMessage();
         if (mensaje.contains("SYS_C009972")) {
@@ -32,8 +33,12 @@ public class TaskException extends OracleException {
             mensaje = "La secuencia de tareas del plan no está correctamente configurada.";
         } else if (mensaje.contains("SYS_C009985")) {
             mensaje = "La secuencia de tareas del plan no está correctamente configurada.";
+        } else if (mensaje.contains("FK_PLTASK_TASK")) {
+            mensaje = "No se puede eliminar esta tarea porque esta contenida en los planes.";
         } else if (mensaje.contains("12519")) {
             mensaje = "No se ha podido conectar al almacenamiento de la aplicación. Si el problema persiste por favor contacte con el administrador del sistema.";
+        } else {
+            mensaje = "Error interno del sistema. Si el problema persiste por favor contacte con el administrador del sistema.";
         }
         if (debug) {
             mensaje = super.getLocalizedMessage();
