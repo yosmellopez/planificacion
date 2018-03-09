@@ -46,13 +46,13 @@ public class Document implements Serializable {
     @JsonIgnore
     @Basic(optional = false)
     @Column(name = "model", nullable = false)
-    @ColumnDefault(value = "true")
+    @ColumnDefault(value = "1")
     private boolean model;
     
     @Basic(optional = false)
     @Column(name = "active", nullable = false)
     @JsonProperty(value = "estado")
-    @ColumnDefault(value = "true")
+    @ColumnDefault(value = "1")
     private boolean active;
     
     @JsonIgnore

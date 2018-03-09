@@ -17,9 +17,7 @@ import java.util.List;
  */
 public interface NotificacionService extends JpaRepository<Notificacion, Long> {
     
-    public List<Notificacion> findByLeido(boolean leido);
+    public List<Notificacion> findByPosition(Position position);
     
-    public List<Notificacion> findByPositionAndLeido(Position position, boolean leido);
-    
-    public Long countByPositionAndLeido(Position position, boolean leido);
+    public Long countByPosition(Position position);
 }

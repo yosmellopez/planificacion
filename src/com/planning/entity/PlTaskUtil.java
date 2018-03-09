@@ -1,12 +1,13 @@
 package com.planning.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlTaskUtil {
 
     private String name;
+
+    private String code;
 
     private int posx;
 
@@ -174,4 +175,13 @@ public class PlTaskUtil {
         }
         this.criticidad = criticidad;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.planning.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,7 +19,7 @@ public class MiTarea {
     @JsonProperty(value = "cargo_id")
     private Integer cargoId;
 
-    private Collection<CriticalyLevel> criticidad_id;
+    private Collection<CriticalyLevel> criticidad_id = new ArrayList<>();
 
     @JsonProperty(value = "estado_id")
     private Integer estadoId;
@@ -54,7 +49,7 @@ public class MiTarea {
 
     private boolean partida;
 
-    private ArrayList<Channel> canales;
+    private ArrayList<Channel> canales = new ArrayList<>();
 
     private String color;
 
@@ -70,24 +65,23 @@ public class MiTarea {
     }
 
     public MiTarea(PlTask plTask) {
-        tareaId = plTask.getTask().getId();
-        cargoId = plTask.getTask().getPosition().getId();
-        criticidad_id = plTask.getTask().getCriticalyLevels();
-        estadoId = plTask.getTask().getStatusTask().getId();
-        peso = plTask.getPosition();
-        gerenciaId = plTask.getTask().getPosition().getArea().getManagement().getId();
+        tareaId = plTask.getId();
+        cargoId = plTask.getPosition().getId();
+        criticidad_id = plTask.getCriticalyLevels();
+        estadoId = plTask.getStatusTask().getId();
+        gerenciaId = plTask.getPosition().getArea().getManagement().getId();
         nombre = plTask.getName();
-        descripcion = plTask.getTask().getDescription();
-        cargo = plTask.getTask().getCargo();
-        codigo = plTask.getTask().getCode();
-        estado = plTask.getTask().getStatusTask().getName();
-        producto = plTask.getTask().getProduct();
-        criticidad = plTask.getTask().getCriticidad();
-        recurrente = plTask.getTask().isIsrecurrent();
-        partida = plTask.getTask().isStart();
-        canales = new ArrayList<>(plTask.getTask().getChannels());
+        descripcion = plTask.getDescription();
+        cargo = plTask.getCargo();
+        codigo = plTask.getCode();
+        estado = plTask.getStatusTask().getName();
+        producto = plTask.getProduct();
+        criticidad = plTask.getCriticidad();
+        recurrente = plTask.isIsrecurrent();
+        partida = plTask.isStart();
+        canales = new ArrayList<>(plTask.getChannels());
         color = "";
-        modelos = new ArrayList<>(plTask.getTask().getDocuments());
+        modelos = new ArrayList<>(plTask.getDocuments());
     }
 
     public Integer getTareaId() {

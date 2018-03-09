@@ -33,14 +33,8 @@ import org.hibernate.annotations.ColumnDefault;
  */
 @Entity
 @Table(name = "child_task")
-@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@NamedEntityGraphs({
-    @NamedEntityGraph(name = "Child.listarTodas", attributeNodes = {
-        @NamedAttributeNode(value = "from")
-        ,@NamedAttributeNode(value = "to")
-    })})
 public class ChildTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,16 +51,11 @@ public class ChildTask implements Serializable {
     @ColumnDefault(value = "0")
     private boolean isChild;
 
-    @JoinColumn(name = "childid", referencedColumnName = "id", nullable = false,
-                foreignKey = @ForeignKey(name = "fk_childtask_platask_child"))
-    @ManyToOne(optional = false)
-    private PlTask from;
+    @Column(name = "from_id")
+    private Integer from;
 
-    @JoinColumn(name = "next_child", referencedColumnName = "id", nullable = false,
-                foreignKey = @ForeignKey(name = "fk_childtask_next"))
-    @ManyToOne(optional = false)
-    @ColumnDefault(value = "1384")
-    private PlTask to;
+    @Column(name = "to_id")
+    private Integer to;
 
     public ChildTask() {
     }
@@ -96,11 +85,11 @@ public class ChildTask implements Serializable {
         this.isChild = ispredecessor;
     }
 
-    public PlTask getFrom() {
+    public Integer getFrom() {
         return from;
     }
 
-    public void setFrom(PlTask childid) {
+    public void setFrom(Integer childid) {
         this.from = childid;
     }
 
@@ -112,16 +101,16 @@ public class ChildTask implements Serializable {
         isChild = child;
     }
 
-    public PlTask getTo() {
+    public Integer getTo() {
         return to;
     }
 
-    public void setTo(PlTask to) {
+    public void setTo(Integer to) {
         this.to = to;
     }
 
     public boolean isValid() {
-        return !from.getTask().getId().equals(to.getTask().getId());
+        return !from.equals(to);
     }
 
     public ChildTask clonar() {

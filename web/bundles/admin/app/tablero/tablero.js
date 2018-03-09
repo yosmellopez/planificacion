@@ -4,12 +4,12 @@
     'use strict';
 
     angular.module('app.tablero').controller('Tablero', Tablero);
-
     Tablero.$inject = ['$rootScope', '$scope', '$timeout', '$location', 'urlPath', 'tableroService', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'usuarioService', 'planService'];
 
     function Tablero($rootScope, $scope, $timeout, $location, urlPath, tableroService, cargoService, areaService, gerenciaService, criticidadTareaService, usuarioService, planService) {
         var vm = this;
         vm.urlPath = urlPath;
+        vm.urlPathImagen = urlPath;
 
         vm.tablero = tableroService.tablero;
         vm.cargos = cargoService.cargos;
@@ -28,6 +28,7 @@
         $scope.tituloModal = "";
         $scope.tarea = {};
         $scope.plan = {};
+        $scope.existePlanEjecucion = false;
         $scope.antecesoras = new Array();
         vm.usuario = usuarioService.usuario;
         $scope.direccion = "";
@@ -128,19 +129,23 @@
             $scope.nivelAlerta = $("#nivel-alerta").val();
             if (parseInt($scope.nivelAlerta))
                 $scope.nivelAlerta = parseInt($scope.nivelAlerta);
-            else $scope.nivelAlerta = "";
+            else
+                $scope.nivelAlerta = "";
             $scope.cargo = $("#cargo").val();
             if (parseInt($scope.cargo))
                 $scope.cargo = parseInt($scope.cargo);
-            else $scope.cargo = "";
+            else
+                $scope.cargo = "";
             $scope.gerencia = $("#gerencia").val();
             if (parseInt($scope.gerencia))
                 $scope.gerencia = parseInt($scope.gerencia);
-            else $scope.gerencia = "";
+            else
+                $scope.gerencia = "";
             $scope.direccion = $("#direccion").val();
             if (parseInt($scope.direccion))
                 $scope.direccion = parseInt($scope.direccion);
-            else $scope.direccion = "";
+            else
+                $scope.direccion = "";
             objeto = {
                 cargo: $scope.cargo,
                 area: $scope.gerencia,
@@ -172,7 +177,7 @@
                         contieneCriticidad = true;
                         return;
                     }
-                })
+                });
                 var color = contieneCriticidad ? criticidad.color : "#bdbdbd";
                 return {
                     "border-color": color,
@@ -182,7 +187,7 @@
                 };
             }
             return {"background-color": "#bdbdbd"};
-        }
+        };
 
         vm.mostrarColorVentana = function (tarea) {
             if (tarea.criticidad_id) {
@@ -195,7 +200,7 @@
                 };
             }
             return {"background-color": color};
-        }
+        };
 
         vm.seleccionarPlan = function () {
             var planId = $("#plan").val();
@@ -222,7 +227,7 @@
             $('#modal-tarea-detalle').modal('toggle');
             $('.modal-backdrop').remove();
             $timeout(function () {
-                planService.buscarTarea(idTarea, vm.planId).then(success).catch(failed);
+                planService.buscarTarea(idTarea).then(success).catch(failed);
             }, 0);
 
             function success(response) {
@@ -256,13 +261,27 @@
         }
 
         function activate() {
+            $scope.plan = JSON.parse(localStorage.getItem("plan"));
             $scope.$on('$viewContentLoaded', function () {
                 // initialize core components
                 Metronic.initAjax();
                 MyApp.init();
 
                 $timeout(function () {
-                    if (vm.usuario.rol === 1) {
+                    var idNivel = 5;
+                    for (var i = 0; i < vm.planes.length; i++) {
+                        if (vm.planes[i].ejecucion) {
+                            if (vm.planes.nivelAlerta !== null) {
+                                var idNivel = vm.planes[i].nivelAlerta.criticidad_id;
+                            }
+                            $scope.existePlanEjecucion = true;
+                            localStorage.setItem("estadoPlan", idNivel);
+                            $scope.titulo = vm.planes[i].nombre;
+                            $("#imagen-estado").prop("src", "bundles/admin/img/" + idNivel + ".png");
+                            break;
+                        }
+                    }
+                    if (vm.usuario.rol === 1 || $scope.existePlanEjecucion) {
                         iniciarKaban(vm.tablero);
                     }
                 }, 1000);
@@ -295,22 +314,26 @@
                         {name: "image", type: "string"},
                         {name: "common", type: "boolean"},
                         {name: "fecha", type: "string"},
+                        {name: "nombre", type: "string"},
+                        {name: "fechaActual", type: "string"},
+                        {name: "usuario", type: "string"},
                         {name: "nombre", type: "string"}
                     ]
                 };
                 var resourcesDataAdapter = new $.jqx.dataAdapter(resourcesSource);
                 return resourcesDataAdapter;
             };
+
             $('#kanban').jqxKanban({
                 template: "<div class='jqx-kanban-item elemento-general'><div class='fondo'>"
-                + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
-                + "<div class='jqx-icon jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
-                + "<div class='jqx-kanban-item-text'><i class='fa fa-hourglass-start usuario'></i>  </div>"
-                + "<div class='jqx-kanban-item-nombre'></div>"
-                + "<div class='jqx-kanban-item-fecha'></div>"
-                + "<div class='jqx-kanban-item-cargo' style='height:40px;'></div>"
-                + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
-                + "</div></div>",
+                        + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
+                        + "<div class='jqx-icon jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
+                        + "<div class='jqx-kanban-item-text'><i class='fa fa-hourglass-start usuario'></i>  </div>"
+                        + "<div class='jqx-kanban-item-nombre'></div>"
+                        + "<div class='jqx-kanban-item-usuario'></div>"
+                        + "<div class='jqx-kanban-item-tiempo-transcurrido'></div>"
+                        + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
+                        + "</div></div>",
                 width: '75%',
                 height: '650px',
                 resources: resourcesAdapterFunc(),
@@ -318,8 +341,8 @@
                 columns: board.columnas,
                 itemRenderer: function (element, item, recurso) {
                     $(element).find(".jqx-kanban-item-nombre").html("<span style='line-height: 23px; margin-left: 5px;' class='alinear-elementos'><i class='fa fa-tasks usuario'></i><span> " + recurso.nombre + "</span></span>");
-                    $(element).find(".jqx-kanban-item-fecha").html("<span style='line-height: 23px; margin-left: 5px;'><i class='fa fa-calendar-check-o usuario'></i> " + recurso.fecha + "</span>");
-                    $(element).find(".jqx-kanban-item-cargo").html("<span style='line-height: 23px; margin-left: 5px;'><i class='fa fa-user usuario' style='font-size:18px'></i> " + recurso.name + "</span>");
+                    $(element).find(".jqx-kanban-item-usuario").html("<span style='line-height: 23px; margin-left: 5px;' class='alinear-elementos'><i class='fa fa-user usuario' style='font-size:18px'></i><span> " + recurso.usuario + "</span></span>");
+                    $(element).find(".jqx-kanban-item-tiempo-transcurrido").html("<span style='line-height: 23px; margin-left: 5px;'><i class='fa fa-calendar-check-o usuario'></i> " + recurso.fechaActual + "</span>");
                     $(element).find(".jqx-kanban-template-icon").html("<button class='btn btn-icon-only subir' data-id='" + item.id + "'><i class='fa fa-eye fa-fw' data-id='" + item.id + "'></i></button>");
                     $(element).find(".fondo").css('border-left-color', item.color);
                     $(element).find(".usuario").css('color', item.color);
@@ -337,14 +360,21 @@
                     collapsedElement.find(".jqx-kanban-column-header-status").html(" (" + columnItems + "/" + column.maxItems + ")");
                 }
             });
-            $('#kanban').on('itemMoved', function (event) {
-                var args = event.args;
-                args.itemData.color = args.newColumn.color;
-                args.itemData.text = args.newColumn.text;
-                args.itemData.className = "mi-clase";
-                tableroService.moverTarea(args.itemId, args.newColumn.dataField);
-                $('#kanban').jqxKanban('updateItem', args.itemId, args.itemData);
-            });
+            if (vm.usuario.rol === 1) {
+                $('#kanban').on('itemMoved', function (event) {
+                    var args = event.args;
+                    args.itemData.color = args.newColumn.color;
+                    args.itemData.text = args.newColumn.text;
+                    args.itemData.className = "mi-clase";
+                    tableroService.moverTarea(args.itemId, args.newColumn.dataField);
+                    $('#kanban').jqxKanban('updateItem', args.itemId, args.itemData);
+                    // tableroService.actualizarTableroUsuario().then(function (response, status, headers, config) {
+                    //     iniciarKaban(response.data.board);
+                    // }).catch(function (error) {
+                    //     logger.error('Error !!' + error.data);
+                    // });
+                });
+            }
             $('#kanban').on('columnCollapsed', function (event) {
                 var args = event.args;
                 var column = args.column;

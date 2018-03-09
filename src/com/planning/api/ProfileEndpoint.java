@@ -5,9 +5,9 @@ import com.planning.security.jwt.Correo;
 import com.planning.security.jwt.JwtAuthenticationToken;
 import com.planning.service.UsersService;
 import com.planning.util.MailMail;
-import com.planning.util.MapeadorObjetos;
 import com.planning.util.RestModelAndView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +35,12 @@ public class ProfileEndpoint {
     @Autowired
     private MailMail mail;
     
-    @Autowired
-    private MapeadorObjetos mapeadorObjetos;
-    
     @ResponseBody
     @RequestMapping(value = "/api/me", method = RequestMethod.GET)
-    public Users get(JwtAuthenticationToken token) {
-        return (Users) token.getPrincipal();
+    public ResponseEntity<ModelMap> get(JwtAuthenticationToken token, ModelMap map) {
+        map.put("usuario", token.getPrincipal());
+        map.put("success", true);
+        return ResponseEntity.ok(map);
     }
     
     @PostMapping(value = "/apirest/auth/restore")

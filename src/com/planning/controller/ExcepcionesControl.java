@@ -1,6 +1,7 @@
 package com.planning.controller;
 
 import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -19,25 +20,25 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @ControllerAdvice
 public class ExcepcionesControl extends ResponseEntityExceptionHandler {
-
+    
     @ExceptionHandler(value = {Exception.class, IOException.class})
     public ModelAndView handleCustomException(Exception ex, WebRequest request) {
         logger.error("Exception during execution of SpringSecurity application", ex);
         ModelMap map = new ModelMap();
-        map.put("msg", ex.getLocalizedMessage());
-        map.put("exception", ex.getLocalizedMessage());
+        map.put("msg", "Error interno del servidor. Si el problema persiste contacte con el administrador del sistema.");
+        map.put("exception", "Error interno del servidor. Si el problema persiste contacte con el administrador del sistema.");
         map.put("success", false);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-
+    
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         logger.error("Exception during execution of SpringSecurity application", ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.OK);
     }
-
+    
     private static Logger logger = LoggerFactory.getLogger(ExcepcionesControl.class);
-
+    
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exception(final Throwable throwable, final Model model) {
@@ -46,5 +47,5 @@ public class ExcepcionesControl extends ResponseEntityExceptionHandler {
         model.addAttribute("errorMessage", errorMessage);
         return "error/error";
     }
-
+    
 }

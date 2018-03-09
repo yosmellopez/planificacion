@@ -10,5 +10,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @see Management
  */
 public interface ManagementService extends JpaRepository<Management, Integer> {
-
 }

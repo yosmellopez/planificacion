@@ -36,13 +36,13 @@ public class TareaApi {
     
     private boolean tranversal;
     
-    private Date fechaCreacion = new Date();
-    
     @JsonProperty(value = "documentos")
     private Set<Document> documents = new HashSet<>();
     
     @JsonProperty(value = "estadoTarea")
     private StatusTask statusTask;
+    
+    private Date fechaCreacion = new Date();
     
     @JsonProperty(value = "nivelesAlerta")
     private Set<CriticalyLevel> criticalyLevels = new HashSet<>();
@@ -55,23 +55,17 @@ public class TareaApi {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Position position;
     
-    public TareaApi(Task task) {
+    public TareaApi(PlTask task) {
         this.id = task.getId();
         this.channels = task.getChannels();
-        this.code = task.getCode();
         this.name = task.getName();
-        this.criticalyLevels = task.getCriticalyLevels();
         this.documents = task.getDocuments();
-        this.hito = task.isHito();
-        this.isrecurrent = task.isIsrecurrent();
-        this.fechaCreacion = task.getFechaCreacion();
-        this.product = task.getProduct();
-        this.start = task.isStart();
-        this.tiempoRecurrencia = task.getTiempoRecurrencia();
-        this.tranversal = task.isTranversal();
-        this.fechaCreacion = task.getFechaCreacion();
-        this.statusTask = task.getStatusTask();
         this.position = task.getPosition();
+        this.product = task.getProduct();
+        this.statusTask = task.getStatusTask();
+        this.fechaCreacion = task.getFechaCreacion();
+        this.isrecurrent = task.isIsrecurrent();
+        this.tiempoRecurrencia = task.getTiempoRecurrencia();
     }
     
     public Integer getId() {
@@ -146,14 +140,6 @@ public class TareaApi {
         this.tranversal = tranversal;
     }
     
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-    
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-    
     public Set<Document> getDocuments() {
         return documents;
     }
@@ -192,5 +178,13 @@ public class TareaApi {
     
     public void setPosition(Position position) {
         this.position = position;
+    }
+    
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+    
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 }

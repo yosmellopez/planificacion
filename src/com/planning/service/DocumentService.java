@@ -20,5 +20,7 @@ public interface DocumentService extends JpaRepository<Document, Integer> {
     
     public List<Document> findByTaskId(Integer id);
     
+    public List<Document> findByDocpath(String docpath);
+    
     public Set<Document> findByIdContaining(List<Integer> ids);
 }

@@ -12,7 +12,6 @@ public class EstadoTarea implements Comparable<EstadoTarea> {
     @JsonIgnore
     private String description;
     
-    @JsonIgnore
     private String color;
     
     private Integer order;

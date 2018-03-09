@@ -11,5 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @see CriticalyLevel
  */
 public interface CriticalyLevelService extends JpaRepository<CriticalyLevel, Integer> {
-    
+
+    public CriticalyLevel findByOrder(int i);
+
 }

@@ -3,11 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Document.java</file>
-            <file>file:/D:/Trabajo/planificacion/src/com/planning/config/AppConfig.java</file>
-            <file>file:/D:/Trabajo/planificacion/src/com/planning/notification/NotificationManager.java</file>
-            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Notificacion.java</file>
-            <file>file:/D:/Trabajo/planificacion/test/test/TestHibernate.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/planes/planes.js</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/service/ChildTaskService.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/ChildTask.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/PlTask.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/diagram/Node.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Antecesora.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/scripts/table/plan-table-editable.js</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/tareas/tareas.html</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/planes/plan.service.js</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/PlTaskController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Task.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/layout/sidebar.html</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/tablero/tablero.js</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/planes/planes.html</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/TaskController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Channel.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/diagram/TareaDiagrama.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/entity/TareaApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/PlanController.java</file>
         </group>
     </open-files>
 </project-private>

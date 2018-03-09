@@ -1,12 +1,8 @@
 package com.planning.api;
 
 import com.planning.api.entity.EstadoTarea;
-import com.planning.entity.DashBoard;
-import com.planning.entity.StatusTask;
-import com.planning.entity.Users;
-import com.planning.service.NotificacionService;
-import com.planning.service.StatusTaskService;
-import com.planning.service.TaskService;
+import com.planning.entity.*;
+import com.planning.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,37 +11,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api")
 public class DashBoardRestApi {
-    
+
     @Autowired
     private StatusTaskService statusTaskService;
-    
+
     @Autowired
-    private TaskService taskService;
-    
+    private PlTaskService plTaskService;
+
     @Autowired
     private NotificacionService notificacionService;
-    
+
+    @Autowired
+    private NotificacionLeidaService leidaService;
+
+    @Autowired
+    private PlanService planService;
+
     @GetMapping(value = "/dashboard/stats")
     public ResponseEntity<DashBoard> dashboard(@AuthenticationPrincipal Users user) {
         DashBoard dashBoard = new DashBoard();
+        Optional<Plan> optional = planService.findByEjecucion(true);
+        dashBoard.setTotalTareas(0);
+        if (optional.isPresent()) {
+            dashBoard.setPlan(optional.get());
+            dashBoard.setTotalTareas(plTaskService.countByPosition(user.getPosition()));
+        }
+        List<NotificacionLeida> notificacionesNoLeidas = leidaService.findByUser_PositionAndLeido(user.getPosition(), false);
+        Set<Notificacion> notificacionSet = notificacionesNoLeidas.parallelStream().map(NotificacionLeida::getNotificacion).collect(Collectors.toSet());
         List<StatusTask> statusTasks = statusTaskService.findAll();
-        Long count = notificacionService.countByPositionAndLeido(user.getPosition(), false);
         TreeSet<EstadoTarea> estadoTareas = new TreeSet<>();
         for (StatusTask statusTask : statusTasks) {
             EstadoTarea estadoTarea = new EstadoTarea(statusTask);
-            Integer total = taskService.countByStatusTaskAndPosition(statusTask, user.getPosition());
+            Integer total = plTaskService.countByStatusTaskAndPosition(statusTask, user.getPosition());
             estadoTarea.setTotalTareas(total);
             estadoTareas.add(estadoTarea);
         }
-        dashBoard.setTotalNotificaciones(count);
+        dashBoard.setTotalNotificaciones(notificacionSet.size());
         dashBoard.setEstadoTareas(estadoTareas);
-        dashBoard.setTotalTareas(taskService.countByPosition(user.getPosition()));
-        dashBoard.setTotalNotificaciones(5);
         dashBoard.setSuccess(true);
         return ResponseEntity.ok(dashBoard);
     }

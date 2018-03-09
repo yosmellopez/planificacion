@@ -24,7 +24,6 @@ public class MapeadorObjetos extends ObjectMapper {
         getDeserializationConfig().with(new SimpleDateFormat("dd/MM/yyyy"));
         getSerializationConfig().with(new SimpleDateFormat("dd/MM/yyyy"));
         configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
     }
 
     @Override

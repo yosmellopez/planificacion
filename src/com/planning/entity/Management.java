@@ -42,7 +42,7 @@ public class Management implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
+    @ColumnDefault(value = "1")
     private boolean active;
 
     @JsonIgnore

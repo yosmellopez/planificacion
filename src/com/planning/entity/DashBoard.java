@@ -1,7 +1,9 @@
 package com.planning.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.planning.api.entity.EstadoTarea;
+import com.planning.util.PlanSerializer;
 
 import java.util.TreeSet;
 
@@ -15,6 +17,9 @@ public class DashBoard {
     private long totalNotificaciones = 5;
     
     private boolean success = false;
+    
+    @JsonSerialize(using = PlanSerializer.class)
+    private Plan plan;
     
     public DashBoard() {
     }
@@ -49,5 +54,13 @@ public class DashBoard {
     
     public void setTotalNotificaciones(long totalNotificaciones) {
         this.totalNotificaciones = totalNotificaciones;
+    }
+    
+    public Plan getPlan() {
+        return plan;
+    }
+    
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 }

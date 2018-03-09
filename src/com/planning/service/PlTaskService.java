@@ -8,42 +8,81 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Service object for domain model class PlTask.
- *
- * @see PlTask
- */
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
+
 public interface PlTaskService extends JpaRepository<PlTask, Integer> {
-    
+
+    @EntityGraph(value = "PlanTarea.tareas")
     public List<PlTask> findByPlan(Plan plan);
-    
+
+    @EntityGraph(value = "PlanTarea.tareas")
     public List<PlTask> findByPlan(Plan plan, Sort sort);
-    
-    public List<PlTask> findByPlanAndTask_Tranversal(Plan plan, boolean tranversal);
-    
-    public Optional<PlTask> findByLastInserted(boolean last);
-    
-    public PlTask findByPlanAndLastInserted(Plan plan, boolean last);
-    
-    public PlTask findByPlanAndTask(Plan plan, Task task);
-    
-    public List<PlTask> findByPlanAndTask_Position(Plan plan, Position position);
-    
-    public List<PlTask> findByPlanAndTask_Position_Area(Plan plan, Area area);
-    
-    public List<PlTask> findByPlanAndTask_Position_Area_Management(Plan plan, Management management);
-    
-    public List<PlTask> findByPlanAndTask_CriticalyLevelsContains(Plan plan, CriticalyLevel criticalyLevel);
-    
-    public List<PlTask> findByPlanAndTask_CriticalyLevelsContainsAndTask_Position(Plan plan, CriticalyLevel criticalyLevel, Position position);
-    
-    public List<PlTask> findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area(Plan plan, CriticalyLevel criticalyLevel, Area area);
-    
-    public List<PlTask> findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area_Management(Plan plan, CriticalyLevel criticalyLevel, Management management);
-    
-    public Optional<PlTask> findByPlanAndTaskAndStart(Plan plan, Task task, boolean start);
-    
+
+    @EntityGraph(value = "PlanTarea.tareas")
+    public List<PlTask> findByPlanAndCriticalyLevelsContains(Plan plan, CriticalyLevel criticalyLevel);
+
+    @EntityGraph(value = "PlanTarea.tareas")
     public Optional<PlTask> findByPlanAndStart(Plan plan, boolean start);
-    
-    public PlTask findByPlanAndPosition(Plan plan, int peso);
+
+    @Override
+    @EntityGraph(value = "PlanTarea.tareas")
+    public PlTask findOne(Integer id);
+
+    @EntityGraph(value = "PlanTarea.tareas")
+    public List<PlTask> findByPlanAndCriticalyLevelsContainsAndPosition(Plan plan, CriticalyLevel criticalyLevel, Position position);
+
+    @EntityGraph(value = "PlanTarea.tareas")
+    public List<PlTask> findByPlanAndCriticalyLevelsContainsAndPosition_Area(Plan plan, CriticalyLevel criticalyLevel, Area areaBd);
+
+    public List<PlTask> findByPlanAndCriticalyLevelsContainsAndPosition_Area_Management(Plan plan, CriticalyLevel criticalyLevel, Management management);
+
+    public List<PlTask> findByPlanAndPosition(Plan plan, Position position);
+
+    public List<PlTask> findByPlanAndPosition_Area(Plan plan, Area areaBd);
+
+    public List<PlTask> findByPlanAndPosition_Area_Management(Plan plan, Management management);
+
+    public List<PlTask> findByCriticalyLevelsContainsAndPosition(CriticalyLevel level, Position position);
+
+    public List<PlTask> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel level, Area areaBd);
+
+    public List<PlTask> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel level, Management management);
+
+    public List<PlTask> findByCriticalyLevelsContains(CriticalyLevel level);
+
+    public List<PlTask> findByPosition(Position findOne);
+
+    public List<PlTask> findByPosition_Area(Area findOne);
+
+    public List<PlTask> findByPosition_Area_Management(Management findOne);
+
+    public Page<PlTask> findByCriticalyLevelsContainsAndPosition(CriticalyLevel level, Position position, Pageable pageRequest);
+
+    public Page<PlTask> findByPosition(Position position, Pageable pageRequest);
+
+    public Page<PlTask> findByPosition_Area_Management(Management findOne, Pageable pageRequest);
+
+    public Page<PlTask> findByPosition_Area(Area findOne, Pageable pageRequest);
+
+    public Page<PlTask> findByCriticalyLevelsContains(CriticalyLevel findOne, Pageable pageRequest);
+
+    public Page<PlTask> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel level, Management management, Pageable pageRequest);
+
+    public Page<PlTask> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel level, Area areaBd, Pageable pageRequest);
+
+    public long countByPosition(Position position);
+
+    public long countByPositionAndPlan(Position position, Plan plan);
+
+    public Integer countByStatusTaskAndPosition(StatusTask statusTask, Position position);
+
+    public List<PlTask> findByStatusTaskAndPosition(StatusTask statusTask, Position position, Sort sort);
+
+    public Long countByStatusTask(StatusTask statusTask);
+
+    public Long countByPlan(Plan plan);
+
 }

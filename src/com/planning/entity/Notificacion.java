@@ -1,6 +1,8 @@
 package com.planning.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.planning.util.SerializadorFechaTiempo;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,9 +25,6 @@ public class Notificacion implements Serializable {
     @JsonProperty(value = "descripcion")
     private String description;
     
-    @Column(name = "leido")
-    private Boolean leido;
-    
     @ManyToOne
     @JsonProperty(value = "cargo")
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_notificacion_position"))
@@ -33,6 +32,7 @@ public class Notificacion implements Serializable {
     
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonSerialize(using = SerializadorFechaTiempo.class)
     private Date fecha;
     
     public Notificacion() {
@@ -60,14 +60,6 @@ public class Notificacion implements Serializable {
     
     public void setDescription(String text) {
         this.description = text;
-    }
-    
-    public boolean isLeido() {
-        return leido;
-    }
-    
-    public void setLeido(boolean read) {
-        this.leido = read;
     }
     
     public Position getPosition() {

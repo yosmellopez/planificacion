@@ -27,52 +27,56 @@ public interface TaskService extends JpaRepository<Task, Integer> {
     @Override
     @EntityGraph(value = "nivelesAlerta")
     public Page<Task> findAll(Pageable pageable);
+
+    @Override
+    @EntityGraph(value = "nivelesAlerta")
+    public Task findOne(Integer id);
     
     public List<Task> findByFechaCreacionBetween(Date fechaInicio, Date fechaFin);
     
     public Page<Task> findByFechaCreacionBetween(Date fechaInicio, Date fechaFin, Pageable p);
     
-    public Page<Task> findByFechaCreacionBetweenAndPosition(Date fechaInicio, Date fechaFin, Position position, Pageable p);
+//    public Page<Task> findByFechaCreacionBetweenAndPosition(Date fechaInicio, Date fechaFin, Position position, Pageable p);
     
     public List<Task> findByIdNotIn(List<Integer> ids);
     
-    public List<Task> findByStatusTask(StatusTask statusTask);
+//    public List<Task> findByStatusTask(StatusTask statusTask);
+//    
+//    public Long countByStatusTask(StatusTask statusTask);
     
-    public Long countByStatusTask(StatusTask statusTask);
+//    public List<Task> findByPosition(Position position);
+//    
+//    public List<Task> findByStatusTaskAndPosition(StatusTask statusTask, Position position);
+//    
+//    public List<Task> findByStatusTaskAndPosition(StatusTask statusTask, Position position, Sort sort);
+//    
+//    public Page<Task> findByPosition(Position position, Pageable pageable);
+//    
+//    public List<Task> findByPosition_Area(Area area);
+//    
+//    public Integer countByStatusTaskAndPosition(StatusTask statusTask, Position position);
+//    
+//    public Integer countByPosition(Position position);
+//    
+//    public Page<Task> findByPosition_Area(Area area, Pageable pageable);
+//    
+//    public List<Task> findByPosition_Area_Management(Management management);
+//    
+//    public Page<Task> findByPosition_Area_Management(Management management, Pageable pageable);
     
-    public List<Task> findByPosition(Position position);
-    
-    public List<Task> findByStatusTaskAndPosition(StatusTask statusTask, Position position);
-    
-    public List<Task> findByStatusTaskAndPosition(StatusTask statusTask, Position position, Sort sort);
-    
-    public Page<Task> findByPosition(Position position, Pageable pageable);
-    
-    public List<Task> findByPosition_Area(Area area);
-    
-    public Integer countByStatusTaskAndPosition(StatusTask statusTask, Position position);
-    
-    public Integer countByPosition(Position position);
-    
-    public Page<Task> findByPosition_Area(Area area, Pageable pageable);
-    
-    public List<Task> findByPosition_Area_Management(Management management);
-    
-    public Page<Task> findByPosition_Area_Management(Management management, Pageable pageable);
-    
-    public List<Task> findByCriticalyLevelsContains(CriticalyLevel criticalyLevel);
-    
-    public List<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position);
-    
-    public List<Task> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel criticalyLevel, Area area);
-    
-    public List<Task> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel criticalyLevel, Management management);
-    
-    public Page<Task> findByCriticalyLevelsContains(CriticalyLevel criticalyLevel, Pageable pageable);
-    
-    public Page<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position, Pageable pageable);
-    
-    public Page<Task> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel criticalyLevel, Area area, Pageable pageable);
-    
-    public Page<Task> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel criticalyLevel, Management management, Pageable pageable);
+//    public List<Task> findByCriticalyLevelsContains(CriticalyLevel criticalyLevel);
+//    
+//    public List<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position);
+//    
+//    public List<Task> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel criticalyLevel, Area area);
+//    
+//    public List<Task> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel criticalyLevel, Management management);
+//    
+//    public Page<Task> findByCriticalyLevelsContains(CriticalyLevel criticalyLevel, Pageable pageable);
+//    
+//    public Page<Task> findByCriticalyLevelsContainsAndPosition(CriticalyLevel criticalyLevel, Position position, Pageable pageable);
+//    
+//    public Page<Task> findByCriticalyLevelsContainsAndPosition_Area(CriticalyLevel criticalyLevel, Area area, Pageable pageable);
+//    
+//    public Page<Task> findByCriticalyLevelsContainsAndPosition_Area_Management(CriticalyLevel criticalyLevel, Management management, Pageable pageable);
 }

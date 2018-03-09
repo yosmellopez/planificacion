@@ -68,7 +68,7 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     private String name;
     
     @Basic(optional = false)
-    @JsonProperty(value = "passwordcodificada")
+    @JsonProperty(value = "password")
     @Column(name = "keypass", nullable = false, length = 128)
     private String keypass = "123";
     
@@ -81,8 +81,12 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     @ManyToOne(optional = false)
     private Rol rol;
     
+    @ManyToOne
+    @JoinColumn(name = "backup", foreignKey = @ForeignKey(name = "fk_user_backup"))
+    private Users backup;
+    
     @Column(name = "active")
-    @ColumnDefault(value = "true")
+    @ColumnDefault(value = "1")
     private boolean active = true;
     
     @Column(name = "titular")
@@ -94,6 +98,10 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     
     public Users(Integer id) {
         this.id = id;
+    }
+    
+    public Users(String id) {
+        this.id = Integer.parseInt(id);
     }
     
     public Users(Integer id, String username, String lastname, String rut, String cellphone, String email, String name, String keypass) {
@@ -203,6 +211,14 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
         this.rol = rol;
     }
     
+    public Users getBackup() {
+        return backup;
+    }
+    
+    public void setBackup(Users backup) {
+        this.backup = backup;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -278,5 +294,9 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     @Override
     public int compareTo(Users o) {
         return name.compareTo(o.getName());
+    }
+    
+    public String getNombreCompleto() {
+        return name + " " + lastname;
     }
 }

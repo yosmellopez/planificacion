@@ -33,20 +33,11 @@ public class Antecesora {
     private String criticidad = "";
     
     public Antecesora(PlTask plTask) {
-        id = plTask.getTask().getId();
-        name = plTask.getTask().getName();
-        code = plTask.getTask().getCode();
-        position = plTask.getTask().getPosition();
-        criticalyLevels = plTask.getTask().getCriticalyLevels();
-        criticalyLevels.forEach(criticalyLevel -> ordenes.add(criticalyLevel.getOrder()));
-    }
-    
-    public Antecesora(Task task) {
-        id = task.getId();
-        name = task.getName();
-        code = task.getCode();
-        position = task.getPosition();
-        criticalyLevels = task.getCriticalyLevels();
+        id = plTask.getId();
+        name = plTask.getName();
+        code = plTask.getCode();
+        position = plTask.getPosition();
+        criticalyLevels = plTask.getCriticalyLevels();
         criticalyLevels.forEach(criticalyLevel -> ordenes.add(criticalyLevel.getOrder()));
     }
     

@@ -5,18 +5,23 @@
  */
 package com.planning.api;
 
+import com.planning.api.entity.Backup;
+import com.planning.entity.Rol;
 import com.planning.entity.Users;
 import com.planning.service.UsersService;
 import com.planning.util.HeaderUtil;
 import com.planning.util.MailMail;
 import com.planning.util.ResponseUtil;
+import com.planning.util.RestModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -41,21 +46,15 @@ public class UsersRestApi {
     @Autowired
     private MailMail mail;
     
-    
-
-    //    @PutMapping("/usuario/{userId}")
-//    public ResponseEntity<ModelMap> updateUsers(@RequestBody Users usuario, @PathVariable("userId") Users usuarioBd, ModelMap map) {
-//        log.debug("REST request to update Users : {}", usuario);
-//        if (usuario.getId() == null) {
-//            return createUsers(usuario, map);
-//        }
-//        usuarioService.saveAndFlush(usuario);
-//        return ResponseEntity.ok(map);
-//    }
     @GetMapping("/usuario")
-    public List<Users> listarTareas() {
+    public ResponseEntity<ModelMap> listarUsuarios(@AuthenticationPrincipal Users user, ModelMap map) {
         log.debug("REST request to get all Userss");
-        return usuarioService.findAll();
+        map.put("usuarios", usuarioService.findAll());
+        map.put("success", true);
+        if (user.isTitular()) {
+            map.put("backup_id", user.getBackup() != null ? user.getBackup().getId() : "");
+        }
+        return ResponseEntity.ok(map);
     }
     
     @GetMapping("/usuario/{id}")
@@ -65,10 +64,25 @@ public class UsersRestApi {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(task));
     }
     
-    @GetMapping("/usuario/count")
-    public Long usuarioCount() {
-        log.debug("REST request to get all Userss");
-        return usuarioService.count();
+    @PostMapping("/usuario/backup")
+    public ModelAndView usuarioBachup(@RequestBody Backup backup, @AuthenticationPrincipal Users user, ModelMap map) {
+        Users usuarioBackup = usuarioService.findOne(backup.getBackupId());
+        user.setBackup(usuarioBackup);
+        usuarioService.saveAndFlush(user);
+        map.put("success", true);
+        map.put("message", "La operación se realizó correctamente.");
+        return RestModelAndView.ok(map);
+    }
+    
+    @PostMapping("/usuario/backup/crear")
+    public ModelAndView usuarioBachupCreate(@RequestBody Users backup, @AuthenticationPrincipal Users user, ModelMap map) {
+        backup.setRol(new Rol(2));
+        usuarioService.saveAndFlush(backup);
+        user.setBackup(backup);
+        usuarioService.saveAndFlush(user);
+        map.put("success", true);
+        map.put("message", "La operación se realizó correctamente.");
+        return RestModelAndView.ok(map);
     }
     
     @DeleteMapping("/usuario/{id}")
@@ -77,5 +91,5 @@ public class UsersRestApi {
         usuarioService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
+    
 }

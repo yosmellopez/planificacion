@@ -17,6 +17,9 @@ public class Modelo {
     
     private ArrayList<Node> nodeDataArray = new ArrayList<>();
     
+    @JsonIgnore
+    private List<Node> invisibleNodesGrupo = new ArrayList<>();
+    
     private ArrayList<Edge> linkDataArray = new ArrayList<>();
     
     @JsonIgnore
@@ -94,6 +97,17 @@ public class Modelo {
                     siders.add(node);
         }
         return siders;
+    }
+    
+    public boolean estaVacio(String grupo) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Node node : nodeDataArray) {
+            if (node.getGroup() != null)
+                if (node.getGroup().compareToIgnoreCase(grupo) == 0)
+                    nodes.add(node);
+        }
+        invisibleNodesGrupo = nodes.parallelStream().filter(node -> node.getColor().compareTo("transparent") == 0 && node.getTareaId() == null).collect(Collectors.toList());
+        return invisibleNodesGrupo.size() == nodes.size();
     }
     
     public Node buscarSider(String key) {
@@ -192,6 +206,14 @@ public class Modelo {
         this.modificado = modificado;
     }
     
+    public List<Node> getInvisibleNodesGrupo() {
+        return invisibleNodesGrupo;
+    }
+    
+    public void setInvisibleNodesGrupo(List<Node> invisibleNodesGrupo) {
+        this.invisibleNodesGrupo = invisibleNodesGrupo;
+    }
+    
     private boolean existNode(Node node) {
         for (Node nod : nodeDataArray) {
             if (nod.getKey().compareTo(node.getKey()) == 0) {
@@ -232,5 +254,18 @@ public class Modelo {
             i++;
         }
         return pos;
+    }
+    
+    public List<Edge> buscarEdges(Node node) {
+        List<Edge> edgeList = linkDataArray.parallelStream().filter(edge -> edge.getFrom().compareToIgnoreCase(node.getKey()) == 0 || edge.getTo().compareToIgnoreCase(node.getKey()) == 0).collect(Collectors.toList());
+        return edgeList;
+    }
+    
+    public Node buscarNodoGrupo(String group) {
+        for (Node node : nodeDataArray)
+            if (node.getKey().compareTo(group) == 0) {
+                return node;
+            }
+        return null;
     }
 }

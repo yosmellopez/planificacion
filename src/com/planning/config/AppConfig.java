@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.planning.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +27,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@Configuration
 @EnableWebMvc
+@Configuration
+@EnableSpringDataWebSupport
+@EnableTransactionManagement
 @ComponentScan(basePackages = "com.planning")
 @EnableJpaRepositories(basePackages = {"com.planning.service"})
-@EnableTransactionManagement
-@EnableSpringDataWebSupport
 @PropertySource(name = "configuracion", value = {"/WEB-INF/configuracion.properties"})
 public class AppConfig {
 

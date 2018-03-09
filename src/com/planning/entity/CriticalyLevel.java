@@ -49,7 +49,7 @@ public class CriticalyLevel implements Serializable, Comparable<CriticalyLevel> 
     @Basic(optional = false)
     @JsonProperty(value = "estado")
     @Column(name = "active", nullable = false)
-    @ColumnDefault(value = "true")
+    @ColumnDefault(value = "1")
     private boolean active;
 
     @Column(name = "orden")

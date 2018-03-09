@@ -8,6 +8,7 @@ package com.planning.controller;
 import com.planning.entity.Users;
 import com.planning.util.ArregloCreator;
 import com.planning.util.RestModelAndView;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,7 +41,7 @@ public class GeneralController {
     
     @RequestMapping(value = "/iniciado.html", method = RequestMethod.GET)
     public ModelAndView iniciado() {
-        return new ModelAndView(new RedirectView("/Planificacion"));
+        return new ModelAndView(new RedirectView("/planificacion"));
     }
     
     @RequestMapping(value = "/error404.html", method = RequestMethod.GET)
@@ -49,6 +50,7 @@ public class GeneralController {
     }
     
     @ResponseBody
+    @PreAuthorize(value = "isFullyAuthenticated()")
     @RequestMapping(value = "/usuario/devolverUsuarioActual", method = RequestMethod.GET)
     public ModelAndView userActual(@AuthenticationPrincipal Users usuario, ModelMap map) {
         if (usuario != null) {
@@ -59,5 +61,12 @@ public class GeneralController {
             map.put("error", "No ha iniciado sesión");
         }
         return new RestModelAndView(map);
+    }
+    
+    @ResponseBody
+    @PreAuthorize(value = "isFullyAuthenticated()")
+    @RequestMapping(value = "/authentication/usuario", method = RequestMethod.GET)
+    public ModelAndView authenticatedUser(@AuthenticationPrincipal Users usuario, ModelMap map) {
+        return userActual(usuario, map);
     }
 }

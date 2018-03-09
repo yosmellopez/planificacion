@@ -7,6 +7,7 @@ package com.planning.service;
 
 import com.planning.entity.GroupPK;
 import com.planning.entity.Grupo;
+import com.planning.entity.PlTask;
 import com.planning.entity.Plan;
 import com.planning.entity.Task;
 import org.springframework.data.domain.Page;
@@ -22,11 +23,11 @@ import java.util.List;
  */
 public interface GrupoRepository extends JpaRepository<Grupo, GroupPK> {
     
-    List<Grupo> findByTaskGrupo(Task task);
+    List<Grupo> findByTaskGrupo(PlTask task);
     
-    List<Grupo> findByTaskGrupo(Task task, Sort sort);
+    List<Grupo> findByTaskGrupo(PlTask task, Sort sort);
     
-    Page<Grupo> findByTaskGrupo(Task task, Pageable pageable);
+    Page<Grupo> findByTaskGrupo(PlTask task, Pageable pageable);
     
     List<Grupo> findByPlan(Plan plan);
     
@@ -34,18 +35,18 @@ public interface GrupoRepository extends JpaRepository<Grupo, GroupPK> {
     
     Page<Grupo> findByPlan(Plan plan, Pageable pageable);
     
-    List<Grupo> findByPlanAndTaskAgrupada(Plan plan, Task task);
+    List<Grupo> findByPlanAndTaskAgrupada(Plan plan, PlTask task);
     
-    List<Grupo> findByPlanAndTaskAgrupada(Plan plan, Task task, Sort sort);
+    List<Grupo> findByPlanAndTaskAgrupada(Plan plan, PlTask task, Sort sort);
     
-    Page<Grupo> findByPlanAndTaskAgrupada(Plan plan, Task task, Pageable pageable);
+    Page<Grupo> findByPlanAndTaskAgrupada(Plan plan, PlTask task, Pageable pageable);
     
-    List<Grupo> findByPlanAndTaskGrupo(Plan plan, Task task);
+    List<Grupo> findByPlanAndTaskGrupo(Plan plan, PlTask task);
     
-    List<Grupo> findByPlanAndTaskGrupo(Plan plan, Task task, Sort sort);
+    List<Grupo> findByPlanAndTaskGrupo(Plan plan, PlTask task, Sort sort);
     
-    Page<Grupo> findByPlanAndTaskGrupo(Plan plan, Task task, Pageable pageable);
+    Page<Grupo> findByPlanAndTaskGrupo(Plan plan, PlTask task, Pageable pageable);
     
     @Transactional
-    void deleteByTaskGrupo(Task task);
+    void deleteByTaskGrupo(PlTask task);
 }

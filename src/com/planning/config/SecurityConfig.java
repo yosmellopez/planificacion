@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,12 +30,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.CacheControlHeadersWriter;
+import org.springframework.security.web.header.writers.HstsHeaderWriter;
+import org.springframework.security.web.header.writers.XContentTypeOptionsHeaderWriter;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     public static final String AUTHENTICATION_HEADER_NAME = "Authorization";
@@ -101,17 +108,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/area/**", "/canal/**", "/criticidad-tarea/**", "/criticidad-plan/**", "/documento/**", "/gerencia/**", "/planTarea/**", "/plan/**",
                         "/cargo/**", "/perfil/**", "/estado-plan/**", "/estado-tarea/**", "/tarea/**", "/usuario/**").authenticated()
                 .antMatchers(API_ROOT_URL).authenticated()
-                .antMatchers("/login.html").permitAll()
                 .antMatchers("/usuario.html").hasAuthority("Administrador").and()
                 .formLogin().loginPage("/login.html").loginProcessingUrl("/usuario/autenticar").successHandler(autenticacionAjaxExitosa).failureHandler(autenticacionAjaxFallida)
-                .usernameParameter("email").passwordParameter("pass").and()
+                .usernameParameter("email").passwordParameter("pass").permitAll().and()
                 .logout().logoutSuccessHandler(manejadorLogout()).logoutUrl("/logout").logoutSuccessUrl("/login.html").and()
                 .addFilterBefore(new CustomCorsFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildAjaxLoginProcessingFilter(AUTHENTICATION_URL), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(permitAllEndpointList, API_ROOT_URL), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(new AccesoDenegadoHandler());
-        http.headers().defaultsDisabled().cacheControl();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(Integer.MAX_VALUE);
+        http.headers().httpStrictTransportSecurity().includeSubDomains(true).maxAgeInSeconds(31536000);
+        http.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                .addHeaderWriter(new XContentTypeOptionsHeaderWriter())
+                .addHeaderWriter(new XXssProtectionHeaderWriter())
+                .addHeaderWriter(new CacheControlHeadersWriter())
+                .addHeaderWriter(new HstsHeaderWriter());
     }
     
     protected AjaxLoginProcessingFilter buildAjaxLoginProcessingFilter(String loginEntryPoint) throws Exception {
@@ -133,6 +144,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setMessageSource(messageSource);
+
 //        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
