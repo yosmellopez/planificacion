@@ -22,6 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
@@ -52,7 +53,7 @@ public class UsersRestApi {
         map.put("usuarios", usuarioService.findAll());
         map.put("success", true);
         if (user.isTitular()) {
-            map.put("backup_id", user.getBackup() != null ? user.getBackup().getId() : "");
+            map.put("backups", user.getBackups());
         }
         return ResponseEntity.ok(map);
     }
@@ -66,8 +67,11 @@ public class UsersRestApi {
     
     @PostMapping("/usuario/backup")
     public ModelAndView usuarioBachup(@RequestBody Backup backup, @AuthenticationPrincipal Users user, ModelMap map) {
-        Users usuarioBackup = usuarioService.findOne(backup.getBackupId());
-        user.setBackup(usuarioBackup);
+        ArrayList<Integer> backups = backup.getBackups();
+        for (Integer usuarioId : backups) {
+            Users usuarioBackup = usuarioService.findOne(usuarioId);
+            user.getBackups().add(usuarioBackup);
+        }
         usuarioService.saveAndFlush(user);
         map.put("success", true);
         map.put("message", "La operación se realizó correctamente.");
@@ -77,9 +81,8 @@ public class UsersRestApi {
     @PostMapping("/usuario/backup/crear")
     public ModelAndView usuarioBachupCreate(@RequestBody Users backup, @AuthenticationPrincipal Users user, ModelMap map) {
         backup.setRol(new Rol(2));
+        user.getBackups().add(backup);
         usuarioService.saveAndFlush(backup);
-        user.setBackup(backup);
-        usuarioService.saveAndFlush(user);
         map.put("success", true);
         map.put("message", "La operación se realizó correctamente.");
         return RestModelAndView.ok(map);

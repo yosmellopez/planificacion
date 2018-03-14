@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -40,6 +41,14 @@ public class ProfileEndpoint {
     public ResponseEntity<ModelMap> get(JwtAuthenticationToken token, ModelMap map) {
         map.put("usuario", token.getPrincipal());
         map.put("success", true);
+        return ResponseEntity.ok(map);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/api/checkmail", method = RequestMethod.GET)
+    public ResponseEntity<ModelMap> checkMail(@RequestParam String email, ModelMap map) {
+        Optional<Users> usersOptional = usuarioService.findByEmail(email);
+        map.put("success", usersOptional.isPresent());
         return ResponseEntity.ok(map);
     }
     

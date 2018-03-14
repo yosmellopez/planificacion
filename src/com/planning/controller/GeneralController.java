@@ -5,9 +5,13 @@
  */
 package com.planning.controller;
 
+import com.planning.entity.Plan;
 import com.planning.entity.Users;
+import com.planning.service.PlanService;
 import com.planning.util.ArregloCreator;
+import com.planning.util.MiPlan;
 import com.planning.util.RestModelAndView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,12 +22,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Optional;
+
 @Controller
 public class GeneralController {
     
+    @Autowired
+    private PlanService planService;
+    
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
-        return new ModelAndView("index");
+        Optional<Plan> planOptional = planService.findByEjecucion(true);
+        ModelMap map = new ModelMap();
+        map.put("existePlan", planOptional.isPresent());
+        if (planOptional.isPresent()) {
+            map.put("plan", new MiPlan(planOptional.get()));
+        }
+        return new ModelAndView("index", map);
     }
     
     @RequestMapping(value = "/login.html", method = RequestMethod.GET)

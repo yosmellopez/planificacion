@@ -7,7 +7,10 @@ package com.planning.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.planning.util.SerializadorBackups;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
@@ -18,6 +21,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Nodo
@@ -81,10 +86,6 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     @ManyToOne(optional = false)
     private Rol rol;
     
-    @ManyToOne
-    @JoinColumn(name = "backup", foreignKey = @ForeignKey(name = "fk_user_backup"))
-    private Users backup;
-    
     @Column(name = "active")
     @ColumnDefault(value = "1")
     private boolean active = true;
@@ -92,6 +93,13 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     @Column(name = "titular")
     @ColumnDefault(value = "0")
     private boolean titular = true;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = SerializadorBackups.class)
+    @JoinTable(name = "user_backup", joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "fk_usuario_backup")),
+            inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "fk_backup_usuario")))
+    private Set<Users> backups = new HashSet<>();
     
     public Users() {
     }
@@ -104,7 +112,7 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
         this.id = Integer.parseInt(id);
     }
     
-    public Users(Integer id, String username, String lastname, String rut, String cellphone, String email, String name, String keypass) {
+    public Users(Integer id, String username, String lastname, String rut, String cellphone, String email, String name) {
         this.id = id;
         this.usuario = username;
         this.lastname = lastname;
@@ -112,7 +120,6 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
         this.cellphone = cellphone;
         this.email = email;
         this.name = name;
-        this.keypass = keypass;
     }
     
     public boolean isActive() {
@@ -211,12 +218,12 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
         this.rol = rol;
     }
     
-    public Users getBackup() {
-        return backup;
+    public Set<Users> getBackups() {
+        return backups;
     }
     
-    public void setBackup(Users backup) {
-        this.backup = backup;
+    public void setBackups(Set<Users> backups) {
+        this.backups = backups;
     }
     
     @Override
@@ -241,6 +248,7 @@ public class Users implements Serializable, UserDetails, Comparable<Users> {
     }
     
     @Override
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<Rol> roles = new ArrayList<>();
         roles.add(rol);

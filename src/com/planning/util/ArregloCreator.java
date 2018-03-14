@@ -17,7 +17,7 @@ import java.util.Set;
  * @author Nodo
  */
 public class ArregloCreator {
-    
+
     public static ModelMap crearTareaMap(Task task, Users usuario) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", task.getId());
@@ -28,7 +28,7 @@ public class ArregloCreator {
         map.put("4", usuario.getRol().getId() == 1 ? listarAcciones(task.getId()) : listarAccionesUsuarioTarea(task.getId()));
         return map;
     }
-    
+
     public static ModelMap crearTareaMap(PlTask task, Users usuario) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", task.getId());
@@ -41,18 +41,7 @@ public class ArregloCreator {
         map.put("6", usuario.getRol().getId() == 1 ? listarAcciones(task.getId()) : listarAccionesUsuarioTarea(task.getId()));
         return map;
     }
-    
-    public static ModelMap crearTareaPlanMap(Task task) {
-        ModelMap map = new ModelMap();
-        map.put("DT_RowId", task.getId());
-//        map.put("0", task.getCode());
-        map.put("1", task.getName());
-//        map.put("2", task.getPosition().getName());
-//        map.put("3", task.getCriticidad());
-        map.put("4", "<a class='btn btn-icon-only yellow view' href='javascript:;' data-id='" + task.getId() + "' ><i class='fa fa-eye fa-fw'></i></a>");
-        return map;
-    }
-    
+
     public static ModelMap crearTareaPlan(PlTask task) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", task.getId());
@@ -64,13 +53,25 @@ public class ArregloCreator {
         map.put("5", listarAccionesTarea(task.getId()));
         return map;
     }
-    
+
+    public static ModelMap crearTareaPlanDetalles(PlTask task) {
+        ModelMap map = new ModelMap();
+        map.put("DT_RowId", task.getId());
+        map.put("0", task.getCode());
+        map.put("1", task.getName());
+        map.put("2", task.getPosition().getName());
+        map.put("3", task.getCriticidad());
+        map.put("4", task.isStart() ? "Si <i class=\"fa fa-check-circle ic-color-ok\"></i>" : "No <i class=\"fa fa-minus-circle ic-color-error\"></i>");
+        map.put("5", listarAccionesUsuarioTarea(task.getId()));
+        return map;
+    }
+
     private static String listarAccionesTarea(Integer id) {
         return "<a class='btn btn-icon-only green edit table-action' href='javascript:;' data-id='" + id + "'><i class='fa fa-edit fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only red delete table-action' href='javascript:;' data-id='" + id + "'><i class='fa fa-trash-o fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only yellow partida table-action' href='javascript:;' data-id='" + id + "'><i class='fa fa-hourglass-start fa-fw'></i></a>";
     }
-    
+
     public static ModelMap crearTareaImportarMap(Task task, int number) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", task.getId());
@@ -81,33 +82,33 @@ public class ArregloCreator {
         map.put("4", listarAccionesImportar(task.getId()));
         return map;
     }
-    
+
     private static String listarAcciones(Integer id) {
         return "<a class='btn btn-icon-only green edit' href='javascript:;' data-id='" + id + "'><i class='fa fa-edit fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only red delete' href='javascript:;' data-id='" + id + "'><i class='fa fa-trash-o fa-fw'></i></a>";
     }
-    
+
     private static String listarAccionesUsuarioTarea(Integer id) {
         return "<a class='btn btn-icon-only yellow view' href='javascript:;' data-id='" + id + "'><i class='fa fa-eye fa-fw'></i></a>";
     }
-    
+
     private static String listarAccionesUsuario(Integer id) {
         return "<a class='btn btn-icon-only green edit' href='javascript:;' data-id='" + id + "'><i class='fa fa-edit fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only yellow block' href='javascript:;' data-id='" + id + "'><i class='fa fa-lock fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only red delete' href='javascript:;' data-id='" + id + "'><i class='fa fa-trash-o fa-fw'></i></a>";
     }
-    
+
     private static String listarAccionesPlan(Integer id, String nombre) {
         return "<a class='btn btn-icon-only green edit' href='javascript:;' data-id='" + id + "'><i class='fa fa-edit fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only red delete' href='javascript:;' data-id='" + id + "'><i class='fa fa-trash-o fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only purple diagrama' href='javascript:;' data-id='" + id + "'><i class='fa fa-cubes fa-fw'></i></a>"
                 + "<a class='btn btn-icon-only blue clonar' href='javascript:;' data-id='" + id + "' data-nombre='" + nombre + "'><i class='fa fa-clone fa-fw'></i></a>";
     }
-    
+
     private static String listarAccionesImportar(Integer id) {
         return "<a class='btn btn-icon-only green add' href='javascript:;' data-id='" + id + "'><i class='fa fa-plus fa-fw'></i></a>";
     }
-    
+
     public static ModelMap crearPlanMap(Plan plan) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", plan.getId());
@@ -116,10 +117,11 @@ public class ArregloCreator {
         map.put("2", plan.getDescription());
         map.put("3", plan.getStatusplanid().getName());
         map.put("4", plan.getFechaCreacion());
-        map.put("5", listarAccionesPlan(plan.getId(), plan.getName()));
+        map.put("5", plan.isEjecucion() ? "Si <i class='fa fa-check-circle ic-color-ok'></i>" : "No <i class='fa fa-minus-circle ic-color-error'></i>");
+        map.put("6", listarAccionesPlan(plan.getId(), plan.getName()));
         return map;
     }
-    
+
     public static ModelMap crearPlanCriticidadMap(CriticalyLevel level) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", level.getId());
@@ -132,7 +134,7 @@ public class ArregloCreator {
         map.put("6", listarAcciones(level.getId()));
         return map;
     }
-    
+
     public static ModelMap crearEstadoPlanMap(StatusPlan plan) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", plan.getId());
@@ -142,7 +144,7 @@ public class ArregloCreator {
         map.put("3", listarAcciones(plan.getId()));
         return map;
     }
-    
+
     public static ModelMap cargarPlan(Plan plan) {
         ModelMap map = new ModelMap();
         map.put("plan_id", plan.getId());
@@ -152,7 +154,7 @@ public class ArregloCreator {
         map.put("estado_id", plan.getStatusplanid().getId());
         return map;
     }
-    
+
     public static ModelMap cargarChannel(Channel channel) {
         ModelMap map = new ModelMap();
         map.put("canal_id", channel.getId());
@@ -160,7 +162,7 @@ public class ArregloCreator {
         map.put("descripcion", channel.getDescription());
         return map;
     }
-    
+
     public static ModelMap crearEstadoPlan(StatusPlan plan) {
         ModelMap map = new ModelMap();
         map.put("estado_id", plan.getId());
@@ -168,7 +170,7 @@ public class ArregloCreator {
         map.put("estado", plan.isActive());
         return map;
     }
-    
+
     public static ModelMap crearEstadoTarea(StatusTask tarea) {
         ModelMap map = new ModelMap();
         map.put("estado_id", tarea.getId());
@@ -179,9 +181,8 @@ public class ArregloCreator {
         map.put("color", tarea.getColor());
         return map;
     }
-    
+
     public static ModelMap cargarUsuario(Users user) {
-        Optional<Users> optional = Optional.ofNullable(user.getBackup());
         ModelMap map = new ModelMap();
         map.put("usuario_id", user.getId());
         map.put("rol", user.getRol().getId());
@@ -190,13 +191,13 @@ public class ArregloCreator {
         map.put("apellidos", user.getLastname());
         map.put("email", user.getEmail());
         map.put("habilitado", user.isEnabled());
-        map.put("backup", optional.isPresent() ? optional.get().getId() : null);
+        map.put("backups", user.getBackups());
         map.put("cargo_id", user.getPosition().getId());
         map.put("area_id", user.getPosition().getArea().getId());
         map.put("gerencia_id", user.getPosition().getArea().getManagement().getId());
         return map;
     }
-    
+
     public static ModelMap cargarTarea(Task task, List<Area> areas, List<Position> positions, List<Document> documents) {
         ModelMap map = new ModelMap();
         map.put("tarea_id", task.getId());
@@ -227,7 +228,7 @@ public class ArregloCreator {
         map.put("modelos", documents);
         return map;
     }
-    
+
     public static ModelMap cargarTarea(Task task, Set<Document> documents) {
         ModelMap map = new ModelMap();
         map.put("tarea_id", task.getId());
@@ -240,7 +241,7 @@ public class ArregloCreator {
         map.put("modelos", documents);
         return map;
     }
-    
+
     public static ModelMap cargarTarea(Task task, List<Area> areas, List<Position> positions) {
         ModelMap map = new ModelMap();
         map.put("tarea_id", task.getId());
@@ -268,7 +269,7 @@ public class ArregloCreator {
         map.put("cargos", positions);
         return map;
     }
-    
+
     public static ModelMap cargarArea(Area area) {
         ModelMap map = new ModelMap();
         map.put("area_id", area.getId());
@@ -278,9 +279,8 @@ public class ArregloCreator {
         map.put("gerencia_id", area.getManagement().getId());
         return map;
     }
-    
+
     public static ModelMap cargarUsuario(Users user, List<Area> areas, List<Position> positions) {
-        Optional<Users> optional = Optional.ofNullable(user.getBackup());
         ModelMap map = new ModelMap();
         map.put("usuario_id", user.getId());
         map.put("rol", user.getRol().getId());
@@ -289,7 +289,7 @@ public class ArregloCreator {
         map.put("apellidos", user.getLastname());
         map.put("titular", user.isTitular());
         map.put("email", user.getEmail());
-        map.put("backup", optional.isPresent() ? optional.get().getId() : null);
+        map.put("backups", user.getBackups());
         map.put("habilitado", user.isEnabled());
         map.put("cargo_id", user.getPosition().getId());
         map.put("area_id", user.getPosition().getArea().getId());
@@ -298,7 +298,7 @@ public class ArregloCreator {
         map.put("areas", areas);
         return map;
     }
-    
+
     public static ModelMap crearRolMap(Rol rol) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", rol.getId());
@@ -308,7 +308,7 @@ public class ArregloCreator {
         map.put("3", listarAcciones(rol.getId()));
         return map;
     }
-    
+
     public static ModelMap crearGerenciaMap(Management gerencia) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", gerencia.getId());
@@ -318,7 +318,7 @@ public class ArregloCreator {
         map.put("3", listarAcciones(gerencia.getId()));
         return map;
     }
-    
+
     public static ModelMap crearAreaMap(Area area) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", area.getId());
@@ -329,7 +329,7 @@ public class ArregloCreator {
         map.put("4", listarAcciones(area.getId()));
         return map;
     }
-    
+
     public static ModelMap crearCargoMap(Position cargo) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", cargo.getId());
@@ -340,7 +340,7 @@ public class ArregloCreator {
         map.put("4", listarAcciones(cargo.getId()));
         return map;
     }
-    
+
     public static ModelMap crearUsersMap(Users user) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", user.getId());
@@ -350,10 +350,11 @@ public class ArregloCreator {
         map.put("3", user.getLastname());
         map.put("4", user.isEnabled() ? "Activo <i class=\"fa fa-check-circle ic-color-ok\"></i>" : "Inactivo <i class=\"fa fa-minus-circle ic-color-error\"></i>");
         map.put("5", user.getRol().getName());
-        map.put("6", listarAccionesUsuario(user.getId()));
+        map.put("6", user.getPosition().getName());
+        map.put("7", listarAccionesUsuario(user.getId()));
         return map;
     }
-    
+
     public static ModelMap crearEstadoTareasMap(StatusTask estado) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", estado.getId());
@@ -366,7 +367,7 @@ public class ArregloCreator {
         map.put("6", listarAcciones(estado.getId()));
         return map;
     }
-    
+
     public static ModelMap crearChannelMap(Channel channel) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", channel.getId());
@@ -376,7 +377,7 @@ public class ArregloCreator {
         map.put("3", listarAcciones(channel.getId()));
         return map;
     }
-    
+
     public static ModelMap cargarTarea(PlTask t, List<Area> areas, List<Position> positions, List<Document> documents) {
         ModelMap map = new ModelMap();
         map.put("planTareaId", t.getId());
@@ -386,6 +387,7 @@ public class ArregloCreator {
         map.put("nombre", t.getName());
         map.put("criticidad", t.getCriticidad());
         map.put("canales", t.getCanales());
+        map.put("listaCanales", t.getChannels());
         map.put("tiempoRecurrencia", t.getTiempoRecurrencia());
         map.put("estado", t.getStatusTask().getName());
         map.put("estado_id", t.getStatusTask().getId());
@@ -401,10 +403,11 @@ public class ArregloCreator {
         map.put("area_id", t.getPosition().getArea().getId());
         map.put("areas", areas);
         map.put("cargos", positions);
+        map.put("agrupada", t.isAgrupada());
         map.put("relacionadas", t.getRelacionadas());
         return map;
     }
-    
+
     public static ModelMap cargarTareaFicticia(PlTaskUtil t, List<Area> areas, List<Position> positions, List<Document> documents) {
         ModelMap map = new ModelMap();
         map.put("tarea_id", t.getTask().getId());
@@ -428,13 +431,29 @@ public class ArregloCreator {
         map.put("relacionadas", new ArrayList<>());
         return map;
     }
-    
+
     public static ModelMap crearTareaDocumentosMap(PlTask task, Users user) {
         ModelMap map = new ModelMap();
         map.put("DT_RowId", task.getId());
         map.put("0", "");
+        map.put("1", task.getCode());
+        map.put("2", task.getName());
+        map.put("3", task.getPosition().getName());
+        map.put("4", task.getCriticidad());
+        map.put("5", task.isStart() ? "Si <i class='fa fa-check-circle ic-color-ok'></i>" : "No <i class='fa fa-minus-circle ic-color-error'></i>");
+        map.put("6", listarAccionesUsuarioTarea(task.getId()));
+        map.put("documentos", task.getDocuments());
+        return map;
+    }
+
+    public static ModelMap crearTareaDocumentosMap(Task task) {
+        ModelMap map = new ModelMap();
+        map.put("DT_RowId", task.getId());
+        map.put("0", "");
         map.put("1", task.getName());
-        map.put("2", task.getProduct());
+        map.put("2", task.getDescription().length() > 200 ? task.getDescription().substring(0, 200) + " ..." : task.getDescription());
+        map.put("3", task.getProduct());
+        map.put("4", task.getCanales());
         map.put("documentos", task.getDocuments());
         return map;
     }

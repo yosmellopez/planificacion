@@ -5,6 +5,7 @@ package com.planning.controller;
 import com.planning.diagram.*;
 import com.planning.entity.*;
 import com.planning.exception.OracleException;
+import com.planning.filter.PlTaskFilter;
 import com.planning.notification.NotificationManager;
 import com.planning.service.*;
 import com.planning.util.ArregloCreator;
@@ -81,6 +82,9 @@ public class PlanController {
 
     @Autowired
     private UserTokenService tokenService;
+
+    @Autowired
+    private UsersService usersService;
 
     @Autowired
     private MapeadorObjetos mapeadorObjetos;
@@ -219,57 +223,65 @@ public class PlanController {
     @PreAuthorize(value = "isFullyAuthenticated()")
     @RequestMapping(value = "/buscarTareasPlan", method = {RequestMethod.GET, RequestMethod.POST})
     @ApiOperation(value = "Returns the list of Task instances.")
-    public ModelAndView buscarTareas(@RequestParam("plan_id") Integer id, Integer cargo, Integer area, Integer direccion, Integer criticidad, @AuthenticationPrincipal Users user) {
+    public ModelAndView buscarTareas(@RequestParam("plan_id") Integer id, PlTaskFilter filter, @AuthenticationPrincipal Users user) {
         LOGGER.debug("Rendering Tasks list");
         Plan plan = planService.findOne(id);
         List<PlTask> plTasks = new ArrayList<>();
-        if (criticidad == null && cargo == null && area == null && direccion == null) {
-            if (user.isTitular()) {
-//                List<Area> areas = areaService.findByTitular(user);
-//                for (Area areaNew : areas) {
-//                    List<PlTask> plTaskList = plTaskService.findByPlanAndTask_Position_Area(plan, areaNew);
-//                    plTasks.addAll(plTaskList);
-//                }
-//                List<Management> direcciones = managementService.findByTitular(user);
-//                for (Management management : direcciones) {
-//                    List<PlTask> plTaskList = plTaskService.findByPlanAndTask_Position_Area_Management(plan, management);
-//                    plTasks.addAll(plTaskList);
-//                }
-
-            } else {
-//                plTasks = plTaskService.findByPlanAndTask_Position(plan, user.getPosition());
-            }
-        } else if (criticidad != null) {
-//            CriticalyLevel criticalyLevel = levelService.findOne(criticidad);
-//            if (cargo != null) {
-//                Position position = positionService.findOne(cargo);
-//                plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContainsAndTask_Position(plan, criticalyLevel, position);
-//            } else if (area != null) {
-//                Area areaBd = areaService.findOne(area);
-//                plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area(plan, criticalyLevel, areaBd);
-//            } else if (direccion != null) {
-//                Management management = managementService.findOne(direccion);
-//                plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContainsAndTask_Position_Area_Management(plan, criticalyLevel, management);
-//            } else {
-//                plTasks = plTaskService.findByPlanAndTask_CriticalyLevelsContains(plan, criticalyLevel);
-//            }
-//        } else if (cargo != null) {
-//            Position position = positionService.findOne(cargo);
-//            plTasks = plTaskService.findByPlanAndTask_Position(plan, position);
-//        } else if (area != null) {
-//            Area areaBd = areaService.findOne(area);
-//            plTasks = plTaskService.findByPlanAndTask_Position_Area(plan, areaBd);
-//        } else if (direccion != null) {
-//            Management management = managementService.findOne(direccion);
-//            plTasks = plTaskService.findByPlanAndTask_Position_Area_Management(plan, management);
+        if (filter != null) {
+            filter.setPlan(plan);
+            plTasks = plTaskService.findAll(filter);
         } else {
             plTasks = plTaskService.findByPlan(plan);
         }
-        List<Task> tareas = new ArrayList<>();
-        plTasks.forEach((PlTask plTask) -> {
-//            tareas.add(plTask.getTask());
-        });
-        return new RestModelAndView(tareas(tareas));
+        return new RestModelAndView(tareas(plTasks));
+    }
+
+    @PostMapping(value = "/documentos/{planId}")
+    @PreAuthorize(value = "hasAnyAuthority('ADMIN', 'USER')")
+    @ApiOperation(value = "Returns the list of Task instances.")
+    public ModelAndView tareasDocumentos(@PathVariable Integer planId, PlTaskFilter filter, @AuthenticationPrincipal Users user) {
+        LOGGER.debug("Rendering Tasks list");
+        Plan plan = planService.findOne(planId);
+        if (filter != null) {
+            filter.setPlan(plan);
+            List<PlTask> taskPage = plTaskService.findAll(filter);
+            return RestModelAndView.ok(documentosTareas(taskPage, user));
+        } else {
+            if (user.isTitular()) {
+                Position position = user.getPosition();
+                Set<PlTask> tareas = new HashSet<>();
+                if (position.isDireccion()) {
+                    Set<Management> direcciones = position.getDirecciones();
+                    for (Management management : direcciones) {
+                        List<PlTask> tareasDireccion = plTaskService.findByPosition_Area_Management(management);
+                        tareas.addAll(tareasDireccion);
+                    }
+                } else if (position.isDireccion()) {
+                    List<PlTask> tareasArea = plTaskService.findByPosition_Area(position.getArea());
+                    tareas.addAll(tareasArea);
+                } else {
+                    List<PlTask> tareasArea = plTaskService.findByPosition(position);
+                    tareas.addAll(tareasArea);
+                }
+                return RestModelAndView.ok(documentosTareas(new ArrayList<>(tareas), user));
+            } else {
+                List<PlTask> plTaskList = plTaskService.findByPlanAndPosition(plan, user.getPosition());
+                return RestModelAndView.ok(documentosTareas(plTaskList, user));
+            }
+        }
+    }
+
+    private ModelMap documentosTareas(Collection<PlTask> content, Users user) {
+        ModelMap map = new ModelMap();
+        map.put("sEcho", content.size());
+        map.put("iTotalRecords", content.size());
+        map.put("iTotalDisplayRecords", content.size());
+        ArrayList<ModelMap> tasks = new ArrayList<>();
+        for (PlTask task : content) {
+            tasks.add(ArregloCreator.crearTareaDocumentosMap(task, user));
+        }
+        map.put("aaData", tasks);
+        return map;
     }
 
     @PreAuthorize(value = "isFullyAuthenticated()")
@@ -280,19 +292,23 @@ public class PlanController {
         return new RestModelAndView(tareas(taskService.findAll(pageable), user));
     }
 
+    private String errorMessage;
+
     @PutMapping(value = "/iniciarPlan")
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     @ApiOperation(value = "Returns the list of Task instances.")
     public ModelAndView iniciarPlan(@RequestBody PlanActivado planActivado, @AuthenticationPrincipal Users user, ModelMap map) {
         Plan plan = planService.findOne(planActivado.getPlanId());
+        if (!validarPlan(plan)) {
+            map.put("success", false);
+            map.put("error", errorMessage);
+            return RestModelAndView.ok(map);
+        }
         Optional<Plan> planOptional = planService.findByEjecucion(true);
         if (planOptional.isPresent()) {
             Plan planBd = planOptional.get();
-            if (!planBd.equals(plan)) {
-                map.put("success", false);
-                map.put("error", "No se puede tener dos planes en ejecución");
-                return RestModelAndView.ok(map);
-            }
+            planBd.setEjecucion(false);
+            planService.saveAndFlush(planBd);
         }
         CriticalyLevel criticalyLevel = levelService.findOne(planActivado.getEstadoId());
         plan.setEjecucion(true);
@@ -327,8 +343,38 @@ public class PlanController {
         LOGGER.debug(b + "");
         planService.saveAndFlush(plan);
         map.put("success", true);
+        map.put("plan", plan);
+        map.put("planes", planService.findAll());
         map.put("message", "La operación se realizó correctamente");
         return RestModelAndView.ok(map);
+    }
+
+    private boolean validarPlan(Plan plan) {
+        List<PlTask> plTasks = plTaskService.findByPlan(plan);
+        ArrayList<Position> positions = new ArrayList<>();
+        for (PlTask plTask : plTasks) {
+            Position position = plTask.getPosition();
+            Long cantidad = usersService.countByPosition(position);
+            if (cantidad == 0) {
+                positions.add(position);
+            }
+        }
+        if (!positions.isEmpty()) {
+            String cargos = positions.parallelStream().map(Position::getName).collect(Collectors.joining(", "));
+            if (positions.size() == 1) {
+                errorMessage = "El cargo " + cargos + " no tiene usuarios asociados";
+            } else {
+                errorMessage = "Los cargos " + cargos + " no tienen usuarios asociados";
+            }
+        }
+        if (plan.getStatusplanid().getId() == 2) {
+            errorMessage = "El plan debe estar disponible para ser activado";
+        }
+        Long cantidad = plTaskService.countByPlanAndStart(plan, true);
+        if (cantidad == 0) {
+            errorMessage = "El plan debe tener almenos una tarea de inicio";
+        }
+        return positions.isEmpty();
     }
 
     private ModelMap tareas(Page<Task> page, Users user) {
@@ -346,7 +392,7 @@ public class PlanController {
         return map;
     }
 
-    private ModelMap tareas(List<Task> page) {
+    private ModelMap tareas(List<PlTask> page) {
         ModelMap map = new ModelMap();
         map.put("sEcho", 0);
         map.put("iTotalRecords", page.size());
@@ -354,7 +400,7 @@ public class PlanController {
         ModelMap[] tasks = new ModelMap[page.size()];
         int cont = page.size();
         for (int i = 0; i < cont; i++) {
-            tasks[i] = ArregloCreator.crearTareaPlanMap(page.get(i));
+            tasks[i] = ArregloCreator.crearTareaPlanDetalles(page.get(i));
         }
         map.put("aaData", tasks);
         return map;
@@ -440,6 +486,8 @@ public class PlanController {
     @ApiOperation(value = "Deletes the Plan instance associated with the given id.")
     public ModelAndView deletePlan(@RequestParam("plan_id") Integer id, ModelMap map) {
         LOGGER.debug("Deleting Plan with id: {}", id);
+        Plan plan = planService.findOne(id);
+        plTaskService.deleteByPlan(plan);
         planService.delete(id);
         map.put("success", true);
         map.put("message", "La operación se realizó correctamente");

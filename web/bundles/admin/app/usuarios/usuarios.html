@@ -57,6 +57,7 @@
                                 <th class="desktop">Apellidos</th>
                                 <th class="min-tablet">Estado</th>
                                 <th class="min-tablet">Perfil</th>
+                                <th class="min-tablet">Cargo</th>
                                 <th class="min-tablet">Acciones</th>
                             </tr>
                         </thead>
@@ -262,7 +263,7 @@
                                         <p class="help-block">Debe seleccionar el perfil para su usuario</p>
                                         <div class="row">
                                             <div class="col-md-6" id="select-backup">
-                                                <select data-ds-select2 class="form-control selectpicker" id="user-backup" name="backup" data-placeholder="Seleccione el usuario backup">
+                                                <select data-ds-select2 class="form-control selectpicker" id="user-backup" name="backup" data-placeholder="Seleccione el usuario backup" multiple>
                                                     <option value=""></option>
                                                     <option data-ng-repeat="usuario in vm.usuarios"
                                                             value="{{usuario.usuario_id}}">{{usuario.nombre}}

@@ -65,6 +65,10 @@
     .chequeado {
         background-position: -72px -279px;
     }
+
+    .niveles-alerta-clase {
+        margin-top: 10px;
+    }
 </style>
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -136,6 +140,7 @@
                                 <th class="all">Descripción</th>
                                 <th class="desktop">Estado</th>
                                 <th class="all">Fecha de Creación</th>
+                                <th class="all">Ejecución</th>
                                 <th class="min-tablet">Acciones</th>
                             </tr>
                         </thead>
@@ -227,18 +232,6 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ic-form-group">
-                                            <key>
-                                                <span class="ic-step-number">4</span>
-                                                Seguidamente, seleccione si el plan está en ejecución o no.
-                                            </key>
-                                            <p class="help-block"></p>
-                                            <div class="row" style="padding: 5px">
-                                                <input type="checkbox" class="toggle" ng-model="ejecucion" id="ejecucion" ng-checked="ejecucion" style="padding: 2px;height: 34px;"/>
-                                                <div style="position:relative;top: -30px;left: 55px;max-width: 80px;color: white;text-shadow: 2px -1px 4px #000000;" ng-show="!ejecucion" class="animacion">Sin Ejecutar</div>
-                                                <div style="position:relative;top: -30px;left: 40px;max-width: 30px;color: white;text-shadow: 2px -1px 4px #000000;" ng-show="ejecucion" class="animacion">Ejecución</div>
                                             </div>
                                         </div>
                                     </div>
@@ -400,7 +393,7 @@
 </div>
 
 <div class="modal fade" id="modal-iniciar-plan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="z-index: 10000;width: 600px">
+    <div class="modal-dialog" id="modal-iniciar-plan-dialog" style="z-index: 10000;width: 600px">
         <div class="modal-content">
             <div class="modal-header blue-hoki">
                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
@@ -444,10 +437,26 @@
                         </key>
                         <p class="help-block"></p>
                         <div class="row" style="padding: 5px">
-                            <div class="form-group" data-ng-repeat="item in vm.criticidades_tarea track by $index" style="margin-bottom: 10px;">
-                                <key>
-                                    <input type="radio" class="niveles-alerta-clase" name="nivelAlerta" id="nivelAlerta{{item.criticidad_id}}" ng-value="item.criticidad_id" ng-click="vm.seleccionarEstado(item)" style="left: 11px;position: relative;display: block;width: 100%;">
-                                    <span class="ic-small">{{item.descripcion}}</span>
+                            <div class="form-group" style="margin-bottom: 10px;padding-bottom: 10px;">
+                                <key style="margin-bottom: 10px; display: block">
+                                    <input type="radio" class="niveles-alerta-clase" name="nivelAlerta" id="nivelAlerta2" value="2" ng-click="vm.seleccionarEstado(2)" checked="false" style="left: 11px;position: relative;display: block;width: 100%;">
+                                    <span class="ic-small">ALERTA VERDE</span><br>
+                                </key>
+                                <key style="margin-bottom: 10px; display: block">
+                                    <input type="radio" class="niveles-alerta-clase" name="nivelAlerta" id="nivelAlerta4" value="4" ng-click="vm.seleccionarEstado(4)" checked="false" style="left: 11px;position: relative;display: block;width: 100%;">
+                                    <span class="ic-small">ALERTA TEMPRANA PREVENTIVA</span><br>
+                                </key>
+                                <key style="margin-bottom: 10px; display: block">
+                                    <input type="radio" class="niveles-alerta-clase" name="nivelAlerta" id="nivelAlerta1" value="1" ng-click="vm.seleccionarEstado(1)" checked="false" style="left: 11px;position: relative;display: block;width: 100%;">
+                                    <span class="ic-small">ALERTA AMARILLA</span><br>
+                                </key>
+                                <key style="margin-bottom: 10px; display: block">
+                                    <input type="radio" class="niveles-alerta-clase" name="nivelAlerta" id="nivelAlerta3" value="3" ng-click="vm.seleccionarEstado(3)" checked="false" style="left: 11px;position: relative;display: block;width: 100%;">
+                                    <span class="ic-small">ALERTA ROJA</span><br>
+                                </key>
+                                <key style="margin-bottom: 10px; display: block">
+                                    <input type="radio" class="niveles-alerta-clase" name="nivelAlerta" id="nivelAlerta5" value="5" ng-click="vm.seleccionarEstado(5)" checked="false" style="left: 11px;position: relative;display: block;width: 100%;">
+                                    <span class="ic-small">ALERTA AMARILLA por reposición</span>
                                 </key>
                             </div>
                         </div>
@@ -697,7 +706,7 @@
                                                 <input type="text" class="form-control" id="tarea-configurar-nombre" name="nombre"/>
                                             </div>
                                             <div class="col-md-6" style="position: relative;top: 10px;">
-                                                <input type="checkbox" class="form-control" id="tarea-configurar-agrupada" name="agrupada" ng-model="agrupada" ng-change="vm.cambiarValor()">La Tarea "{{tituloModal}}" es Agrupada?
+                                                <input type="checkbox" class="form-control" id="tarea-configurar-agrupada" name="agrupada" ng-model="agrupada" ng-checked="agrupada" ng-click="vm.cambiarValor()">La Tarea "{{tituloModal}}" es Agrupada?
                                             </div>
                                         </div>
                                     </div>
@@ -781,7 +790,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <key>
-                                                    <span class="ic-step-number">5</span>
+                                                    <span class="ic-step-number">6</span>
                                                     Luego, seleccione el canal
                                                     <span class="ic-small italic">(opcional)</span>
                                                 </key>
@@ -800,41 +809,6 @@
                                             <div class="col-md-6">
                                                 <key>
                                                     <span class="ic-step-number">7</span>
-                                                    Luego, seleccione el estado de la tarea
-                                                    <span class="ic-small italic">(obligatorio)</span>
-                                                </key>
-                                                <p class="help-block"></p>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <select data-ds-select2 class="form-control selectpicker" id="estado-tarea" name="estado-tarea">
-                                                            <option value="">Seleccione el estado</option>
-                                                            <option data-ng-repeat="item in vm.estadosTareas"
-                                                                    value="{{item.estado_id}}">{{item.nombre}}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group ic-form-group" ng-show="!agrupada">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <key><span class="ic-step-number">8</span>Define si la tarea será de partida</key>
-                                                <div class="form-group">
-                                                    <key class="radio-inline">
-                                                        <input type="radio" name="radiopartida" id="partidaactivo-tarea" style="left: 11px;position: relative;">
-                                                        <span class="ic-small">SI</span>
-                                                    </key>
-                                                    <key class="radio-inline">
-                                                        <input type="radio" name="radiopartida" id="partidainactivo-tarea" checked style="left: 11px;position: relative;">
-                                                        <span class="ic-small">NO</span>
-                                                    </key>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <key>
-                                                    <span class="ic-step-number">9</span>
                                                     Inserte el nombre del producto de la tarea<span
                                                         class="ic-small italic">(obligatorio)</span>
                                                 </key>
@@ -843,8 +817,12 @@
                                                     <input type="text" class="form-control" id="producto" name="producto"/>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ic-form-group" ng-show="!agrupada">
+                                        <div class="row">
                                             <div class="col-md-6" ng-show="!agrupada">
-                                                <key><span class="ic-step-number">10</span>Define si la tarea será recurrente</key>
+                                                <key><span class="ic-step-number">8</span>Define si la tarea será recurrente</key>
                                                 <div class="form-group">
                                                     <key class="radio-inline">
                                                         <input type="radio" name="recurrente" ng-model="recurrente" value="true" checked="false" id="recurrente-activo" style="left: 11px;position: relative;">
@@ -858,7 +836,7 @@
                                             </div>
                                             <div class="col-md-6" ng-disabled="recurrente == 'false'">
                                                 <key ng-disabled="recurrente">
-                                                    <span class="ic-step-number" ng-disabled="recurrente == 'false'">11</span>
+                                                    <span class="ic-step-number" ng-disabled="recurrente == 'false'">9</span>
                                                     Inserte cada que tiempo se ejecutará la tarea en caso de ser recurrente<span class="ic-small italic">(obligatorio)</span>
                                                 </key>
                                                 <p class="help-block" ng-disabled="recurrente == 'false'">Inserte el tiempo de recurrencia. Debe seleccionar el tiempo en minutos.</p>
@@ -866,8 +844,23 @@
                                                     <input type="number" class="form-control" id="tiempo-recurrencia" name="tiempoRecurrencia" ng-disabled="recurrente == 'false'"/>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6">
-                                                <key><span class="ic-step-number">12</span>A continuación, define si la tarea será un hito de la tarea</key>
+                                                <key><span class="ic-step-number">10</span>Define si la tarea será de partida</key>
+                                                <div class="form-group">
+                                                    <key class="radio-inline">
+                                                        <input type="radio" name="radiopartida" id="partidaactivo-tarea" style="left: 11px;position: relative;">
+                                                        <span class="ic-small">SI</span>
+                                                    </key>
+                                                    <key class="radio-inline">
+                                                        <input type="radio" name="radiopartida" id="partidainactivo-tarea" checked style="left: 11px;position: relative;">
+                                                        <span class="ic-small">NO</span>
+                                                    </key>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <key><span class="ic-step-number">11</span>A continuación, define si la tarea será un hito de la tarea</key>
                                                 <div class="row">
                                                     <div class="form-group" style="padding-left: 15px;">
                                                         <key class="radio-inline">
@@ -876,22 +869,6 @@
                                                         </key>
                                                         <key class="radio-inline">
                                                             <input type="radio" name="radiohito" id="hitoinactivo" checked style="left: 11px;position: relative;">
-                                                            <span class="ic-small">No</span>
-                                                        </key>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <key><span class="ic-step-number">13</span>A continuación, define si la tarea será tranversal</key>
-                                                <p class="help-block">Tenga en cuenta que para una tarea ser tranversal los niveles de alerta deben ser consecutivos</p>
-                                                <div class="row">
-                                                    <div class="form-group" style="padding-left: 17px;">
-                                                        <key class="radio-inline">
-                                                            <input type="radio" name="tranversal" ng-model="tranversal" value="true" checked="false" id="tarea-tranversal-activa" style="left: 11px;position: relative;">
-                                                            <span class="ic-small">Si</span>
-                                                        </key>
-                                                        <key class="radio-inline">
-                                                            <input type="radio" name="tranversal" ng-model="tranversal" value="false" checked="true" id="tarea-tranversal-inactiva" style="left: 11px;position: relative;" checked>
                                                             <span class="ic-small">No</span>
                                                         </key>
                                                     </div>

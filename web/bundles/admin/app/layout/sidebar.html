@@ -13,7 +13,7 @@
             <img ng-src="{{vm.urlPath + '/bundles/admin/img/logo.png'}}" alt="logo" class="img-responsive"
                  style="margin: auto; width: 80%;"/>
         </li>
-        
+
         <li id="li-estado" style="margin-bottom: 15px;">
             <img id="imagen-estado" src="bundles/admin/img/5.png" alt="logo" class="img-responsive"
                  style="margin: auto; width: 80%;"/>
@@ -115,14 +115,29 @@
                 </li>
             </ul>
         </li>
-        <li ng-if="vm.usuario.rol === 1">
-            <a href="#/tareas">
+        <li ng-if="vm.usuario.rol === 1 || existePlanSeleccionado">
+            <a href="javascript:;">
                 <i class="icon-doc"></i>
                 <span class="title">Catálogo de Tareas</span>
+                <span class="arrow "></span>
             </a>
+            <ul class="sub-menu">
+                <li class="oculto">
+                    <a href="#/tareas">
+                        <i class="icon-list"></i>
+                        <span class="title">Tareas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#/documentos-catalogo">
+                        <i class="icon-list"></i>
+                        <span class="title">Documentos de Tareas</span>
+                    </a>
+                </li>
+            </ul>
         </li>
         <li>
-            <a href="javascript:;">
+            <a href="javascript:;" ng-show="vm.usuario.rol === 1 ||vm.existePlanSeleccionado()">
                 <i class="icon-grid"></i>
                 <span class="title">Planes</span>
                 <span class="arrow "></span>
@@ -134,20 +149,20 @@
                         <span class="title">Listar Planes</span>
                     </a>
                 </li>
-                <li class="oculto">
-                    <a href="#/view-plan" ng-class="vm.usuario.rol === 1?'visible':'hidden'">
+                <li ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
+                    <a href="#/view-plan">
                         <i class="icon-list"></i>
                         <span class="title">Tareas</span>
                     </a>
                 </li>
-                <li class="oculto">
-                    <a href="#/diagrama-planes" ng-class="vm.usuario.rol === 1?'visible':'hidden'">
+                <li>
+                    <a href="#/diagrama-planes" ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
                         <i class="icon-list"></i>
                         <span class="title">Diagrama</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#/documentos">
+                    <a href="#/documentos" ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
                         <i class="icon-list"></i>
                         <span class="title">Documentos de Tareas</span>
                     </a>

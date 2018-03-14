@@ -49,7 +49,7 @@
         $scope.nuevoPlan = true;
         $scope.seleccionado = false;
         $scope.tranversal = false;
-        $scope.nivelAlerta = {};
+        $scope.nivelAlerta = 0;
 
         vm.nuevo = nuevo;
         vm.eliminar = eliminar;
@@ -491,43 +491,67 @@
             if (currentPlan !== null) {
                 $("#plan-seleccionado").select2('val', currentPlan.plan_id);
                 $scope.iniciado = currentPlan.ejecucion;
-                $scope.nivelAlerta = currentPlan.nivelAlerta;
+                $scope.nivelAlerta = currentPlan.nivelAlerta.criticidad_id;
+                $("#nivelAlerta1").prop("checked", false);
+                $("#nivelAlerta2").prop("checked", false);
+                $("#nivelAlerta3").prop("checked", false);
+                $("#nivelAlerta4").prop("checked", false);
+                $("#nivelAlerta5").prop("checked", false);
+                $("#nivelAlerta" + $scope.nivelAlerta).prop("checked", true);
+            } else {
+                $("#nivelAlerta1").prop("checked", true);
+                $("#nivelAlerta2").prop("checked", false);
+                $("#nivelAlerta3").prop("checked", false);
+                $("#nivelAlerta4").prop("checked", false);
+                $("#nivelAlerta5").prop("checked", false);
             }
+            jQuery.uniform.update("#nivelAlerta1");
+            jQuery.uniform.update("#nivelAlerta2");
+            jQuery.uniform.update("#nivelAlerta3");
+            jQuery.uniform.update("#nivelAlerta4");
+            jQuery.uniform.update("#nivelAlerta5");
             $('#modal-iniciar-plan').modal({
                 show: true
             });
-        }
+        };
 
         vm.inicializarPlan = function () {
+            Metronic.blockUI({target: '#modal-iniciar-plan-dialog', animate: true});
             var planId = $("#plan-seleccionado").val();
             if (planId === "") {
                 toastr.error("Debe seleccionar un plan", "Error !!!");
+                Metronic.unblockUI('#modal-iniciar-plan-dialog');
             } else if (!$scope.iniciado) {
                 toastr.error("Debe ejecutar el plan", "Error !!!");
+                Metronic.unblockUI('#modal-iniciar-plan-dialog');
             } else if ($scope.estado === 0) {
                 toastr.error("Debe seleccionar un estado del plan", "Error !!!");
+                Metronic.unblockUI('#modal-iniciar-plan-dialog');
             } else {
-                var plan = {planId: planId, estadoId: $scope.nivelAlerta.criticidad_id, ejecucion: $scope.iniciado};
+                var plan = {planId: planId, estadoId: $scope.nivelAlerta, ejecucion: $scope.iniciado};
                 planService.inicializarPlan(plan).then(function (resp) {
+                    Metronic.unblockUI('#modal-iniciar-plan-dialog');
                     if (resp.data.success) {
                         toastr.success(resp.data.message, "Exito !!!");
                         $('#modal-iniciar-plan').modal('toggle');
+                        localStorage.setItem("planActivo", JSON.stringify(resp.data.plan));
+                        vm.planes = resp.data.planes;
+                        TableEditablePlanes.refrescarTabla();
+                    } else {
+                        toastr.error(resp.data.error, "Error !!!");
                     }
                 }).catch(function (error) {
+                    Metronic.unblockUI('#modal-iniciar-plan-dialog');
                     toastr.error(error.error, "Error !!!");
                 });
             }
-            $("#nivelAlerta2").prop("checked", true);
-            $("#nivelAlerta2").parent().addClass("checked");
-        }
+        };
 
-        vm.seleccionarEstado = function (criticidad) {
-            $scope.nivelAlerta = criticidad;
-            $(".niveles-alerta-clase").prop("checked", false);
-            jQuery.uniform.update('.niveles-alerta-clase');
-            $("#nivelAlerta" + criticidad.criticidad_id).parent().addClass("checked");
-            $("#nivelAlerta" + criticidad.criticidad_id).prop("checked", true);
-        }
+        vm.seleccionarEstado = function (id) {
+            $scope.nivelAlerta = id;
+            $("#nivelAlerta" + id).parent().addClass("checked");
+            $("#nivelAlerta" + id).prop("checked", true);
+        };
     }
 
     angular.module('app.planes').controller('PlanesList', PlanesList);
@@ -545,6 +569,7 @@
         vm.planes = planService.planes;
         vm.filtarTareasCargo = filtarTareasCargo;
         vm.seleccionarElemento = seleccionarElemento;
+        $scope.titulo = "";
         $scope.titulo = vm.planes.length === 1 ? vm.planes[0].nombre : "Tareas de Planes";
         $scope.idPlan = 0;
         $scope.tituloModal = "";
@@ -560,41 +585,38 @@
         vm.usuario = usuarioService.usuario;
         $scope.mostrarTabla = false;
         $scope.mostrarInicial = vm.planes.length === 1;
+        if (localStorage.getItem("existePlan")) {
+            $scope.titulo = JSON.parse(localStorage.getItem("planActivo")).nombre;
+            $scope.mostrarInicial = true;
+        }
         $scope.planes = new Array();
         activate();
 
         vm.mostrarDetalles = function () {
             $scope.planes = new Array();
             var cant = vm.planes.length;
-            $scope.idPlan = $("#plan").val();
-            if ($scope.mostrarInicial) {
-                $scope.idPlan = vm.planes[0].plan_id;
-            }
-            for (var i = 0; i < cant; i++) {
-                if (parseInt(vm.planes[i].plan_id) === parseInt($scope.idPlan)) {
-                    $scope.planes.push(vm.planes[i]);
-                    break;
+            if (localStorage.getItem("existePlan")) {
+                $scope.plan = JSON.parse(localStorage.getItem("planActivo"));
+                $scope.idPlan = $scope.plan.plan_id;
+                $scope.planes.push($scope.plan);
+            } else {
+                $scope.idPlan = $("#plan").val();
+                if ($scope.mostrarInicial) {
+                    $scope.idPlan = vm.planes[0].plan_id;
+                }
+                for (var i = 0; i < cant; i++) {
+                    if (parseInt(vm.planes[i].plan_id) === parseInt($scope.idPlan)) {
+                        $scope.planes.push(vm.planes[i]);
+                        break;
+                    }
                 }
             }
         };
 
         vm.mostrarDetallesTarea = function (idTarea) {
-            var tareas = $scope.planes[0].tareas;
-            var cant = tareas.length;
-            var tieneTarea = false;
-            for (var i = 0; i < cant; i++) {
-                if (parseInt(tareas[i].tarea_id) === parseInt(idTarea)) {
-                    $scope.tarea = tareas[i];
-                    $scope.tituloModal = tareas[i].nombre;
-                    tieneTarea = true;
-                    break;
-                }
-            }
-            if (tieneTarea) {
-                $timeout(function () {
-                    planService.buscarTarea(idTarea, $scope.planes[0].plan_id).then(success).catch(failed);
-                }, 0);
-            }
+            $timeout(function () {
+                planService.buscarTarea(idTarea).then(success).catch(failed);
+            }, 0);
 
             function success(response) {
                 $scope.tarea = response.data.tarea;
@@ -733,7 +755,14 @@
             $scope.gerencia = $("#gerencia").val();
             $scope.direccion = $("#direccion").val();
             $scope.criticidad = $("#nivel-alerta").val();
-            tabla.getDataTable().ajax.url("plan/buscarTareasPlan?plan_id=" + $scope.planes[0].plan_id + "&cargo=" + $scope.cargo + "&area=" + $scope.gerencia + "&direccion=" + $scope.direccion + "&criticidad=" + $scope.criticidad);
+            var parametros = {
+                "cargo": $scope.cargo,
+                "gerencia": $scope.gerencia,
+                "direccion": $scope.direccion,
+                "criticidad": $scope.criticidad
+            };
+            tabla.setAjaxParam("parametros", JSON.stringify(parametros));
+            tabla.getDataTable().ajax.url("plan/buscarTareasPlan?plan_id=" + $scope.planes[0].plan_id);
             tabla.getDataTable().ajax.reload();
         }
 
@@ -745,7 +774,7 @@
                     vm.mostrarDetalles();
                     crearTabla();
                 } else {
-                    var plan = JSON.parse(localStorage.getItem("plan"));
+                    var plan = JSON.parse(localStorage.getItem("planActivo"));
                     if (plan && vm.usuario.rol !== 1) {
                         vm.planes.push(plan);
                         $("#plan").select2().val(plan);
@@ -760,9 +789,11 @@
             if ($scope.planes[0].plan_id) {
 
             } else {
-                $scope.planes[0] = JSON.parse("plan");
+                $scope.planes[0] = JSON.parse("planActivo");
             }
             tabla = new Datatable();
+            var parametros = {"cargo": "", "gerencia": "", "direccion": "", "criticidad": ""};
+            tabla.setAjaxParam("parametros", JSON.stringify(parametros));
             tabla.init({
                 src: $('#tarea-table-editable'),
                 onSuccess: function (grid) {
@@ -780,7 +811,7 @@
                     ],
                     "pageLength": 15, // default record count per page
                     "ajax": {
-                        "url": "plan/buscarTareasPlan?plan_id=" + $scope.planes[0].plan_id + "&cargo=" + $scope.cargo + "&area=" + $scope.gerencia + "&direccion=" + $scope.direccion + "&criticidad=" + $scope.criticidad, // ajax source
+                        "url": "plan/buscarTareasPlan?plan_id=" + $scope.planes[0].plan_id, // ajax source
                     },
                     "order": [[1, "asc"]],
                     responsive: {
@@ -790,8 +821,9 @@
                         {"bSortable": false, "sWidth": '2%', "sClass": 'text-center'},
                         {"bSortable": true, "sWidth": '30%'},
                         {"bSortable": true, "sWidth": '30%'},
-                        {"bSortable": true, "sWidth": '30%'},
-                        {"bSortable": false, "sWidth": '10%', "sClass": 'text-center'}
+                        {"bSortable": true, "sWidth": '20%'},
+                        {"bSortable": true, "sWidth": '5%'},
+                        {"bSortable": false, "sWidth": '15%', "sClass": 'text-center'}
                     ]
                 }
             });
@@ -816,10 +848,18 @@
         $scope.tituloModal = "";
         $scope.tituloDiagrama = "";
         $scope.titulo = vm.planes.length === 1 ? vm.planes[0].nombre : "Diagramas de Planes";
+        $scope.plan = {};
         $scope.tarea = {};
         $scope.mostrarTabla = false;
         $scope.mostrarInicial = vm.planes.length === 1;
         $scope.planes = new Array();
+        if (localStorage.getItem("existePlan")) {
+            $scope.plan = JSON.parse(localStorage.getItem("planActivo"));
+            $scope.planes.push($scope.plan);
+            $scope.titulo = $scope.plan.nombre;
+            $scope.planId = $scope.plan.plan_id;
+            $scope.mostrarInicial = true;
+        }
         $scope.antecesoras = new Array();
         $scope.sucesoras = new Array();
         var myDiagram = null;
@@ -881,16 +921,21 @@
             $scope.$on('$viewContentLoaded', function () {
                 Metronic.initAjax();
                 MyApp.init();
-                if ($scope.mostrarInicial) {
-                    $scope.planes[0] = vm.planes[0];
-                    $scope.planId = vm.planes[0].plan_id;
-                    inicializarPlan(vm.planes[0]);
+                if (localStorage.getItem("existePlan")) {
+                    $scope.planes[0] = $scope.plan;
+                    inicializarPlan($scope.plan);
                 } else {
-                    var plan = JSON.parse(localStorage.getItem("plan"));
-                    if (plan) {
-                        vm.planes.push(plan);
+                    if ($scope.mostrarInicial) {
                         $scope.planes[0] = vm.planes[0];
+                        $scope.planId = vm.planes[0].plan_id;
                         inicializarPlan(vm.planes[0]);
+                    } else {
+                        var plan = JSON.parse(localStorage.getItem("planActivo"));
+                        if (plan) {
+                            vm.planes.push(plan);
+                            $scope.planes[0] = vm.planes[0];
+                            inicializarPlan(vm.planes[0]);
+                        }
                     }
                 }
             });

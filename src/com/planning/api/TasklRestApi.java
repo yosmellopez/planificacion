@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,9 @@ public class TasklRestApi {
 
     @Autowired
     private PlTaskService plTaskService;
+
+    @Autowired
+    private PlanService planService;
 
     @Autowired
     private PositionService positionService;
@@ -91,9 +96,13 @@ public class TasklRestApi {
     public ResponseEntity<ModelMap> listarTareasEstado(@PathVariable("estadoId") StatusTask statusTask, Sort sort, @AuthenticationPrincipal Users user) {
         ModelMap map = new ModelMap();
         log.debug("REST request to get all Tasks");
-        List<PlTask> tasks = plTaskService.findByStatusTaskAndPosition(statusTask, user.getPosition(), sort);
+        List<PlTask> tasks = new ArrayList<>();
+        Optional<Plan> optional = planService.findByEjecucion(true);
+        if (optional.isPresent()) {
+            tasks = plTaskService.findByStatusTaskAndPositionAndPlan(statusTask, user.getPosition(), optional.get(), sort);
+        }
         map.put("success", true);
-        map.put("tareas", tasks.parallelStream().map(TareaApi::new).collect(Collectors.toList()));
+        map.put("tareas", tasks.isEmpty() ? tasks : tasks.parallelStream().map(TareaApi::new).collect(Collectors.toList()));
         return ResponseEntity.ok(map);
     }
 
@@ -107,15 +116,19 @@ public class TasklRestApi {
             int total = 0;
             EstadoTarea estadoTarea = new EstadoTarea(statusTask);
             estadoTareas.add(estadoTarea);
-            List<PlTask> tasks;
-            if (cargoId != null) {
-                tasks = plTaskService.findByPosition(positionService.findOne(cargoId));
-            } else if (unidadId != null) {
-                tasks = plTaskService.findByPosition_Area(areaService.findOne(unidadId));
-            } else if (direccionId != null) {
-                tasks = plTaskService.findByPosition_Area_Management(managementService.findOne(direccionId));
-            } else {
-                tasks = plTaskService.findByPosition(user.getPosition());
+            List<PlTask> tasks = new ArrayList<>();
+            Optional<Plan> optional = planService.findByEjecucion(true);
+            if (optional.isPresent()) {
+                Plan plan = optional.get();
+                if (cargoId != null) {
+                    tasks = plTaskService.findByPlanAndPosition(plan, positionService.findOne(cargoId));
+                } else if (unidadId != null) {
+                    tasks = plTaskService.findByPlanAndPosition_Area(plan, areaService.findOne(unidadId));
+                } else if (direccionId != null) {
+                    tasks = plTaskService.findByPlanAndPosition_Area_Management(plan, managementService.findOne(direccionId));
+                } else {
+                    tasks = plTaskService.findByPlanAndPosition(plan, user.getPosition());
+                }
             }
             total = (int) tasks.parallelStream().filter(task -> task.getStatusTask().equals(statusTask)).count();
             estadoTarea.setTotalTareas(total);
@@ -131,15 +144,19 @@ public class TasklRestApi {
     @GetMapping("/tarea/search/{estadoId}")
     public ResponseEntity<ModelMap> buscarTareasEstado(@RequestParam Integer direccionId, @RequestParam Integer unidadId, @RequestParam Integer cargoId, @PathVariable("estadoId") StatusTask statusTask, @AuthenticationPrincipal Users user) {
         ModelMap map = new ModelMap();
-        List<PlTask> tasks;
-        if (cargoId != null) {
-            tasks = plTaskService.findByPosition(positionService.findOne(cargoId));
-        } else if (unidadId != null) {
-            tasks = plTaskService.findByPosition_Area(areaService.findOne(unidadId));
-        } else if (direccionId != null) {
-            tasks = plTaskService.findByPosition_Area_Management(managementService.findOne(direccionId));
-        } else {
-            tasks = plTaskService.findByPosition(user.getPosition());
+        List<PlTask> tasks = new ArrayList<>();
+        Optional<Plan> optional = planService.findByEjecucion(true);
+        if (optional.isPresent()) {
+            Plan plan = optional.get();
+            if (cargoId != null) {
+                tasks = plTaskService.findByPlanAndPosition(plan, positionService.findOne(cargoId));
+            } else if (unidadId != null) {
+                tasks = plTaskService.findByPlanAndPosition_Area(plan, areaService.findOne(unidadId));
+            } else if (direccionId != null) {
+                tasks = plTaskService.findByPlanAndPosition_Area_Management(plan, managementService.findOne(direccionId));
+            } else {
+                tasks = plTaskService.findByPlanAndPosition(plan, user.getPosition());
+            }
         }
         List<TareaApi> taskList = tasks.parallelStream().filter(task -> task.getStatusTask().equals(statusTask)).map(TareaApi::new).collect(Collectors.toList());
         map.put("tareas", taskList);
@@ -151,6 +168,10 @@ public class TasklRestApi {
     @GetMapping("/tarea/estado/{estadoId}/count")
     public Long countTaskStatusTask(@PathVariable("estadoId") StatusTask statusTask) {
         log.debug("REST request to get all Tasks");
-        return plTaskService.countByStatusTask(statusTask);
+        Optional<Plan> optional = planService.findByEjecucion(true);
+        if (optional.isPresent()) {
+            return plTaskService.countByPlanAndStatusTask(optional.get(), statusTask);
+        }
+        return 0L;
     }
 }

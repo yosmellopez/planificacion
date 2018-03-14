@@ -21,6 +21,9 @@ public class TareaApi {
     @JsonProperty(value = "codigo")
     private String code;
     
+    @JsonProperty(value = "descripcion")
+    private String descripcion;
+    
     @JsonProperty(value = "producto")
     private String product;
     
@@ -66,6 +69,7 @@ public class TareaApi {
         this.fechaCreacion = task.getFechaCreacion();
         this.isrecurrent = task.isIsrecurrent();
         this.tiempoRecurrencia = task.getTiempoRecurrencia();
+        this.descripcion = task.getDescription();
     }
     
     public Integer getId() {
@@ -186,5 +190,13 @@ public class TareaApi {
     
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

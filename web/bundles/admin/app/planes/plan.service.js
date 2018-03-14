@@ -20,6 +20,7 @@
             salvarDiagrama: salvarDiagrama,
             insertarEliminarLink: insertarEliminarLink,
             eliminarTareaGrafico: eliminarTareaGrafico,
+            buscarTareaSinPlan: buscarTareaSinPlan,
             inicializarPlan: inicializarPlan
         };
 
@@ -149,6 +150,11 @@
         function inicializarPlan(plan) {
             var settings = {};
             return $http.put("plan/iniciarPlan", plan, settings);
+        }
+
+        function buscarTareaSinPlan(idTarea) {
+            var settings = {};
+            return $http.get("planTarea/detallesTarea/" + idTarea, settings);
         }
     }
 })();

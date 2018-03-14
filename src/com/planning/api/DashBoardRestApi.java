@@ -42,7 +42,7 @@ public class DashBoardRestApi {
         dashBoard.setTotalTareas(0);
         if (optional.isPresent()) {
             dashBoard.setPlan(optional.get());
-            dashBoard.setTotalTareas(plTaskService.countByPosition(user.getPosition()));
+            dashBoard.setTotalTareas(plTaskService.countByPositionAndPlan(user.getPosition(), optional.get()));
         }
         List<NotificacionLeida> notificacionesNoLeidas = leidaService.findByUser_PositionAndLeido(user.getPosition(), false);
         Set<Notificacion> notificacionSet = notificacionesNoLeidas.parallelStream().map(NotificacionLeida::getNotificacion).collect(Collectors.toSet());
@@ -50,7 +50,7 @@ public class DashBoardRestApi {
         TreeSet<EstadoTarea> estadoTareas = new TreeSet<>();
         for (StatusTask statusTask : statusTasks) {
             EstadoTarea estadoTarea = new EstadoTarea(statusTask);
-            Integer total = plTaskService.countByStatusTaskAndPosition(statusTask, user.getPosition());
+            Integer total = optional.isPresent() ? plTaskService.countByStatusTaskAndPositionAndPlan(statusTask, user.getPosition(), optional.get()) : 0;
             estadoTarea.setTotalTareas(total);
             estadoTareas.add(estadoTarea);
         }

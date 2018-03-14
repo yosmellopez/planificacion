@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface PlTaskService extends JpaRepository<PlTask, Integer> {
+public interface PlTaskService extends JpaRepository<PlTask, Integer>, JpaSpecificationExecutor<PlTask> {
 
     @EntityGraph(value = "PlanTarea.tareas")
     public List<PlTask> findByPlan(Plan plan);
@@ -79,10 +80,21 @@ public interface PlTaskService extends JpaRepository<PlTask, Integer> {
 
     public Integer countByStatusTaskAndPosition(StatusTask statusTask, Position position);
 
+    public Integer countByStatusTaskAndPositionAndPlan(StatusTask statusTask, Position position, Plan plan);
+
     public List<PlTask> findByStatusTaskAndPosition(StatusTask statusTask, Position position, Sort sort);
+
+    public List<PlTask> findByStatusTaskAndPositionAndPlan(StatusTask statusTask, Position position, Plan plan, Sort sort);
 
     public Long countByStatusTask(StatusTask statusTask);
 
+    public Long countByPlanAndStatusTask(Plan plan, StatusTask statusTask);
+
     public Long countByPlan(Plan plan);
+
+    public Long countByPlanAndStart(Plan plan, boolean start);
+
+    @Transactional
+    public void deleteByPlan(Plan plan);
 
 }

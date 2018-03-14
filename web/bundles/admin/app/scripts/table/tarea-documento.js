@@ -6,10 +6,13 @@ var TableTareasDocumentos = function () {
     var oTable;
     var rowDelete = null;
     var cont = 0;
+    var plan = {};
+    var servicioPlan = null;
     var formTitle = "¿Deseas crear una nueva tarea? Sigue los siguientes pasos:";
 
     //Inicializa la tabla
-    var initTable = function (scope) {
+    var initTable = function (scope, planService) {
+        servicioPlan = planService;
         var table = $('#tarea-table-editable');
 
         var order = [[1, "desc"]];
@@ -20,20 +23,23 @@ var TableTareasDocumentos = function () {
                 "data": null,
                 "defaultContent": ''
             },
-            {"bSortable": true, "sWidth": '30%', "sClass": 'text-center'},
+            {"bSortable": true, "sWidth": '10%', "sClass": 'text-center'},
             {"bSortable": true, "sWidth": '45%'},
-            {"bSortable": true, "sWidth": '15%', "sClass": 'text-center'},
+            {"bSortable": true, "sWidth": '15%'},
+            {"bSortable": true, "sWidth": '15%'},
             {"bSortable": true, "sWidth": '10%', "sClass": 'text-center'}
         ];
         oTable = new Datatable();
+        var parametros = {"cargo": "", "gerencia": "", "direccion": "", "criticidad": ""};
+        oTable.setAjaxParam("parametros", JSON.stringify(parametros));
         var planId = 0;
-        plan = JSON.parse(localStorage.getItem("plan"));
-        if (plan) {
+        if (localStorage.getItem("existePlan")) {
+            plan = JSON.parse(localStorage.getItem("planActivo"));
             planId = plan.plan_id;
         }
-        if (scope.usuario.rol === 1) {
-            planId = 0;
-        }
+        // if (scope.usuario.rol === 1) {
+        //     planId = 0;
+        // }
         oTable.init({
             src: table,
             onSuccess: function (grid) {
@@ -51,7 +57,7 @@ var TableTareasDocumentos = function () {
                 ],
                 "pageLength": 15, // default record count per page
                 "ajax": {
-                    "url": "tarea/documentos/" + planId // ajax source
+                    "url": "plan/documentos/" + planId // ajax source
                 },
                 "order": order,
                 responsive: {
@@ -132,12 +138,44 @@ var TableTareasDocumentos = function () {
         oTable.getDataTable().ajax.reload();
     };
 
+    var initAccionEditar = function () {
+        $(document).on('click', "#canal-table-editable a.view", function (e) {
+            e.preventDefault();
+            var tareaId = $(this).data('id');
+            mostrarDetallesTarea(tareaId);
+        });
+    };
+
+    function mostrarDetallesTarea(idTarea) {
+        Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+        servicioPlan.buscarTareaSinPlan(idTarea).then(success).catch(failed);
+
+        function success(response) {
+            Metronic.unblockUI('#form-diagrama .portlet-body');
+            $('#modal-tarea-detalle').modal({
+                'show': true
+            });
+            scopePlan.antecesoras = new Array();
+            scopePlan.sucesoras = new Array();
+            scopePlan.tarea = response.data.tarea;
+            scopePlan.antecesoras = response.data.antecesoras;
+            scopePlan.sucesoras = response.data.sucesoras;
+            scopePlan.tituloModal = response.data.tarea.nombre;
+            $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+            $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
+        }
+
+        function failed(error) {
+            loggerSistema.error('Error !!' + error.data);
+        }
+    }
+
     return {
         //main function to initiate the module
-        init: function (url, scope) {
+        init: function (url, scope, planService) {
             urlPath = url;
             //Inicializar fechas de filtro
-            initTable(scope);
+            initTable(scope, planService);
         },
         buscarTareas: buscarTareas
     };

@@ -22,6 +22,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cache;
@@ -32,7 +33,7 @@ import org.hibernate.annotations.ColumnDefault;
  * @author Nodo
  */
 @Entity
-@Table(name = "child_task")
+@Table(name = "child_task", uniqueConstraints = @UniqueConstraint(name = "unique_from_to", columnNames = {"from_id", "to_id"}))
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ChildTask implements Serializable {

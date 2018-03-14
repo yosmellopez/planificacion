@@ -89,6 +89,14 @@ public class Modelo {
         }
     }
     
+    public void updateNode(Node node) {
+        int pos = buscarNodo(node);
+        if (pos != -1) {
+            Node currentNode = nodeDataArray.get(pos);
+            currentNode.clonarDatos(node);
+        }
+    }
+    
     private ArrayList<Node> buscarSiders() {
         ArrayList<Node> siders = new ArrayList<>();
         for (Node node : nodeDataArray) {

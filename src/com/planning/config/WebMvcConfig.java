@@ -5,6 +5,7 @@
  */
 package com.planning.config;
 
+import com.planning.filter.SpecificationArgumentResolver;
 import com.planning.util.MailMail;
 import com.planning.util.MapeadorObjetos;
 import com.planning.util.MiCorreo;
@@ -49,26 +50,26 @@ import java.util.*;
 @ComponentScan(basePackages = {"com.planning"})
 @EnableSpringDataWebSupport
 public class WebMvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
-    
+
     @Autowired
     Environment env;
 //
 //    @Autowired
 //    Session session;
-    
+
     @Bean
     public MapeadorObjetos wMObjectMapper() {
         return new MapeadorObjetos();
     }
-    
+
     @Bean
     public FileServiceManager fileServiceManager() {
         return new FileServiceManager();
     }
-    
+
     @Value("${planning.cachear}")
     String cachear;
-    
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -76,13 +77,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         converters.add(converter);
         super.configureMessageConverters(converters);
     }
-    
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/fonts/**", "/flaty/**", "/docs/**", "/app/**", "/theme-classic/**", "/recursos/**")
                 .addResourceLocations("/fonts/", "/flaty/", "/docs/", "/app/", "/theme-classic/", "/recursos/");
     }
-    
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(false).
@@ -93,7 +94,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
                 mediaType("json", MediaType.APPLICATION_JSON);
         super.configureContentNegotiation(configurer);
     }
-    
+
     @Bean(name = "contentNegotiatingViewResolver")
     public ContentNegotiatingViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
         ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
@@ -103,23 +104,23 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         resolver.setViewResolvers(resolvers);
         return resolver;
     }
-    
+
     private static final String UTF8 = "UTF-8";
-    
+
     private ApplicationContext applicationContext;
-    
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
-    
+
     @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         return resolver;
     }
-    
+
     @Bean
     public TemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -130,7 +131,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         engine.setAdditionalDialects(additionalDialects);
         return engine;
     }
-    
+
     private ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
@@ -141,7 +142,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }
-    
+
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setOrder(2);
@@ -152,7 +153,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         templateResolver.setCacheable(false);
         return templateResolver;
     }
-    
+
+    @Autowired
+    SpecificationArgumentResolver argumentResolver;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         AuthenticationPrincipalArgumentResolver resolver = new AuthenticationPrincipalArgumentResolver();
@@ -163,14 +167,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         phmar.setFallbackPageable(new PageRequest(0, Integer.MAX_VALUE, new Sort(Sort.Direction.DESC, "id")));
         argumentResolvers.add(resolver);
         argumentResolvers.add(phmar);
+        argumentResolvers.add(argumentResolver);
         super.addArgumentResolvers(argumentResolvers);
     }
-    
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-    
+
     @Bean
     public JavaMailSenderImpl javaMailSender() {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
@@ -187,14 +192,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         sender.setJavaMailProperties(properties);
         return sender;
     }
-    
+
     @Bean
     public SimpleMailMessage simpleMailMessage() {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom("yosmellopez@gmail.com");
         return mailMessage;
     }
-    
+
     @Bean
     public MailMail mailMail() {
         MailMail mail = new MailMail();
@@ -202,7 +207,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter implements Application
         mail.setSimpleMailMessage(simpleMailMessage());
         return mail;
     }
-    
+
     @Bean
     public MiCorreo miCorreo() {
         MiCorreo correo = new MiCorreo();

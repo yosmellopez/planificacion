@@ -63,6 +63,30 @@
                 }]
             }
         });
+        $stateProvider.state('documentos-catalogo', {
+            url: "/documentos-catalogo",
+            templateUrl: urlPath + "/bundles/admin/app/tareas/documentos-tareas-catalogo.html",
+            data: {
+                pageTitle: ' - Documentos de Tareas'
+            },
+            controller: "TareasDocumentosCatalogo",
+            controllerAs: 'vm',
+            resolve: {
+                criticidadesTareasPrepService: criticidadesTareasPrepService,
+                gerenciasPrepService: gerenciasPrepService,
+                areasPrepService: areasPrepService,
+                cargosPrepService: cargosPrepService,
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'app',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            urlPath + '/bundles/admin/app/scripts/table/tarea-documento-catalogo.js'
+                        ]
+                    });
+                }]
+            }
+        });
 
         //Carga las gerencias
         gerenciasPrepService.$inject = ['gerenciaService'];

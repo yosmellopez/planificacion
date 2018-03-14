@@ -17,8 +17,8 @@ var TableEditableTareas = function () {
 
         var order = [[1, "desc"]];
         var aoColumns = [
-            {"bSortable": false, "sWidth": '1%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '45%', "sClass": 'text-center'},
+            {"bSortable": false, "sWidth": '0%', "sClass": 'text-center'},
+            {"bSortable": true, "sWidth": '45%'},
             {"bSortable": true, "sWidth": '35%'},
             {"bSortable": true, "sWidth": '10%', "sClass": 'text-center'},
             {"bSortable": false, "sWidth": '15%', "sClass": 'text-center'}
@@ -274,6 +274,11 @@ var TableEditableTareas = function () {
             var canales = $('#canales').val();
             if (canales === null || canales === "")
                 canales = new Array();
+            canales.forEach(function (item, index) {
+                if (item === "") {
+                    canales.splice(index, 1);
+                }
+            });
             $.ajax({
                 type: tarea_id === "" ? "POST" : "PUT",
                 url: tarea_id === "" ? "tarea/salvarTarea" : "tarea/salvarTarea/" + tarea_id,

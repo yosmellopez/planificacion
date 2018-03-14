@@ -16,12 +16,13 @@ var TableEditableUsuarios = function () {
         var order = [[1, "asc"]];
         var aoColumns = [
             {"bSortable": false, "sWidth": '1%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '20%'},
-            {"bSortable": true, "sWidth": '16%', "sClass": 'form-control-text'},
-            {"bSortable": true, "sWidth": '16%', "sClass": 'form-control-text'},
-            {"bSortable": true, "sWidth": '16%', "sClass": 'text-center'},
-            {"bSortable": true, "sWidth": '16%', "sClass": 'text-center'},
-            {"bSortable": false, "sWidth": '15%', "sClass": 'text-center'}
+            {"bSortable": true, "sWidth": '16%'},
+            {"bSortable": true, "sWidth": '15%', "sClass": 'form-control-text'},
+            {"bSortable": true, "sWidth": '15%', "sClass": 'form-control-text'},
+            {"bSortable": true, "sWidth": '5%', "sClass": 'text-center'},
+            {"bSortable": true, "sWidth": '15%', "sClass": 'text-center'},
+            {"bSortable": true, "sWidth": '20%', "sClass": 'text-center'},
+            {"bSortable": false, "sWidth": '13%', "sClass": 'text-center'}
         ];
 
         oTable = new Datatable();
@@ -341,9 +342,9 @@ var TableEditableUsuarios = function () {
             var estado = ($('#estadoactivo').prop('checked')) ? 1 : 0;
             var titular = vmUsuario.getValor();
             var cargo_id = $('#cargo').val();
-            var backup = $('#user-backup').val();
-            if (backup === "") {
-                backup = null;
+            var backups = $('#user-backup').val();
+            if (backups === "") {
+                backups = new Array();
             }
             Metronic.blockUI({target: '#form-usuario .portlet-body', animate: true});
             $.ajax({
@@ -360,7 +361,7 @@ var TableEditableUsuarios = function () {
                     'nombre': nombre,
                     'apellidos': apellidos,
                     'titular': titular,
-                    'backup': backup,
+                    'backups': backups,
                     'email': email
                 }),
                 success: function (response) {
@@ -428,7 +429,16 @@ var TableEditableUsuarios = function () {
                         //Datos usuario    
                         var rol_id = response.usuario.rol;
                         $('#rol').select2('val', rol_id);
-                        $('#user-backup').select2('val', response.usuario.backup);
+                        var backups = response.usuario.backups;
+                        console.log(backups);
+                        var backupsIds = new Array();
+                        var tam = backups.length;
+                        for (var i = 0; i < tam; i++) {
+                            backupsIds.push(backups[i].usuario_id);
+                        }
+                        console.log(backupsIds);
+                        usuarioBackups = $('#user-backup').select2();
+                        usuarioBackups.val(backupsIds).trigger("change");
                         formTitle = "¿Deseas actualizar el usuario \"" + response.usuario.nombre + "\" ? Sigue los siguientes pasos:";
                         $('#form-usuario-title').html(formTitle);
                         $('#nombre').val(response.usuario.nombre);

@@ -28,12 +28,14 @@
         $scope.tituloModal = "";
         $scope.tarea = {};
         $scope.plan = {};
-        $scope.existePlanEjecucion = false;
+        $scope.existePlanEjecucion = JSON.parse(localStorage.getItem("existePlan"));
         $scope.antecesoras = new Array();
         vm.usuario = usuarioService.usuario;
         $scope.direccion = "";
         $scope.nivelAlerta = "";
         $scope.mensaje = "";
+        $scope.existePlanSeleccionado = $scope.existePlanEjecucion;
+        console.log($scope.existePlanSeleccionado);
         vm.eliminar = eliminar;
         vm.modalEliminar = modalEliminar;
         vm.modalEliminarSeleccion = modalEliminarSeleccion;
@@ -148,7 +150,7 @@
                 $scope.direccion = "";
             objeto = {
                 cargo: $scope.cargo,
-                area: $scope.gerencia,
+                gerencia: $scope.gerencia,
                 direccion: $scope.direccion,
                 criticidad: $scope.nivelAlerta
             };
@@ -161,7 +163,8 @@
                         $('#kanban').jqxKanban('destroy');
                         var contenedor = angular.element("#kanbanBox1");
                         contenedor.append(angular.element('<div id="kanban" style="padding: 0 10px 0 10px;"></div>'));
-                        iniciarKaban(response.data.board);
+                        vm.tablero = response.data.board;
+                        iniciarKaban(vm.tablero);
                     }
                 }, 1000);
             }).catch(function (error) {
@@ -209,9 +212,11 @@
             for (var i = 0; i < tam; i++) {
                 if (parseInt(vm.planes[i].plan_id) === parseInt(planId)) {
                     vm.planId = planId;
-                    localStorage.setItem("plan", JSON.stringify(vm.planes[i]));
+                    localStorage.setItem("planActivo", JSON.stringify(vm.planes[i]));
+                    localStorage.setItem("existePlan", true);
                     toastr.success("Plan - " + vm.planes[i].nombre + " seleccionado", "Exito !!!");
                     seleccionado = true;
+                    $scope.existePlanSeleccionado = true;
                     var elemento = $(".oculto a.hidden");
                     elemento.attr('class', 'visible');
                     $location.path('/view-plan');
@@ -261,7 +266,6 @@
         }
 
         function activate() {
-            $scope.plan = JSON.parse(localStorage.getItem("plan"));
             $scope.$on('$viewContentLoaded', function () {
                 // initialize core components
                 Metronic.initAjax();
@@ -269,17 +273,12 @@
 
                 $timeout(function () {
                     var idNivel = 5;
-                    for (var i = 0; i < vm.planes.length; i++) {
-                        if (vm.planes[i].ejecucion) {
-                            if (vm.planes.nivelAlerta !== null) {
-                                var idNivel = vm.planes[i].nivelAlerta.criticidad_id;
-                            }
-                            $scope.existePlanEjecucion = true;
-                            localStorage.setItem("estadoPlan", idNivel);
-                            $scope.titulo = vm.planes[i].nombre;
-                            $("#imagen-estado").prop("src", "bundles/admin/img/" + idNivel + ".png");
-                            break;
-                        }
+                    if ($scope.existePlanEjecucion) {
+                        $scope.plan = JSON.parse(localStorage.getItem("planActivo"));
+                        var idNivel = $scope.plan.nivelAlerta.criticidad_id;
+                        localStorage.setItem("estadoPlan", idNivel);
+                        $scope.titulo = $scope.plan.nombre;
+                        $("#imagen-estado").prop("src", "bundles/admin/img/" + idNivel + ".png");
                     }
                     if (vm.usuario.rol === 1 || $scope.existePlanEjecucion) {
                         iniciarKaban(vm.tablero);
@@ -287,6 +286,19 @@
                 }, 1000);
             });
         }
+
+        function buscarItem(itemId) {
+            var tam = vm.tablero.datos.length;
+            for (var i = 0; i < tam; i++) {
+                if (parseInt(vm.tablero.datos[i].id) === parseInt(itemId))
+                    return vm.tablero.datos[i];
+            }
+            return null;
+        }
+
+        vm.buscarTareasPlan = function (currentUser) {
+
+        };
 
         function iniciarKaban(board) {
             var fields = [
@@ -352,29 +364,43 @@
                 },
                 // render column headers.
                 columnRenderer: function (element, collapsedElement, column) {
-                    var columnItems = $("#kanban").jqxKanban('getColumnItems', column.dataField).length;
-                    // update header's status.
-                    element.css("border-color", column.color);
-                    element.find(".jqx-kanban-column-header-status").html(" (" + columnItems + "/" + column.maxItems + ")");
-                    // update collapsed header's status.
-                    collapsedElement.find(".jqx-kanban-column-header-status").html(" (" + columnItems + "/" + column.maxItems + ")");
+                    try {
+                        var columnItems = $("#kanban").jqxKanban('getColumnItems', column.dataField).length;
+                        // update header's status.
+                        element.css("border-color", column.color);
+                        element.find(".jqx-kanban-column-header-status").html(" (" + columnItems + "/" + column.maxItems + ")");
+                        // update collapsed header's status.
+                        collapsedElement.find(".jqx-kanban-column-header-status").html(" (" + columnItems + "/" + column.maxItems + ")");
+                    } catch (e) {
+                        console.log(e.message);
+                    }
                 }
             });
-            if (vm.usuario.rol === 1) {
-                $('#kanban').on('itemMoved', function (event) {
-                    var args = event.args;
-                    args.itemData.color = args.newColumn.color;
-                    args.itemData.text = args.newColumn.text;
-                    args.itemData.className = "mi-clase";
-                    tableroService.moverTarea(args.itemId, args.newColumn.dataField);
-                    $('#kanban').jqxKanban('updateItem', args.itemId, args.itemData);
-                    // tableroService.actualizarTableroUsuario().then(function (response, status, headers, config) {
-                    //     iniciarKaban(response.data.board);
-                    // }).catch(function (error) {
-                    //     logger.error('Error !!' + error.data);
-                    // });
-                });
-            }
+            $('#kanban').on('itemMoved', function (event) {
+                var args = event.args;
+                args.itemData.color = args.newColumn.color;
+                args.itemData.text = args.newColumn.text;
+                args.itemData.className = "mi-clase";
+                tableroService.moverTarea(args.itemId, args.newColumn.dataField).then(success).catch(failed);
+
+                function success(response, status, headers, config) {
+                    if (response.data.success) {
+                        $('#kanban').jqxKanban('updateItem', args.itemId, args.itemData);
+                        toastr.success(response.data.message, "Exito !!!");
+                    } else {
+                        toastr.error(response.data.error, "Error !!!", {"positionClass": "toast-top-center"});
+                        $('#kanban').jqxKanban('destroy');
+                        var contenedor = angular.element("#kanbanBox1");
+                        contenedor.append(angular.element('<div id="kanban" style="padding: 0 10px 0 10px;"></div>'));
+                        iniciarKaban(vm.tablero = response.data.board);
+                    }
+                }
+
+                function failed(error) {
+                    logger.error('Error !!' + error.data);
+                }
+                ;
+            });
             $('#kanban').on('columnCollapsed', function (event) {
                 var args = event.args;
                 var column = args.column;
@@ -403,6 +429,10 @@
                 }
             });
         }
+        ;
 
+        vm.existePlanSeleccionado = function () {
+            return $scope.existePlanSeleccionado;
+        };
     }
 })();

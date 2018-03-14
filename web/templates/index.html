@@ -45,8 +45,17 @@ and open the template in the editor.
         <link th:href="@{/bundles/admin/assets/jqwidgets/hiraku.css}" rel="stylesheet" type="text/css"/>
         <link th:href="@{/bundles/admin/assets/ckeditor/contents.css}" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" th:inline="javascript" th:with="usuario=${#authentication.principal}">
+            localStorage.removeItem("existePlan");
             var idUsuario = [[${usuario.id}]];
             var idRol = [[${usuario.rol.id}]];
+            var planActivado = {};
+            localStorage.setItem("existePlan", false);
+            localStorage.removeItem("planActivo");
+        </script>
+        <script type="text/javascript" th:inline="javascript" th:if="${existePlan}">
+            var planActivado = [[${plan}]];
+            localStorage.setItem("existePlan", true);
+            localStorage.setItem("planActivo", JSON.stringify(planActivado));
         </script>
         <script type="text/javascript" th:inline="javascript">
             var urlSitio = [[@{
@@ -280,6 +289,7 @@ and open the template in the editor.
         <script th:src="@{/bundles/admin/app/tareas/config.route.js}"></script>
         <script th:src="@{/bundles/admin/app/tareas/tareas.js}"></script>
         <script th:src="@{/bundles/admin/app/tareas/tareas-documento.js}"></script>
+        <script th:src="@{/bundles/admin/app/tareas/tareas-documento-catalogo.js}"></script>
 
         <!-- planes -->
         <script th:src="@{/bundles/admin/app/planes/planes.module.js}"></script>

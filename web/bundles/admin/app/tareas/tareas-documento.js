@@ -7,15 +7,15 @@
         .module('app.tareas')
         .controller('TareasDocumentos', TareasDocumentos);
 
-    TareasDocumentos.$inject = ['$rootScope', '$scope', '$timeout', 'urlPath', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'estadoTareaService', 'canalService', 'usuarioService'];
+    TareasDocumentos.$inject = ['$rootScope', '$scope', '$timeout', 'urlPath', 'cargoService', 'areaService', 'gerenciaService', 'criticidadTareaService', 'estadoTareaService', 'canalService', 'usuarioService', 'planService'];
 
-    function TareasDocumentos($rootScope, $scope, $timeout, urlPath, cargoService, areaService, gerenciaService, criticidadTareaService, estadoTareaService, canalService, usuarioService) {
+    function TareasDocumentos($rootScope, $scope, $timeout, urlPath, cargoService, areaService, gerenciaService, criticidadTareaService, estadoTareaService, canalService, usuarioService, planService) {
         var vm = this;
         vm.urlPath = urlPath;
 
         vm.mostrarNuevo = true;
         vm.usuario = usuarioService.usuario;
-        $scope.titulo = "Lista de Tareas";
+        $scope.titulo = "Documentos de Tareas";
         $scope.cargo = "";
         $scope.gerencia = "";
         $scope.direccion = "";
@@ -31,6 +31,12 @@
         vm.areas = areaService.areas;
         vm.cargos = cargoService.cargos;
         vm.canales = canalService.canales;
+        if (localStorage.getItem("existePlan")) {
+            $scope.plan = JSON.parse(localStorage.getItem("planActivo"));
+            $scope.titulo = $scope.plan.nombre;
+            $scope.planId = $scope.plan.plan_id;
+            $scope.mostrarInicial = true;
+        }
         vm.filtarTareasCargo = filtarTareasCargo;
         vm.seleccionarElemento = seleccionarElemento;
 
@@ -111,6 +117,32 @@
             TableTareasDocumentos.buscarTareas("tarea/buscarTareas?cargo=" + $scope.cargo + "&area=" + $scope.gerencia + "&direccion=" + $scope.direccion + "&criticidad=" + $scope.criticidad);
         }
 
+        vm.mostrarMasDetalles = function (idTarea) {
+            Metronic.blockUI({target: '#form-diagrama .portlet-body', animate: true});
+            $('#modal-tarea-detalle').modal('toggle');
+            $('.modal-backdrop').remove();
+            $timeout(function () {
+                planService.buscarTarea(idTarea).then(success).catch(failed);
+            }, 0);
+
+            function success(response) {
+                Metronic.unblockUI('#form-diagrama .portlet-body');
+                $scope.tarea = response.data.tarea;
+                $scope.antecesoras = response.data.antecesoras;
+                $scope.sucesoras = response.data.sucesoras;
+                $scope.tituloModal = response.data.tarea.nombre;
+                $('#modal-tarea-detalle').modal({
+                    show: true
+                });
+                $('#table-modelos-tarea .download').data("title", 'Descargar modelo').tooltip();
+                $('#table-modelos-tarea .view').data("title", 'Ver Detalles de la Tarea').tooltip();
+            }
+
+            function failed(error) {
+                logger.error('Error !!' + error.data);
+            }
+        };
+
         function activate() {
             $scope.$on('$viewContentLoaded', function () {
                 // initialize core components
@@ -118,7 +150,7 @@
                 MyApp.init();
 
                 $timeout(function () {
-                    TableTareasDocumentos.init(vm.urlPath, $scope);
+                    TableTareasDocumentos.init(vm.urlPath, $scope, planService);
                 }, 1000);
             });
         }

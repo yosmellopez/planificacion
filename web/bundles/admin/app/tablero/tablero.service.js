@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.tablero')
-        .factory('tableroService', tableroService);
+            .factory('tableroService', tableroService);
 
     tableroService.$inject = ['$http', 'logger'];
 
@@ -16,6 +16,7 @@
             moverTarea: moverTarea,
             buscarTablero: buscarTablero,
             buscarTareas: buscarTareas,
+            buscarTareasMias: buscarTareasMias,
             buscarTarea: buscarTarea,
             actualizarTableroUsuario: actualizarTableroUsuario
         };
@@ -24,7 +25,11 @@
 
         function getTablero() {
             var settings = {};
-
+            var existePlan = JSON.parse(localStorage.getItem("existePlan"));
+            if (existePlan) {
+                var plan = JSON.parse(localStorage.getItem("planActivo"));
+                settings.params = {planId: plan.plan_id};
+            }
             return $http.get("tarea/listarTableros", settings).then(success).catch(failed);
 
             function success(response, status, headers, config) {
@@ -87,21 +92,13 @@
 
         function moverTarea(idTarea, idEstado) {
             var params = {};
-            return $http.post("tarea/moverTarea/" + idTarea + "/" + idEstado, params).then(success).catch(failed);
-
-            function success(response, status, headers, config) {
-                toastr.success(response.data.message, "Exito !!!");
-                return response.data;
-            }
-
-            function failed(error) {
-                logger.error('Error !!' + error.data);
-            }
+            return $http.post("tarea/moverTarea/" + idTarea + "/" + idEstado, params);
         }
 
         function buscarTablero(parametros) {
+            parametros = JSON.stringify(parametros);
             var settings = {
-                params: parametros
+                params: {parametros: parametros}
             };
             return $http.get("tarea/listarTableros", settings);
         }
@@ -112,8 +109,8 @@
             };
 
             return $http.get("tarea/cargarDatos", settings)
-                .then(success)
-                .catch(failed);
+                    .then(success)
+                    .catch(failed);
 
             function success(response, status, headers, config) {
                 service.tarea = response.data.tarea;
@@ -126,6 +123,13 @@
         }
 
         function buscarTarea(idTarea) {
+            var settings = {
+                tarea_id: idTarea
+            };
+            return $http.post("planTarea/detallesTarea/" + idTarea, settings);
+        }
+
+        function buscarTareasMias() {
             var settings = {
                 tarea_id: idTarea
             };
