@@ -521,9 +521,6 @@
             if (planId === "") {
                 toastr.error("Debe seleccionar un plan", "Error !!!");
                 Metronic.unblockUI('#modal-iniciar-plan-dialog');
-            } else if (!$scope.iniciado) {
-                toastr.error("Debe ejecutar el plan", "Error !!!");
-                Metronic.unblockUI('#modal-iniciar-plan-dialog');
             } else if ($scope.estado === 0) {
                 toastr.error("Debe seleccionar un estado del plan", "Error !!!");
                 Metronic.unblockUI('#modal-iniciar-plan-dialog');

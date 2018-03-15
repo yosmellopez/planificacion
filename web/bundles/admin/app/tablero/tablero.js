@@ -297,7 +297,11 @@
         }
 
         vm.buscarTareasPlan = function (currentUser) {
+            tableroService.buscarTareasMias().then(function (resp) {
 
+            }).catch(function () {
+                
+            });
         };
 
         function iniciarKaban(board) {
@@ -338,14 +342,14 @@
 
             $('#kanban').jqxKanban({
                 template: "<div class='jqx-kanban-item elemento-general'><div class='fondo'>"
-                        + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
-                        + "<div class='jqx-icon jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
-                        + "<div class='jqx-kanban-item-text'><i class='fa fa-hourglass-start usuario'></i>  </div>"
-                        + "<div class='jqx-kanban-item-nombre'></div>"
-                        + "<div class='jqx-kanban-item-usuario'></div>"
-                        + "<div class='jqx-kanban-item-tiempo-transcurrido'></div>"
-                        + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
-                        + "</div></div>",
+                + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
+                + "<div class='jqx-icon jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
+                + "<div class='jqx-kanban-item-text'><i class='fa fa-hourglass-start usuario'></i>  </div>"
+                + "<div class='jqx-kanban-item-nombre'></div>"
+                + "<div class='jqx-kanban-item-usuario'></div>"
+                + "<div class='jqx-kanban-item-tiempo-transcurrido'></div>"
+                + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
+                + "</div></div>",
                 width: '75%',
                 height: '650px',
                 resources: resourcesAdapterFunc(),
@@ -399,7 +403,6 @@
                 function failed(error) {
                     logger.error('Error !!' + error.data);
                 }
-                ;
             });
             $('#kanban').on('columnCollapsed', function (event) {
                 var args = event.args;
@@ -428,8 +431,7 @@
                     logger.error('Error !!' + error.data);
                 }
             });
-        }
-        ;
+        };
 
         vm.existePlanSeleccionado = function () {
             return $scope.existePlanSeleccionado;

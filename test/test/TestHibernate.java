@@ -37,48 +37,48 @@ import java.util.Set;
 @ContextConfiguration(classes = {AppConfig.class})
 @WebAppConfiguration(value = "web")
 public class TestHibernate {
-
+    
     @Autowired
     PlTaskService plTaskService;
-
+    
     @Autowired
     PlanService planService;
-
+    
     @Autowired
     ManagementService managementService;
-
+    
     @Autowired
     TaskService taskService;
-
+    
     @Autowired
     PositionService positionService;
-
+    
     @Autowired
     ChannelService channelService;
-
+    
     @Autowired
     DocumentService documentService;
-
+    
     ArrayList<Task> elementos = new ArrayList<>();
-
+    
     @Autowired
     ChildTaskService childTaskService;
-
+    
     @Autowired
     UsersService usersService;
-
+    
     @Autowired
     MapeadorObjetos mapeadorObjetos;
-
+    
     @Autowired
     PlanController controller;
-
+    
     @Autowired
     GrupoRepository grupoRepository;
-
+    
     @Autowired
     NotificacionService notificacionService;
-
+    
     @BeforeClass
     public static void setUpClass() throws IllegalStateException, NamingException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:oracle:thin:@localhost:1521:xe", "PLANNING", "adminsys26");
@@ -87,55 +87,56 @@ public class TestHibernate {
         builder.bind("java:comp/env/jdbc/planificacionDB", dataSource);
         builder.activate();
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
     }
-
+    
     @Before
     public void setUp() {
     }
-
+    
     @After
     public void tearDown() {
     }
-
+    
     //@Test
     public void testSheduled() {
 //        Users users = usersService.findOne(15);
 //        ModelAndView view = controller.cargarDatosDiagrama(1013, users, new ModelMap());
 //        view.getModelMap();
     }
-
+    
     @Test
     public void notifiaciones() {
-        List<Plan> planes = planService.findAll();
-        for (Plan instance : planes) {
-            Set<PlTask> tasks = new HashSet<>(plTaskService.findByPlan(instance));
-            int i = 0;
-            for (PlTask task : tasks) {
-                MiTarea miTarea = new MiTarea();
-//                Task tarea = task.getTask();
-//                miTarea.setCargoId(task.getTask().getPosition().getId());
-//                miTarea.setCodigo(tarea.getCode());
-//                miTarea.setCriticidad_id(task.getTask().getCriticalyLevels());
-//                miTarea.setEstado(task.getTask().getStatusTask().getName());
-//                miTarea.setGerenciaId(task.getTask().getPosition().getArea().getManagement().getId());
-//                miTarea.setNombre(tarea.getName());
-//                miTarea.setTareaId(tarea.getId());
-//                miTarea.setEsMia(true);
-//                miTarea.setDescripcion(tarea.getDescription());
-//                miTarea.setCargo(task.getTask().getPosition().getName());
-//                miTarea.setFechaCreacion(tarea.getFechaCreacion());
-//                miTarea.setModelos(new ArrayList<>(tarea.getDocuments()));
-                List<ChildTask> sucesoras = childTaskService.findByFromAndIsChild(task.getId(), true);
-                for (ChildTask childTask : sucesoras) {
-                    miTarea.getSucesoras().add(new Tarea(childTask.getFrom()));
-                }
-//                instance.getTareas().add(miTarea);
-                i++;
-            }
-        }
+        System.out.println(5 + 5);
+//        List<Plan> planes = planService.findAll();
+//        for (Plan instance : planes) {
+//            Set<PlTask> tasks = new HashSet<>(plTaskService.findByPlan(instance));
+//            int i = 0;
+//            for (PlTask task : tasks) {
+//                MiTarea miTarea = new MiTarea();
+////                Task tarea = task.getTask();
+////                miTarea.setCargoId(task.getTask().getPosition().getId());
+////                miTarea.setCodigo(tarea.getCode());
+////                miTarea.setCriticidad_id(task.getTask().getCriticalyLevels());
+////                miTarea.setEstado(task.getTask().getStatusTask().getName());
+////                miTarea.setGerenciaId(task.getTask().getPosition().getArea().getManagement().getId());
+////                miTarea.setNombre(tarea.getName());
+////                miTarea.setTareaId(tarea.getId());
+////                miTarea.setEsMia(true);
+////                miTarea.setDescripcion(tarea.getDescription());
+////                miTarea.setCargo(task.getTask().getPosition().getName());
+////                miTarea.setFechaCreacion(tarea.getFechaCreacion());
+////                miTarea.setModelos(new ArrayList<>(tarea.getDocuments()));
+//                List<ChildTask> sucesoras = childTaskService.findByFromAndIsChild(task.getId(), true);
+//                for (ChildTask childTask : sucesoras) {
+//                    miTarea.getSucesoras().add(new Tarea(childTask.getFrom()));
+//                }
+////                instance.getTareas().add(miTarea);
+//                i++;
+//            }
+//        }
 //
 //        List<Plan> plans = planService.findAll();
 //        for (Plan plan : plans) {
@@ -149,7 +150,7 @@ public class TestHibernate {
 //notificacion.setTitle("Nueva notificacion de tarea realizada");
 //notificacionService.saveAndFlush(notificacion);
     }
-
+    
     //@Test
     public void testGrupo() {
 //RestTemplate restTemplate = new RestTemplate();

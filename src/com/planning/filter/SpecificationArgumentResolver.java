@@ -28,35 +28,35 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Service
 public class SpecificationArgumentResolver implements HandlerMethodArgumentResolver {
-
+    
     @Autowired
     private AreaService areaService;
-
+    
     @Autowired
     private ManagementService managementService;
-
+    
     @Autowired
     private PositionService positionService;
-
+    
     @Autowired
     private CriticalyLevelService levelService;
-
+    
     @Autowired
     private PlanService planService;
-
+    
     private static final String DEFAULT_SPECIFICATION_PARAMETER = "parametros";
-
+    
     private HashMap<String, Object> hashMap = new HashMap<>();
-
+    
     private String parametrosParameterName = DEFAULT_SPECIFICATION_PARAMETER;
-
+    
     private final ObjectMapper objectMapper = new MapeadorObjetos();
-
+    
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return PlTaskFilter.class.equals(parameter.getParameterType());
     }
-
+    
     @Override
     public Specification resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String parametro = webRequest.getParameter(parametrosParameterName);
@@ -68,34 +68,38 @@ public class SpecificationArgumentResolver implements HandlerMethodArgumentResol
         }
         if (hasText) {
             hashMap = objectMapper.readValue(parametro, HashMap.class);
+        } else {
+            hashMap = null;
         }
         if (hashMap == null && planId == null) {
             return null;
         }
         try {
-            String cargoString = hashMap.get("cargo").toString();
-            int cargoId = cargoString.isEmpty() ? 0 : Integer.parseInt(cargoString);
-            if (cargoId != 0) {
-                Position position = positionService.findOne(cargoId);
-                filter.setPosition(position);
-            }
-            String areaString = hashMap.get("gerencia").toString();
-            int areaId = areaString.isEmpty() ? 0 : Integer.parseInt(areaString);
-            if (areaId != 0) {
-                Area area = areaService.findOne(areaId);
-                filter.setArea(area);
-            }
-            String direccionString = hashMap.get("direccion").toString();
-            int direccionId = direccionString.isEmpty() ? 0 : Integer.parseInt(direccionString);
-            if (direccionId != 0) {
-                Management management = managementService.findOne(direccionId);
-                filter.setManagement(management);
-            }
-            String nivelString = hashMap.get("criticidad").toString();
-            int nivelId = nivelString.isEmpty() ? 0 : Integer.parseInt(nivelString);
-            if (nivelId != 0) {
-                CriticalyLevel criticalyLevel = levelService.findOne(nivelId);
-                filter.setCriticalyLevel(criticalyLevel);
+            if (hashMap != null) {
+                String cargoString = hashMap.get("cargo").toString();
+                int cargoId = cargoString.isEmpty() ? 0 : Integer.parseInt(cargoString);
+                if (cargoId != 0) {
+                    Position position = positionService.findOne(cargoId);
+                    filter.setPosition(position);
+                }
+                String areaString = hashMap.get("gerencia").toString();
+                int areaId = areaString.isEmpty() ? 0 : Integer.parseInt(areaString);
+                if (areaId != 0) {
+                    Area area = areaService.findOne(areaId);
+                    filter.setArea(area);
+                }
+                String direccionString = hashMap.get("direccion").toString();
+                int direccionId = direccionString.isEmpty() ? 0 : Integer.parseInt(direccionString);
+                if (direccionId != 0) {
+                    Management management = managementService.findOne(direccionId);
+                    filter.setManagement(management);
+                }
+                String nivelString = hashMap.get("criticidad").toString();
+                int nivelId = nivelString.isEmpty() ? 0 : Integer.parseInt(nivelString);
+                if (nivelId != 0) {
+                    CriticalyLevel criticalyLevel = levelService.findOne(nivelId);
+                    filter.setCriticalyLevel(criticalyLevel);
+                }
             }
             if (planId != null) {
                 int idPlan = Integer.parseInt(planId);
@@ -114,19 +118,19 @@ public class SpecificationArgumentResolver implements HandlerMethodArgumentResol
             return null;
         }
     }
-
+    
     public String getParametrosParameterName() {
         return parametrosParameterName;
     }
-
+    
     public void setParametrosParameterName(String parametrosParameterName) {
         this.parametrosParameterName = parametrosParameterName;
     }
-
+    
     public HashMap<String, Object> getHashMap() {
         return hashMap;
     }
-
+    
     public void setHashMap(HashMap<String, Object> hashMap) {
         this.hashMap = hashMap;
     }

@@ -3,18 +3,27 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/tablero/tablero.service.js</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/tablero/tablero.html</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/scripts/table/plan-table-editable.js</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/templates/index.html</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/src/com/planning/service/UsersService.java</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/src/com/planning/service/PlTaskService.java</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/src/com/planning/controller/GeneralController.java</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/layout/acciones-lista.html</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/src/com/planning/controller/PlanController.java</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/tablero/tablero.js</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/tablero/config.route.js</file>
-            <file>file:/E:/Progamacion/Salvas/planificacion/web/bundles/admin/app/planes/planes.js</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/DireccionRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/UsersRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/service/ChildTaskService.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/ChannelRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/PositionRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/ChildTask.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/AreaRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/scripts/table/tarea-table-editable.js</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/StatusTaskRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/scripts/table/plan-table-editable.js</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/PlanRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/ProfileEndpoint.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/DashBoardRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/PlTaskController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/TasklRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/api/NotificacionRestApi.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/entity/Users.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/util/ArregloCreator.java</file>
+            <file>file:/D:/Trabajo/planificacion/web/bundles/admin/app/planes/planes.html</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/controller/PlanController.java</file>
+            <file>file:/D:/Trabajo/planificacion/src/com/planning/service/PlTaskService.java</file>
         </group>
     </open-files>
 </project-private>

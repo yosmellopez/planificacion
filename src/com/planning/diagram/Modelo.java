@@ -92,8 +92,14 @@ public class Modelo {
     public void updateNode(Node node) {
         int pos = buscarNodo(node);
         if (pos != -1) {
-            Node currentNode = nodeDataArray.get(pos);
-            currentNode.clonarDatos(node);
+            nodeDataArray.set(pos, node);
+        }
+    }
+    
+    public void updateEdge(Edge edge) {
+        int pos = buscarEnge(edge);
+        if (pos != -1) {
+            linkDataArray.set(pos, edge);
         }
     }
     

@@ -2095,7 +2095,7 @@ var TableEditablePlanes = function () {
                 doubleClick: function (e, node) {
                     mostrarDetallesTarea(plan, node.data.tarea_id);
                 }
-            }, /* new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),*/ new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+            }, new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
             new go.Binding("position", "bounds", go.Point.parse).makeTwoWay(go.Point.stringify),
             {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate, movable: true},
             {resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate},
@@ -2219,7 +2219,20 @@ var TableEditablePlanes = function () {
             var pos = myDiagram.model.modelData.position;
             if (pos)
                 myDiagram.initialPosition = go.Point.parse(pos);
-            // myDiagram.delayInitialization(relayoutDiagram);
+            var elementos = myDiagram.model.ze;
+            var tam = elementos.length;
+            for (var i = 0; i < tam; i++) {
+                if (elementos[i].bounds) {
+                    var data = myDiagram.model.findNodeDataForKey(elementos[i].key);
+                    // This will update the color of the "Delta" Node
+                    punto = go.Point.parse(elementos[i].bounds);
+                    punto.x += 1;
+                    punto.y += 1;
+                    if (data !== null)
+                        myDiagram.model.setDataProperty(data, "bounds", go.Point.stringify(punto));
+                }
+            }
+            myDiagram.delayInitialization(relayoutDiagram);
         } else {
             var links = plan.links;
             //Datos del modelo
@@ -2260,7 +2273,6 @@ var TableEditablePlanes = function () {
             for (var i = 0; i < siders.length; i++) {
                 for (var j = 0; j < columnas.length; j++) {
                     var celda = "Celda(" + siders[i].idSider + "," + columnas[j].identificador + ")";
-                    console.log(celda);
                     cont["Fila(" + siders[i].idSider + ")"] = 0;
                     model.push({
                         key: celda,
@@ -2271,13 +2283,13 @@ var TableEditablePlanes = function () {
                         isGroup: true
                     });
                     // Tareas Invisibles
-//                    model.push({
-//                        key: generateUUID(),
-//                        text: "",
-//                        color: "white",
-//                        size: "3 3",
-//                        group: celda
-//                    });
+                    model.push({
+                        key: generateUUID(),
+                        text: "",
+                        color: "white",
+                        size: "3 3",
+                        group: celda
+                    });
                     celdas[celda] = {pos: 0, x: 0, y: 0};
                 }
             }
@@ -2336,6 +2348,14 @@ var TableEditablePlanes = function () {
                     gruposDiagrama.push(grupo);
                     model.push(grupo);
                 }
+                // Tareas Invisibles
+                model.push({
+                    key: generateUUID(),
+                    text: "",
+                    color: "white",
+                    size: "3 3",
+                    group: nombreGrupo
+                });
                 var objetoTranversal = {
                     key: "" + tareasTranversales[i].key,
                     text: tareasTranversales[i].nombre,
@@ -2370,7 +2390,9 @@ var TableEditablePlanes = function () {
 
     function insertarEliminarLink(from, to, accion, planId) {
         $("#modal-confirmar").modal({
-            show: true
+            show: true,
+            backdrop: 'static',
+            keyboard: false
         });
         $("#btn-confirmar-si").click(function (e) {
             e.preventDefault();
@@ -2416,6 +2438,10 @@ var TableEditablePlanes = function () {
             }
         });
         $("#btn-confirmar-no").click(function (e) {
+            e.preventDefault();
+            myDiagram.commandHandler.undo();
+        });
+        $('.close').click(function (e) {
             e.preventDefault();
             myDiagram.commandHandler.undo();
         });

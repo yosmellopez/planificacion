@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.tablero')
-            .factory('tableroService', tableroService);
+        .factory('tableroService', tableroService);
 
     tableroService.$inject = ['$http', 'logger'];
 
@@ -109,8 +109,8 @@
             };
 
             return $http.get("tarea/cargarDatos", settings)
-                    .then(success)
-                    .catch(failed);
+                .then(success)
+                .catch(failed);
 
             function success(response, status, headers, config) {
                 service.tarea = response.data.tarea;
@@ -130,10 +130,13 @@
         }
 
         function buscarTareasMias() {
-            var settings = {
-                tarea_id: idTarea
-            };
-            return $http.post("planTarea/detallesTarea/" + idTarea, settings);
+            var settings = {};
+            var existePlan = JSON.parse(localStorage.getItem("existePlan"));
+            if (existePlan) {
+                var plan = JSON.parse(localStorage.getItem("planActivo"));
+                settings.params = {planId: plan.plan_id};
+            }
+            return $http.get("planTarea/tareasUsuario", settings);
         }
     }
 })();

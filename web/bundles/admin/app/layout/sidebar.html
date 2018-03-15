@@ -115,7 +115,7 @@
                 </li>
             </ul>
         </li>
-        <li ng-if="vm.usuario.rol === 1 || existePlanSeleccionado">
+        <li ng-if="vm.usuario.rol === 1">
             <a href="javascript:;">
                 <i class="icon-doc"></i>
                 <span class="title">Catálogo de Tareas</span>
@@ -131,13 +131,13 @@
                 <li>
                     <a href="#/documentos-catalogo">
                         <i class="icon-list"></i>
-                        <span class="title">Documentos de Tareas</span>
+                        <span class="title">Documentos - Tareas</span>
                     </a>
                 </li>
             </ul>
         </li>
         <li>
-            <a href="javascript:;" ng-show="vm.usuario.rol === 1 ||vm.existePlanSeleccionado()">
+            <a href="javascript:;" ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
                 <i class="icon-grid"></i>
                 <span class="title">Planes</span>
                 <span class="arrow "></span>
