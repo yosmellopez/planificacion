@@ -549,6 +549,79 @@
             $("#nivelAlerta" + id).parent().addClass("checked");
             $("#nivelAlerta" + id).prop("checked", true);
         };
+
+        vm.nuevoArchivo = function () {
+            $('#modal-modelo').modal({
+                show: true
+            });
+        };
+        vm.salvarModelo = function () {
+            console.log(!$('#fileinput-archivo').fileinput().hasClass('fileinput-new'));
+            if ($('#fileinput-archivo').fileinput().hasClass('fileinput-new')) {
+                var formData = new FormData($('#modelo-form'));
+                formData.append($("#file").attr("name"), $('#file').prop('files')[0]);
+                formData.append($("#modelo-descripcion").attr("name"), $("#modelo-descripcion").val());
+                formData.append($("#estadoactivo").attr("name"), $("#estadoactivo").prop('checked') ? true : false);
+                $.ajax({
+                    url: "planTarea/salvarModelo",
+                    type: 'POST',
+                    xhr: function () {
+                        myXhr = $.ajaxSettings.xhr();
+                        if (myXhr.upload) {
+                            myXhr.upload.addEventListener('progress', function (progress) {
+                                // calculate upload progress
+                                var percentage = Math.floor((progress.loaded / progress.total) * 100);
+                                // log upload progress to console
+                                var progressbar = $('#progressbar');
+                                progressbar.val(percentage);
+                                $('.progress-value').html("Subiendo... " + percentage + '%');
+                                if (percentage === 100) {
+                                    $('.progress-value').html(percentage + '%' + " Hecho!");
+                                }
+                            }, false);
+                        }
+                        return myXhr;
+                    },
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    complete: function (res) {
+                        console.log(res);
+                        if (res.responseJSON.success) {
+                            toastr.success("Archivo subido con éxito", "Error !!!");
+                            var modelo = res.responseJSON.modelo;
+                            $scope.modelos.push({
+                                archivo: modelo.ruta,
+                                descripcion: modelo.descripcion,
+                                estado: modelo.estado,
+                                ruta: modelo.ruta,
+                                modelo_id: modelo.modelo_id
+                            });
+                            resetFormModelo();
+                            dibujarTablaModelos("#table-modelos");
+                            var progressbar = $('#progressbar');
+                            progressbar.val(0);
+                            $('.progress-value').html('0%');
+                        } else
+                            toastr.error(res.responseJSON.error, "Error !!!");
+                    }
+                });
+            } else {
+                if ($('#fileinput-archivo').fileinput().hasClass('fileinput-new')) {
+                    var $element = $('#fileinput-archivo');
+                    $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
+                            .data("title", "Este campo es obligatorio")
+                            .addClass("has-error")
+                            .tooltip({
+                                placement: 'bottom'
+                            }); // Create a new tooltip based on the error messsage we just set in the title
+
+                    $element.closest('.form-group')
+                            .removeClass('has-success').addClass('has-error');
+                }
+            }
+        };
     }
 
     angular.module('app.planes').controller('PlanesList', PlanesList);

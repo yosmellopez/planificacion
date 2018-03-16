@@ -32,6 +32,7 @@
         $scope.antecesoras = new Array();
         vm.usuario = usuarioService.usuario;
         $scope.direccion = "";
+        $scope.deEquipo = false;
         $scope.nivelAlerta = "";
         $scope.mensaje = "";
         $scope.existePlanSeleccionado = $scope.existePlanEjecucion;
@@ -275,8 +276,11 @@
                     var idNivel = 5;
                     if ($scope.existePlanEjecucion) {
                         $scope.plan = JSON.parse(localStorage.getItem("planActivo"));
-                        var idNivel = $scope.plan.nivelAlerta.criticidad_id;
-                        localStorage.setItem("estadoPlan", idNivel);
+                        console.log($scope.plan);
+                        if ($scope.plan.nivelAlerta !== null) {
+                            var idNivel = $scope.plan.nivelAlerta.criticidad_id;
+                            localStorage.setItem("estadoPlan", idNivel);
+                        }
                         $scope.titulo = $scope.plan.nombre;
                         $("#imagen-estado").prop("src", "bundles/admin/img/" + idNivel + ".png");
                     }
@@ -296,11 +300,23 @@
             return null;
         }
 
-        vm.buscarTareasPlan = function (currentUser) {
-            tableroService.buscarTareasMias().then(function (resp) {
-
+        vm.buscarTareasPlan = function (equipo) {
+            $scope.deEquipo = equipo;
+            tableroService.buscarTareasMias(equipo).then(function (resp) {
+                $timeout(function () {
+                    Metronic.unblockUI('#lista-tarea .portlet-body');
+                    if (resp.data.board.datos.length === 0) {
+                        toastr.error("No se encontraron tareas ", "Error !!!", {"positionClass": "toast-top-center"});
+                    } else {
+                        $('#kanban').jqxKanban('destroy');
+                        var contenedor = angular.element("#kanbanBox1");
+                        contenedor.append(angular.element('<div id="kanban" style="padding: 0 10px 0 10px;"></div>'));
+                        vm.tablero = resp.data.board;
+                        iniciarKaban(vm.tablero);
+                    }
+                }, 1000);
             }).catch(function () {
-                
+
             });
         };
 
@@ -342,14 +358,14 @@
 
             $('#kanban').jqxKanban({
                 template: "<div class='jqx-kanban-item elemento-general'><div class='fondo'>"
-                + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
-                + "<div class='jqx-icon jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
-                + "<div class='jqx-kanban-item-text'><i class='fa fa-hourglass-start usuario'></i>  </div>"
-                + "<div class='jqx-kanban-item-nombre'></div>"
-                + "<div class='jqx-kanban-item-usuario'></div>"
-                + "<div class='jqx-kanban-item-tiempo-transcurrido'></div>"
-                + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
-                + "</div></div>",
+                        + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
+                        + "<div class='jqx-icon jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
+                        + "<div class='jqx-kanban-item-text'><i class='fa fa-hourglass-start usuario'></i>  </div>"
+                        + "<div class='jqx-kanban-item-nombre'></div>"
+                        + "<div class='jqx-kanban-item-usuario'></div>"
+                        + "<div class='jqx-kanban-item-tiempo-transcurrido'></div>"
+                        + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
+                        + "</div></div>",
                 width: '75%',
                 height: '650px',
                 resources: resourcesAdapterFunc(),
@@ -398,6 +414,11 @@
                         contenedor.append(angular.element('<div id="kanban" style="padding: 0 10px 0 10px;"></div>'));
                         iniciarKaban(vm.tablero = response.data.board);
                     }
+                    if (response.data.subirArchivo) {
+                        $('#modal-modelo').modal({
+                            show: true
+                        });
+                    }
                 }
 
                 function failed(error) {
@@ -431,7 +452,8 @@
                     logger.error('Error !!' + error.data);
                 }
             });
-        };
+        }
+        ;
 
         vm.existePlanSeleccionado = function () {
             return $scope.existePlanSeleccionado;

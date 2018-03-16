@@ -1,3 +1,8 @@
+<style>
+    .vsible{
+        visibility: visible;
+    }
+</style>
 <div class="page-sidebar navbar-collapse collapse">
     <!-- BEGIN SIDEBAR MENU -->
     <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
@@ -137,7 +142,7 @@
             </ul>
         </li>
         <li>
-            <a href="javascript:;" ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
+            <a href="javascript:;" class="oculto">
                 <i class="icon-grid"></i>
                 <span class="title">Planes</span>
                 <span class="arrow "></span>
@@ -149,20 +154,20 @@
                         <span class="title">Listar Planes</span>
                     </a>
                 </li>
-                <li ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
-                    <a href="#/view-plan">
+                <li ng-class="vm.usuario.rol === 1?'':'oculto'">
+                    <a href="#/view-plan" ng-class="vm.usuario.rol === 1?'':'hidden'">
                         <i class="icon-list"></i>
                         <span class="title">Tareas</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#/diagrama-planes" ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
+                <li ng-class="vm.usuario.rol === 1?'':'oculto'">
+                    <a href="#/diagrama-planes" ng-class="vm.usuario.rol === 1?'':'hidden'">
                         <i class="icon-list"></i>
                         <span class="title">Diagrama</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#/documentos" ng-show="vm.usuario.rol === 1 || vm.existePlanSeleccionado()">
+                <li ng-class="vm.usuario.rol === 1?'':'oculto'">
+                    <a href="#/documentos" ng-class="vm.usuario.rol === 1?'':'hidden'">
                         <i class="icon-list"></i>
                         <span class="title">Documentos de Tareas</span>
                     </a>

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.tablero')
-        .factory('tableroService', tableroService);
+            .factory('tableroService', tableroService);
 
     tableroService.$inject = ['$http', 'logger'];
 
@@ -44,6 +44,11 @@
 
         function getTableroUsuario() {
             var settings = {};
+            var existePlan = JSON.parse(localStorage.getItem("existePlan"));
+            if (existePlan) {
+                var plan = JSON.parse(localStorage.getItem("planActivo"));
+                settings.params = {planId: plan.plan_id, equipo: false};
+            }
             return $http.get("tarea/listarTablerosUsuario", settings).then(success).catch(failed);
 
             function success(response, status, headers, config) {
@@ -109,8 +114,8 @@
             };
 
             return $http.get("tarea/cargarDatos", settings)
-                .then(success)
-                .catch(failed);
+                    .then(success)
+                    .catch(failed);
 
             function success(response, status, headers, config) {
                 service.tarea = response.data.tarea;
@@ -129,12 +134,12 @@
             return $http.post("planTarea/detallesTarea/" + idTarea, settings);
         }
 
-        function buscarTareasMias() {
+        function buscarTareasMias(equipo) {
             var settings = {};
             var existePlan = JSON.parse(localStorage.getItem("existePlan"));
             if (existePlan) {
                 var plan = JSON.parse(localStorage.getItem("planActivo"));
-                settings.params = {planId: plan.plan_id};
+                settings.params = {planId: plan.plan_id, equipo: equipo};
             }
             return $http.get("planTarea/tareasUsuario", settings);
         }

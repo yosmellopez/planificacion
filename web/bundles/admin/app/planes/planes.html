@@ -880,7 +880,8 @@
                                 <uib-tab heading="Archivos" id="tab-archivo" ng-show="!agrupada">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <div class="space20"></div>
+                                            <button type="button" class="btn green" data-ng-click="vm.nuevoArchivo()">Nuevo Archivo <i class="fa fa-plus"></i></button>
+                                            <div class="margin-bottom-30"></div>
                                             <table class="table table-advance table-bordered table-hover table-striped" id="table-archivos">
                                                 <thead>
                                                     <tr>
@@ -1302,6 +1303,102 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modal-modelo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="ventana-titulo" style="border-top-width: 20px">
+            <div class="modal-header blue-hoki">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                <h4 class="modal-title">Agregar archivo</h4>
+            </div>
+            <div class="modal-body">
+                <form class="" id="modelo-form" action="tarea/salvarModelo"
+                      enctype="multipart/form-data" method="post">
+                    <div class="form-body">
+                        <div class="form-group ic-form-group">
+                            <key>
+                                <span class="ic-step-number">1</span>
+                                Para comenzar, seleccione el archivo de la tarea <span
+                                    class="ic-small italic">(obligatorio)</span>
+                            </key>
+                            <p class="help-block" translate>
+                                Se admiten los siguentes formatos: Word - Presentaciones - Pdf - Excel - Imagenes - ZIP - RAR
+                            </p>
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <div id="fileinput-archivo" class="fileinput fileinput-new" data-provides="fileinput" style="position:relative;top: 10px;">
+                                        <div class="input-group">
+                                            <div class="form-control uneditable-input input-fixed"
+                                                 data-trigger="fileinput">
+                                                <i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename">
+                                                </span>
+                                            </div>
+                                            <span class="input-group-addon btn default btn-file">
+                                                <span class="fileinput-new">
+                                                    Seleccione
+                                                </span>
+                                                <span class="fileinput-exists">
+                                                    Cambiar
+                                                </span>
+                                                <input type="file" name="file" id="file" required>
+                                                <input type="hidden" name="nombreArchivo" id="nombre-archivo">
+                                            </span>
+                                            <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput">
+                                                Eliminar
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <input type="text" name="nombre" id="archivo" style="display: none;position:relative;top:-28px;z-index:10000;height:32px;width:71%;padding-left:10px;border: 1px solid #e5e5e5;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ic-form-group">
+                            <key>
+                                <span class="ic-step-number">2</span>
+                                Seguidamente, ingrese una descripción para el archivo <span
+                                    class="ic-small italic">(opcional)</span>
+                            </key>
+                            <p class="help-block"></p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea class="form-control" id="modelo-descripcion" name="descripcion" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ic-form-group">
+                            <key><span class="ic-step-number">3</span>Luego, define si el archivo estará activo</key>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <key class="radio-inline">
+                                            <input type="radio" name="radioestado" id="estadoactivo"
+                                                   checked>
+                                            <span class="ic-small">Activo</span>
+                                        </key>
+                                        <key class="radio-inline">
+                                            <input type="radio" name="radioestado" id="estadoinactivo">
+                                            <span class="ic-small">Inactivo</span>
+                                        </key>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="demo-wrapper html5-progress-bar">
+                            <div class="progress-bar-wrapper">
+                                <progress id="progressbar" value="0" max="100"></progress>
+                                <span class="progress-value">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green" data-ng-click="vm.salvarModelo()">Guardar</button>
+                <button type="button" class="btn red" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div>
 <!-- Modal -->
 <div data-ng-include="vm.urlPath + '/bundles/admin/app/layout/modal-eliminar.html'"></div>

@@ -698,6 +698,15 @@ public class PlanController {
             } else {
                 plan.setModeloAgrupado(planBd.getModeloAgrupado());
             }
+            if (plan.getDiagrama() != null && !plan.getDiagrama().isEmpty()) {
+                Modelo modelo = mapeadorObjetos.readValue(plan.getDiagrama(), Modelo.class);
+                ArrayList<Edge> linkDataArray = modelo.getLinkDataArray();
+                for (Edge edge : linkDataArray) {
+                    edge.setPoints(new ArrayList<>());
+                    modelo.updateEdge(edge);
+                }
+                plan.setDiagrama(mapeadorObjetos.writeValueAsString(modelo));
+            }
         }
         planService.saveAndFlush(plan);
         
